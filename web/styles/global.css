@@ -1,0 +1,127 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+
+@layer base {
+	/* inter var - latin */
+	/* @font-face {
+	  font-family: 'Inter';
+	  font-style: normal;
+	  font-weight: 100 900;
+	  font-display: optional;
+	  src: url('/fonts/inter-var-latin.woff2') format('woff2');
+	  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6,
+		U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193,
+		U+2212, U+2215, U+FEFF, U+FFFD;
+	} */
+
+	@font-face {
+		font-family: 'Poppins';
+		font-style: normal;
+		font-weight: 400;
+		font-display: optional;
+		src: url(/fonts/Poppins-Regular.woff2) format('woff2')
+	}
+
+	@font-face {
+		font-family: 'Poppins';
+		font-weight: 700;
+		font-style: Bold;
+		font-display: optional;
+		src: url(/fonts/Poppins-Bold.woff2) format('woff2')
+	}
+
+	/* @font-face {
+		font-family: 'Poppins';
+		font-weight: 900;
+		font-style: bold;
+		font-display: optional;
+		src: url(/fonts/Poppins-Bold.ttf) format('ttf')
+	} */
+
+
+	@font-face {
+		font-family: 'Gaegu';
+		font-style: normal;
+		font-weight: 400;
+		font-display: optional;
+		src: url(/fonts/Gaegu-Regular.woff2) format('woff2')
+	}
+
+
+
+	/* @font-face {
+		font-family: 'Poppins';
+		src: local('Poppins'), url(/fonts/Poppins-Regular.woff2) format('woff2');
+	}
+   */
+	.cursor-newtab {
+	  cursor: url('/images/new-tab.png') 10 10, pointer;
+	}
+  
+	h1 {
+	  @apply  text-2xl font-bold md:text-4xl ;
+	}
+  
+	h2 {
+	  @apply  text-xl font-bold md:text-3xl;
+	}
+  
+	h3 {
+	  @apply  text-lg font-bold md:text-2xl;
+	}
+  
+	h4 {
+	  @apply  text-base font-bold md:text-lg;
+	}
+  
+	html {
+	  @apply  h-full;
+	}
+
+
+	#__next {
+		@apply  h-full;
+	}
+
+	.page-container{
+		@apply  h-full;
+	}
+
+
+	body {
+		@apply  text-sm md:text-base h-full;
+	}
+  
+	.layout {
+	  /* 750px */
+	  /* max-width: 43.75rem; */
+  
+	  /* 1100px */
+	  max-width: 68.75rem;
+	  @apply mx-auto w-11/12;
+	}
+	
+	
+}
+
+.btn-styled {
+	@apply text-sm 
+}
+
+.btn-style-text {
+	@apply py-2 px-3  text-custom-primary hover:bg-custom-secondary hover:underline
+}
+.btn-style-primary {
+	@apply py-2 px-3 bg-custom-primary text-custom-secondary border-solid border border-custom-primary hover:bg-custom-secondary hover:text-custom-primary 
+}
+
+.btn-size-large{
+	@apply  text-lg py-3 px-6
+}
+/* 
+.header-select{
+	@apply mx-1.5 text-xl font-bold md:text-3xl bg-transparent text-custom-tertiary underline;
+} */
