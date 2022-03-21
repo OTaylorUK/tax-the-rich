@@ -8,7 +8,7 @@ const MyApp = (props) => {
   const { Component, pageProps } = props;
   const { globalData: settings } = pageProps;
 
-  const palette = settings.find(({ name }) => name === 'colourPalette')
+  const palette = settings?.find(({ name }) => name === 'colourPalette')
  
 
 

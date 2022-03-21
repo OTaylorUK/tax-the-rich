@@ -21,23 +21,23 @@
 		font-family: 'Poppins';
 		font-style: normal;
 		font-weight: 400;
-		font-display: optional;
-		src: url(/fonts/Poppins-Regular.woff2) format('woff2')
+		font-display: swap;
+		src: url('/fonts/Poppins-Regular.woff2') format('woff2')
 	}
 
 	@font-face {
 		font-family: 'Poppins';
 		font-weight: 700;
 		font-style: Bold;
-		font-display: optional;
-		src: url(/fonts/Poppins-Bold.woff2) format('woff2')
+		font-display: swap;
+		src: url('/fonts/Poppins-Bold.woff2') format('woff2')
 	}
 
 	/* @font-face {
 		font-family: 'Poppins';
 		font-weight: 900;
 		font-style: bold;
-		font-display: optional;
+		font-display: swap;
 		src: url(/fonts/Poppins-Bold.ttf) format('ttf')
 	} */
 
@@ -46,8 +46,8 @@
 		font-family: 'Gaegu';
 		font-style: normal;
 		font-weight: 400;
-		font-display: optional;
-		src: url(/fonts/Gaegu-Regular.woff2) format('woff2')
+		font-display: swap;
+		src: url('/fonts/Gaegu-Regular.woff2') format('woff2')
 	}
 
 
