@@ -23,7 +23,7 @@ export const getStaticPaths = async () => {
 	});
 	
 	const paths = await Promise.all(routes.value.map(route => {
-		if (route.slug !== undefined) {
+		if (route.slug !== undefined && route.slug.current.toString() !== '/404') {
 			return {
 				params: {slug: route.slug.current.toString()}
 			}
