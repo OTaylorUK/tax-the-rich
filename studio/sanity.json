@@ -1,11 +1,12 @@
 {
   "root": true,
   "project": {
-    "name": "Next.js landing pages"
+    "name": "Next.js landing pages",
+    "basePath": "/studio"
   },
   "api": {
-    "projectId": "v1w1ovsb",
-    "dataset": "production"
+    "projectId": "process.env.NEXT_PUBLIC_SANITY_PROJECT_ID", 
+    "dataset": "process.env.NEXT_PUBLIC_SANITY_DATASET"
   },
   "plugins": [
     "@sanity/base",
