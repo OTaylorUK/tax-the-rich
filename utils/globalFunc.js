@@ -1,15 +1,8 @@
 
 export const formatGlobalSettings = (obj) => {
   for (let [key, result] of Object.entries(obj)) {
-    console.log('1111!!!');
-    console.log(result);
-
     if (!result) continue;
-    
-    console.log('222222222!!!');
-
     if (!result?.[0]) continue;
-    console.log('fwefwefewfwef');
     let type = result?.[0]._type;
 
     let returnContent = result;
