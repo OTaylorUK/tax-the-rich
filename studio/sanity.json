@@ -5,7 +5,7 @@
     "basePath": "/studio"
   },
   "api": {
-    "projectId": "process.env.NEXT_PUBLIC_SANITY_PROJECT_ID", 
+    "projectId": "process.env.NEXT_PUBLIC_SANITY_PROJECT_ID",
     "dataset": "process.env.NEXT_PUBLIC_SANITY_DATASET"
   },
   "plugins": [
@@ -13,7 +13,8 @@
     "@sanity/default-layout",
     "@sanity/default-login",
     "@sanity/desk-tool",
-    "media"
+    "media",
+    "color-picker"
   ],
   "env": {
     "development": {

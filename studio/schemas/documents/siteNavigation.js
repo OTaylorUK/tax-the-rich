@@ -15,11 +15,6 @@ export default {
       type: 'array',
       of: [ { title: 'Link',type: 'button',} ],
     },
-    {
-      name: 'button',
-      title: 'Button',
-      type: 'button',
-    },
   ],
   preview: {
    

@@ -1,25 +1,39 @@
 // Must keep '_type' to use in later function to organise data into groups
+// add to btn below when testing 'TYPEEEEE': _type,
 
+const buttonGroq = `
+...,
 
-const buttonGroq = `...,
-'intLink': route->slug.current,
-'link': link,
-portableButton[]{
+_type == 'button' => {
+  'intLink': route->slug.current,'link': link,
+  portableButton[]{
   ...,
   asset->
-},`
+  },
+ },
+
+ 
+
+_type == 'buttons' => {
+  'test': _key,
+  buttons[]{
+    ...,
+    'intLink': route->slug.current,'link': link,
+    portableButton[]{
+      ...,
+      asset->
+    },
+  },
+}
+`
 
 export const getFooter = `
 *[_type in ["siteFooter"]]
-{_type,middle,
-  lhs[]{
-    ${buttonGroq}
-  },
-  rhs[]{
-    ${buttonGroq}
-  },
+{_type,
   middle{
-    ...,
+    button{
+      ${buttonGroq}
+     },
     social[]->{
       ...,
       button{
@@ -32,7 +46,12 @@ export const getFooter = `
 
 export const  getPalette = `
   *[_type in ["colourPalette"]]
-  {hex,name,_type}
+  {
+    _type,
+    name,
+    'dark': darkThemeHex,
+    'light': lightThemeHex,
+  }
 `
 
 export const  getSEO = `
@@ -74,14 +93,44 @@ export const getPageContent = (slug = '404') => {
   *[_type == "page" && slug.current == "${slug}"]
   {
     ...,
+    'SEO': {
+      title,
+      'url': slug.current,
+      description,
+      openGraphImage{
+        asset->{
+          url,
+          mimeType,
+        }
+      }
+    },
     content[] {
-      ...,
-      buttons[] {
+      ${buttonGroq},
+ 
+      Header[] {
         ${buttonGroq}
       },
-      
+
+      textContent[] {
+        ${buttonGroq}
+      },
+      buttons[]{
+        ${buttonGroq}
+       
+      },
+      social[]->{
+        ...,
+        button{
+         ${buttonGroq}
+        }
+      }
+
     }
+    
   }
+
+
+ 
   `
 }
 

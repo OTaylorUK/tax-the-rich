@@ -30,6 +30,7 @@ import colour from './objects/colour';
 import footer from './objects/footer';
 import quote from './objects/quote';
 import button from './objects/button';
+import buttons from './objects/buttons';
 import embedHTML from './objects/embedHTML';
 import figure from './objects/figure';
 import internalLink from './objects/internalLink';
@@ -38,6 +39,10 @@ import portableText from './objects/portableText';
 import portableHeader from './objects/portableHeader';
 import portableButton from './objects/portableButton';
 import richList from './objects/richList';
+import generalText from './objects/generalText';
+import textAlign from './objects/textAlign';
+import lineBreak from './objects/lineBreak';
+import blockVisual from './objects/blockVisual';
 
 
 import simplePortableText from './objects/simplePortableText';
@@ -65,6 +70,7 @@ export default createSchema({
     footer,
     quote,
     button,
+    buttons,
     embedHTML,
     figure,
     hero,
@@ -78,6 +84,10 @@ export default createSchema({
     portableHeader,
     portableButton,
     richList,
+    generalText,
+    textAlign,
+    lineBreak,
+    blockVisual,
     route,
     simplePortableText,
     dropDown,

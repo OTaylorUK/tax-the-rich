@@ -3,7 +3,7 @@ import client from '../client'
 import { getFooter, getSEO, getNav, getPalette, getRoutes, getCurrentPage, getPageContent } from '../utils/globalGroq';
 import { formatGlobalSettings } from '../utils/globalFunc';
 
-import PageSections from '../comps/PageSections'
+import PageSections from '../components/PageSections'
 
 
 

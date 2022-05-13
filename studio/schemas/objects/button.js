@@ -138,7 +138,7 @@ export default {
         ? link
         : 'Not set';
       
-      const subTitle = `Style: ${style}  |  Size: ${slugPath}  |  URL: ${slugPath}`
+      const subTitle = `Style: ${style}  |  Size: ${size}  |  URL: ${slugPath}`
       return {
         title: spanText,
         subtitle: subTitle,

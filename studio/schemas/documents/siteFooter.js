@@ -4,24 +4,14 @@ export default {
   name: 'siteFooter',
   title: 'Footer',
   fields: [
-    {
-      name: 'lhs',
-      title: 'Left hand side',
-      type: 'array',
-      of: [ { title: 'Button',type: 'button',} ],
-    },
-    {
-      name: 'rhs',
-      title: 'Right hand side',
-      type: 'array',
-      of: [ { title: 'Button',type: 'button',} ],
-    },
+   
     {
       name: 'middle',
       title: 'Middle',
       type: 'object',
       fields: [
         {name: 'text', type: 'string', title: 'Text'},
+        {name: 'button', type: 'button'},
         {name: 'social',  type: 'array',
           of: [{ title: 'Social Channel', type: 'reference',
           to: [{ type: 'socialMedia' }], }]

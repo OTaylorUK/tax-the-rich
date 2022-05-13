@@ -42,7 +42,8 @@ export default {
         { type: 'quote', icon: MdAddCircle },
         { type: 'visualiser', icon: MdAddCircle },
         { type: 'richList', icon: MdAddCircle },
-        
+        { type: 'generalText', icon: MdAddCircle },
+        { type: 'blockVisual', icon: MdAddCircle },
       ],
     },
 

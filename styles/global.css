@@ -1,10 +1,39 @@
+:root {
+	@apply light;
+	
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
 
+/* only way to add variables without hard coding it */
+.light{
+	--custom-primary: var(--theme-light-primary);
+	--custom-secondary: var(--theme-light-secondary);
+	--custom-accent: var(--theme-light-accent);
+	--custom-highlight: var(--theme-light-highlight);
+	--custom-text: var(--theme-light-text);
+	--custom-faded: var(--theme-light-faded);
+}
+
+.dark{
+	--custom-primary: var(--theme-dark-primary);
+	--custom-secondary: var(--theme-dark-secondary);
+	--custom-accent: var(--theme-dark-accent);
+	--custom-highlight: var(--theme-dark-highlight);
+	--custom-text: var(--theme-dark-text);
+	--custom-faded: var(--theme-dark-faded);
+}
+
+
+
+
 @layer base {
+	
 	/* inter var - latin */
 	/* @font-face {
 	  font-family: 'Inter';
@@ -50,16 +79,6 @@
 		src: url('/fonts/Gaegu-Regular.woff2') format('woff2')
 	}
 
-
-
-	/* @font-face {
-		font-family: 'Poppins';
-		src: local('Poppins'), url(/fonts/Poppins-Regular.woff2) format('woff2');
-	}
-   */
-	.cursor-newtab {
-	  cursor: url('/images/new-tab.png') 10 10, pointer;
-	}
   
 	h1 {
 	  @apply  text-2xl font-bold md:text-4xl ;
@@ -92,7 +111,8 @@
 
 
 	body {
-		@apply  text-sm md:text-base h-full;
+		@apply  text-sm md:text-base h-full bg-custom-primary;
+
 	}
   
 	.layout {
@@ -108,14 +128,56 @@
 }
 
 .btn-styled {
-	@apply text-sm 
+	@apply text-sm rounded-md
 }
 
+
+
+
 .btn-style-text {
-	@apply py-2 px-3  text-custom-primary hover:bg-custom-secondary hover:underline
+	@apply py-2 px-3  text-custom-secondary hover:text-custom-accent hover:underline
 }
+
+.btn-style-text.is-active  {
+	@apply text-custom-accent underline
+}
+
+
+
 .btn-style-primary {
-	@apply py-2 px-3 bg-custom-primary text-custom-secondary border-solid border border-custom-primary hover:bg-custom-secondary hover:text-custom-primary 
+	@apply py-2 px-3 bg-custom-highlight text-custom-secondary border-solid border border-custom-highlight hover:bg-custom-secondary hover:text-custom-highlight 
+}
+
+.btn-style-ghost {
+	@apply py-2 px-3  text-custom-accent border-solid border border-custom-accent hover:bg-custom-accent hover:text-custom-primary 
+}
+
+
+
+.btn-style-action span {
+	@apply px-2 text-custom-secondary 
+}
+
+
+
+.btn-style-action .box-wrap {
+	@apply py-1 px-1 bg-custom-highlight text-custom-secondary border-solid border border-custom-highlight hover:bg-custom-secondary hover:text-custom-highlight rounded-md
+}
+
+
+.btn-style-action.is-active .box-wrap {
+	@apply bg-custom-secondary text-custom-highlight rounded-md
+}
+
+
+/* 
+* {
+	scroll-margin-top: 300px;
+  }
+   */
+
+.btn-styled svg path{
+	@apply fill-current
 }
 
 .btn-size-large{

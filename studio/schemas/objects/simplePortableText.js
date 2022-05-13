@@ -1,3 +1,6 @@
+import React from 'react'
+
+
 export default {
   title: 'Simple Portable Text',
   name: 'simplePortableText',
@@ -14,6 +17,7 @@ export default {
         {title: 'H4', value: 'h4'},
         {title: 'H5', value: 'h5'},
         {title: 'H6', value: 'h6'},
+        {title: 'span', value: 'span'},
         {title: 'Quote', value: 'blockquote'}
       ],
       lists: [
@@ -25,18 +29,25 @@ export default {
           { title: 'Strong', value: 'strong' },
           { title: 'Emphasis', value: 'em' },
           { title: 'Code', value: 'code' },
+        
         ],
-        annotations: [{ type: 'link' }, { type: 'internalLink' }],
+
+        annotations: [{ type: 'link' }, { type: 'internalLink' }, { type: 'textAlign' }],
       },
     },
     {
       type: 'image'
     },
     {
-      type: 'embedHTML',
+      type: 'button',
+    },
+    {
+      type: 'buttons',
     },
     {
       type: 'dropDown',
     },
+    
+    
   ],
 };

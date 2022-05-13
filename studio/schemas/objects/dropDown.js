@@ -10,8 +10,8 @@ export default {
       type: 'string',
       options: {
         list: [
-          {title: 'pricedItem', value: 'pricedItem'},
-          {title: 'moneyAmount', value: 'moneyAmount'},
+          {title: 'pricedItems', value: 'pricedItems'},
+          {title: 'moneyAmounts', value: 'moneyAmounts'},
         ],
       },
     },

@@ -22,18 +22,36 @@ export default {
       type: 'number',
       title: 'The numerical value e.g. 1000000',
     },
+    {
+      name: 'color',
+      title: 'Color',
+      type: 'colorPicker'
+    },
+  
   ],
 
   preview: {
     select: {
       title: 'shortValue',
       subtitle: 'actualValue',
+      color: 'color'
     },
-    prepare({ title, subtitle }) {
+    prepare({ title, subtitle, color }) {
      
+      const styles = {
+        backgroundColor: color,
+        height: '100%',
+        width: '100%',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center'
+      };
+
+
       return {
         title: `${title}`,
         subtitle: `${subtitle}`,
+        media: <span style={styles}> <MdAttachMoney/> </span>
       };
     },
   },

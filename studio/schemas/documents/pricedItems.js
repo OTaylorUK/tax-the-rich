@@ -58,7 +58,12 @@ export default {
       group: 'media',
       title: 'Image',
     },
-    
+    {
+      name: 'icon',
+      group: 'media',
+      type: 'string',
+      title: 'Icon',
+    },
     {
       name: 'source',
       type: 'url',
