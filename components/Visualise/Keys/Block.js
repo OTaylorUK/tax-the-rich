@@ -1,18 +1,35 @@
 
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+
+import { useThemeContext } from "../../../context/theme"
 
 
-const Block = ({ content }) => {
+const Block = ({id, colour, displayVal}) => {
+
+	const { isDark } = useThemeContext()
+
+	const [bgColour, setBgColour] = useState(null)
+
+	useEffect(()=>{
+		if(isDark){
+			setBgColour(colour.dark)
+		}else{
+			setBgColour(colour.light)
+		}
+	},[isDark])
 
 	
 	return (
 		<>
-			{content?.map((key, index) => (
-				<div className="key flex-1 sm:flex-auto flex flex-col text-center sm:flex-row justify-center items-center" key={`key-${index}`}>
-					{key?.visual}
-					<span className="m-1">{key?.displayVal} </span>
-				</div>
-			))} 
+			<div className="key flex-1 sm:flex-auto flex flex-col text-center sm:flex-row justify-center items-center font-gaegu" key={`key-${id}`}
+			>
+				<div className={`h-4 w-4 border `} 
+				style={{
+					backgroundColor: `${bgColour}`,
+				}}
+				></div>
+				<span className="m-1"> = {displayVal} </span>
+			</div>
 		</>
 	);
 }

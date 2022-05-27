@@ -5,11 +5,15 @@ export default {
  
   fields: [
     {
+      name: 'headerContent',
+      type: 'simplePortableText',
+      title: 'Header Content',
+    },
+    {
       name: 'textContent',
       type: 'simplePortableText',
       title: 'Text Content',
     },
-  
   ],
   preview: {
     select: {

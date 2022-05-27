@@ -57,7 +57,7 @@ function Default(props) {
 
   
   return (
-    <div className={`flex text-left flex-wrap flex-col items-center justify-center ${options?.customClass} ${options?.containerMargin} ${options?.textAlign}`}>
+    <div className={`flex flex-wrap flex-col items-center justify-center text-center ${options?.customClass} ${options?.containerMargin} ${options?.textAlign}`}>
        <PortableText
         value={blocks}
         components={{
@@ -71,13 +71,13 @@ function Default(props) {
           block: {
             // Ex. 1: customizing common block types
             h1: ({ children }) =>
-              <h1 className={`font-bold text-3xl md:text-5xl lg:text-6xl capitalize ${options?.textColor} mb-10`}>{children}</h1>,
+              <h1 className={`font-bold text-3xl md:text-5xl lg:text-8xl capitalize ${options?.textColor} mb-10 lg:leading-snug`}>{children}</h1>,
             h2: ({ children }) =>
-              <h1 className={`font-bold text-2xl md:text-3xl lg:text-4xl  ${options?.textColor}  `} > { children }</h1>,
+              <h1 className={`font-bold text-2xl md:text-3xl lg:text-4xl    `} > { children }</h1>,
             h3: ({ children }) =>
               <h1 className={`font-bold text-xl md:text-3xl ${options?.textColor} mb-8`} > { children }</h1 >,
             normal: ({ children }) =>
-              <p className={`mb-4`} > { children }</p >,
+              <p className={`mb-4 `} > { children }</p >,
             span: ({ children }) =>
               <p className={`capitalize text-lg mb-4 ${options?.textColor}`} > { children }</p >,
           },

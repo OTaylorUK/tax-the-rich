@@ -69,7 +69,6 @@ const Navbar = ({ content = null, scroll }) => {
 			<div className={`px-10 py-5 overflow-hidden bg-custom-primary container max-w-screen-xl m-auto   flex flex-row items-center   h-full ${navPos} transition-[top] duration-300 ${navShadow}`}>
 
 				<div className="logo flex-1 flex items-start justify-start  ">
-					{/* <Button content={logo} /> */}
 					<PortableButton content={logo}/>
 				</div>
 

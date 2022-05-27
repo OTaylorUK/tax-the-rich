@@ -1,5 +1,5 @@
 
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useMemo, useRef } from 'react';
 import { toPng } from 'html-to-image';
 import {Dynamic, Default} from "../../PortableContent";
 import { useEffect, useState } from 'react';
@@ -9,6 +9,7 @@ import { PortableButton } from "../../PortableContent";
 import { useRouter } from "next/router";
 import {  getSheet, getRichList, allKeyed, formatNumberToLocal, calcUnitsPerAmount } from '../../../utils/globalFunc';
 
+import { Header, Body } from '../sectionLayout';
 
 
 const Visualiser = ({
@@ -64,11 +65,19 @@ const Visualiser = ({
 		moneyAmounts: moneyAmounts,
 	}
 
-	const variableSelection = {
-		isUpdating: isUpdating,
-		item: selectedItem,
-		amount: selectedAmount,
-	}
+	// const variableSelection = {
+	// 	isUpdating: isUpdating,
+	// 	item: selectedItem,
+	// 	amount: selectedAmount,
+	// }
+	const variableSelection = useMemo(
+		() => ({
+			isUpdating: isUpdating,
+			item: selectedItem,
+			amount: selectedAmount,
+		 }),
+		[isUpdating, selectedItem, selectedAmount] //no dependencies so the value doesn't change
+	  );
 
 	const findReplace = {
 		'moneyAmount' : selectedAmount?.displayValue,
@@ -151,10 +160,8 @@ const Visualiser = ({
 				finalPricedItems = items?.data
 			}
 			
-
-
+			// default set if no change - try to find more elegant way of doing this
 			finalSelectedItem = finalPricedItems[0]
-
 			finalAmounts = moneyAmountsArr
 			finalSelectedAmount = moneyAmountsArr[0]
 
@@ -218,14 +225,12 @@ const Visualiser = ({
 			if(selectedItem === null){
 				setSelectedItem(finalSelectedItem)
 			}
-
 	
 			// prevent overwriting the selected amount if already set
 			if(selectedAmount === null){
 				setSelectedAmount(finalSelectedAmount)
 			}
 		
-
 			setIsUpdating(true)
 
 		}
@@ -386,55 +391,65 @@ const Visualiser = ({
 		url
 	}
 
+
+	const sourceData = useMemo(
+		() => ({
+			text: selectedItem?.text,
+			replaceDetails: {
+				"price": `${selectedItem?.priceUSD?.toLocaleString("en-US")}`,
+				"name": `${selectedItem?.singularName}`,
+			},
+			sources: selectedItem?.sources
+		 }),
+		[selectedItem]
+	  );
+
+
 	return (
 		<>
-			<div ref={ref} className="container   gap-16 flex flex-col justify-center items-center ">
-				<article className="hide-me  w-full sm:w-4/5  flex flex-col justify-center items-center  px-6">
+			<div  className="container    flex flex-col justify-center items-center ">
+				<Header >
+					<Default  blocks={question} />
+				</Header>
+				<Body >
+					<Dynamic blocks={header} context={dynamicContext} />
+				</Body>
+			</div>
 
-					<div className="w-full bg-custom-faded flex flex-col justify-center items-center">
-						<Default  blocks={question} overrides={{customClass:'bg-custom-highlight p-6 w-full',textColor: 'text-custom-accent', textAlign: 'text-center' }}  />
-						<Dynamic blocks={header} context={dynamicContext} overrides={{customClass:'p-10 sm:p-12'}} />
-					</div>
-				</article>
-
-				<div className="relative w-full sm:w-4/5  flex flex-col justify-center items-center  px-6">
-					<div ref={resultsRef} style={{scrollMarginTop: '200px'}} className="relative w-full bg-custom-faded  flex-col">
-
-						<Default blocks={answer} findReplace={findReplace} overrides={{customClass:'bg-custom-highlight p-6 w-full',textColor: 'text-custom-accent', textAlign: 'text-center' }} />
-
-						<div className="relative w-full p-10 sm:p-12  flex flex-col">
-							<div className="relative w-full gap-12  flex flex-col">
-								<Results numOfUnits={visualSettings?.numOfUnits?.display} displayName={visualSettings?.displayName}  numOfUnitsPlural={visualSettings?.numOfUnitsPlural} />
-								<Source object={selectedItem} />
-							</div>
-
-							<div className="relative w-full h-full mb-60">
-								<Keys keys={[visualSettings]} type={'icon'}  />
-								<Icons  data={visualSettings} />
-							</div>
-		
-							<div className="w-full h-full ">
-								<article className="relative -top-24 wrap flex flex-row flex-wrap justify-center items-center gap-5">
-									{buttons?.map((button, i) => {
-										if (i === 0) {
-											return (
-												<SocialShare key={`btn-${i}`} context={btnShareContext} content={button} social={social} bgColour={'bg-custom-primary'}/>
-											)
-										} else {
-											return (
-												<PortableButton key={`btn-${i}`} content={button} context={btnContent}/>
-											)
-										}
-									})}
-								</article>
-							</div>
-
-						</div>
-							
+			<div ref={ref}  className="container    flex flex-col justify-center items-center ">
+				<Header >
+					<Default blocks={answer} findReplace={findReplace}  />
+				</Header>
+				<Body >
+					<div className="relative w-full gap-12  flex flex-col">
+						<Results number={visualSettings?.numOfUnits?.display} text={visualSettings?.displayName}  isPlural={visualSettings?.numOfUnitsPlural} />
+						<Source {...sourceData} />
 					</div>
 
-				</div> 
-			</div> 
+					<div className="relative w-full h-full mb-60">
+						<Keys keys={[visualSettings]} type={'icon'}  />
+						<Icons  data={visualSettings} />
+					</div>
+
+					<div className="w-full h-full ">
+						<article className="relative -top-24 wrap flex flex-row flex-wrap justify-center items-center gap-5">
+							{buttons?.map((button, i) => {
+								if (i === 0) {
+									return (
+										<SocialShare key={`btn-${i}`} context={btnShareContext} content={button} social={social} bgColour={'bg-custom-primary'}/>
+									)
+								} else {
+									return (
+										<PortableButton key={`btn-${i}`} content={button} context={btnContent}/>
+									)
+								}
+							})}
+						</article>
+					</div>
+				</Body>
+			</div>
+
+			
 		</>
 	)
 

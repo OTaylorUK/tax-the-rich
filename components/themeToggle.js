@@ -2,18 +2,47 @@
 import { useDarkMode } from '../hooks/useDarkMode'
 // import { useDarkMode } from '@/hooks/useDarkMode'
 import { useAnalyticsEvent } from '../hooks/useAnalytics'
+import { useEffect, useState, useContext } from 'react';
+
+import { useThemeContext } from '../context/theme';
+
 
 export function ThemeToggle({ className }) {
-  const [isDark, setIsDark] = useDarkMode()
+
+  const { isDark, setIsDark } = useThemeContext();
+
+  const [displaySettings, setDisplaySettings] = useState({
+    position: 'translate(0px)',
+    text: 'light',
+    label: 'Activate Light Mode',
+  })
   const { trackCustomEvent } = useAnalyticsEvent()
 
+
+  useEffect(()=>{
+    console.log('theme:', isDark);
+    if(isDark){
+      setDisplaySettings({
+        position: 'translate(13px)',
+        text: 'dark',
+        label: 'Activate Light Mode',
+      })
+      
+    }else{
+      setDisplaySettings({
+        position: 'translate(0px)',
+        text: 'light',
+        label: 'Activate Dark Mode',
+      })
+    }
+  },[isDark])
 
   return (
  
     <>
        <button
-        aria-label={isDark ? 'Activate Light Mode' : 'Activate Dark Mode'}
-        title={isDark ? 'Activate Light Mode' : 'Activate Dark Mode'}
+        aria-label={displaySettings.label}
+        title={displaySettings.label}
         onClick={() => {
           setIsDark(!isDark)
           trackCustomEvent({ eventName: 'toggle-theme' })
@@ -22,9 +51,11 @@ export function ThemeToggle({ className }) {
       >
            <div className="wrap form-check-input appearance-none w-[30px]  rounded-full float-left h-[17px] align-top  bg-no-repeat bg-contain bg-gray-300 focus:outline-none cursor-pointer shadow-sm relative ">
             <input className='opacity-0 w-0 h-0' type="checkbox" />
-            <span className={`absolute h-[13px] w-[13px] top-[2px]  ${isDark ? 'translate-x-[13px]' :  ''} left-[2px] rounded-full bg-custom-primary transition-transform`}></span>
+            <span className={`absolute h-[13px] w-[13px] top-[2px]   left-[2px] rounded-full bg-custom-primary transition-transform`} style={{
+              transform: displaySettings.position
+            }}></span>
           </div>
-          <span className='font-gaegu uppercase text-custom-secondary group-hover:text-custom-accent'>Toggle {isDark ? <span>light</span> :  <span>dark</span>} mode</span>
+          <span className='font-gaegu uppercase text-custom-secondary group-hover:text-custom-accent'>Toggle <span>{displaySettings.text}</span> mode</span>
       </button>
 
 

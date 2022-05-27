@@ -2,16 +2,21 @@
 
 import {Default} from "../../PortableContent";
 
+import { Header, Body } from '../sectionLayout';
+
 const Quote = (props) => {
 
-	const { textContent } = props;
+	const { textContent, headerContent } = props;
 
 
 	return (
-		<div className={` py-20 flex flex-col justify-center items-center`}>
-			<div className="container md:w-3/5 text-center flex flex-col justify-center items-center">
+		<div  className="container general-text-container   flex flex-col justify-center items-center ">
+			<Header >
+				<Default blocks={headerContent} />
+			</Header>
+			<Body >
 				<Default blocks={textContent} />
-			</div>
+			</Body>
 		</div>
 	)
 

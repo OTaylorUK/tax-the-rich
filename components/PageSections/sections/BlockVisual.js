@@ -1,54 +1,63 @@
 
-import { useEffect, useState, useCallback, useRef } from 'react';
+import { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { toPng } from 'html-to-image';
 
 import React from 'react'
-import {Results, Icons, Source, Keys, Boxes, Toggle} from "../../Visualise";
+import { Keys, Boxes} from "../../Visualise";
 import { useRouter } from "next/router";
 import { useResizeDetector } from 'react-resize-detector';
 import { formatNumberToLocal } from '../../../utils/globalFunc';
-import { PortableButton } from '../../PortableContent';
+import { PortableButton, Default } from '../../PortableContent';
+import { Header, Body } from '../sectionLayout';
 
-const BlockVisual = ({buttons, componentContext}) => {
+const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => {
 
 	let { moneyAmounts: initalMoney } = {...componentContext?.data}
 
-	// dynamically update the width and height on resize
-	const { width: elWidth, height: elHeight, ref: elementRef } = useResizeDetector();
-	
 	const router = useRouter()
 
 	const resultsRef = useRef()
 
-	const [containerWidth, setContainerWidth] = useState(elWidth)
+	const [containerWidth, setContainerWidth] = useState(null)
 	const [boxes, setBoxes] = useState(null);
 	const [keys, setKeys] = useState(null);
 	const [contHeight, setContHeight] = useState(0);
 	const [showLabels, setShowLabels] = useState(true);
 	const [moneyAmounts, setMoneyAmounts] = useState(null)
 	const [displayType, setDisplayType] = useState('y');
+	const colourArray = useRef([
+		{
+			dark: '#8AE7DB',
+			light: '#081B45',
+		},
+		{
+			dark: '#64A8A9',
+			light: '#54617D',
+		},
+		{
+			dark: '#4B7F88',
+			light: '#8790A3',
+		},
+		{
+			dark: '#315566',
+			light: '#B9BEC8',
+		},
+		{
+			dark: '#182B45',
+			light: '#ECEDEE',
+		},
+	]);
 
-	const variableSelection = {
-		amounts: moneyAmounts,
-		displayType: displayType,
-	}
+
+	const variableSelection = useMemo(
+		() => ({
+			amounts: moneyAmounts,
+			displayType: displayType,
+		 }),
+		[moneyAmounts] //no dependencies so the value doesn't change
+	  );
+
 	
-
-	// const colourArray = [
-	// 	'#ee9f77',
-	// 	'#e4ab7c',
-	// 	'#d8b782',
-	// 	'#ccc287',
-	// 	'#becd8d',
-	// 	'#aed892',
-	// 	'#9be298',
-	// 	'#84ec9d',
-	// 	'#65f5a3',
-	// 	'#2effa9',
-
-	// ]
-	
-
 	// Use effects //
 	/**
 	 * on load / router change
@@ -110,7 +119,6 @@ const BlockVisual = ({buttons, componentContext}) => {
 		 */
 		const getData = async () => {
 
-
 			// original default values to use
 			let moneyAmountsArr = JSON.parse(JSON.stringify(initalMoney));
 
@@ -137,123 +145,107 @@ const BlockVisual = ({buttons, componentContext}) => {
 	 */
 	useEffect(() => {
 		const{amounts, displayType} = {...variableSelection}
+		console.log('this called here', colourArray);
 
-
-		const colourArray = [
-			'#FAFAFB',
-			'#DADAEC',
-			'#BBBDDD',
-			'#9FA3CE',
-			'#868CBE',
-			'#6E77AF',
-			'#5964A0',
-			'#465491',
-			'#354582',
-			'#263872',
-			'#1A2D63',
-			'#102354',
-			'#081B45',
-		]
-
-		if(amounts === null && (elWidth === undefined) ){
+		
+		if(amounts === null  || colourArray === null || containerWidth === null){
 			return null
 		}
 
-		const checkForWidthChange = (width) =>{
-	
-			if(width !== containerWidth){
-				setContainerWidth(width)
-				return true
+		const calculateSizes = (amount, base, i) => {
+
+			let maxHeight,widthDiff,heightDiff;
+
+			// calculate the new height/width of element 
+			const baseInc = (amount?.actualValue / base?.value)
+
+			const actualSize = (baseInc * base?.size)
+			const currentBoxMaxWidth = base?.maxWidth * (i + 1)
+
+			let boxHeight = actualSize;
+			let boxWidth = actualSize;
+			
+			// will scroll horizontally
+			if(displayType === 'x'){
+				// is bigger than the max height then add the difference to the width
+				if(actualSize > elHeight){
+					heightDiff = actualSize - elHeight
+					widthDiff = actualSize - boxWidth
+					boxHeight = elHeight // set to the max height possible
+					boxWidth = boxWidth + heightDiff
+				}
+
 			}else{
-				return false
+				// is bigger than the max width of current box then add the difference to the height
+				if(actualSize > currentBoxMaxWidth){
+					widthDiff = actualSize - currentBoxMaxWidth
+					heightDiff = actualSize - boxHeight
+					boxWidth = currentBoxMaxWidth // set to the max width possible
+					boxHeight = boxHeight + widthDiff
+				}
+
+				maxHeight = boxHeight;
 			}
+
+			return {
+				width: boxWidth,
+				height: boxHeight,
+				newMaxHeight: maxHeight,
+			}
+
 		}
-
-		const updateVals = checkForWidthChange(elWidth);
-
 
 		const formatAmounts = () => {
 			let keys = [], boxes = [], maxHeight, heightDiff, widthDiff, curIter = 0;
 
-	
-
-			const width = elWidth;
+			const width = containerWidth;
 			// const height = elHeight;
 			
 			const base = {
-				// size: width / amounts?.length, //px
-				size:  5, //px
-				value: amounts?.[0]?.actualValue
+				size:  10, //px
+				value: amounts?.[0]?.actualValue,
+				maxWidth: width / amounts.length,
+				// change the increment rate of the colours so that each box is visually distinct when possible 
+				incrementBy: Math.floor(colourArray.current.length / amounts.length )
 			}
 
-			// change the increment rate of the colours so that each box is visually distinct when possible 
-			const incBy = Math.floor(colourArray.length / amounts.length )
-
-			// limits width of each box so it's possible to partially see all boxes from the start
-			const baseMaxWidth =  width / amounts.length
 		
-			
-
 			// loop over the set money amounts to create keys and update/add values
 			amounts?.map((amount, i) => {
 
 				// dynamically selected colour - depends on the number of values to show
-				const selectedColour = colourArray[curIter];
+				const selectedColourObj = colourArray.current[curIter];
 
-				// calculate the new height/width of element 
-
-				const baseInc = (amount?.actualValue / base?.value)
-
-				const actualSize = (baseInc * base?.size)
-				const currentBoxMaxWidth = baseMaxWidth * (i + 1)
-
-				let boxHeight = actualSize;
-				let boxWidth = actualSize;
-				
-				// will scroll horizontally
-				if(displayType === 'x'){
-					// is bigger than the max height then add the difference to the width
-					if(actualSize > elHeight){
-						heightDiff = actualSize - elHeight
-						widthDiff = actualSize - boxWidth
-						boxHeight = elHeight // set to the max height possible
-						boxWidth = boxWidth + heightDiff
-					}
-
-				}else{
-					// is bigger than the max width of current box then add the difference to the height
-					if(actualSize > currentBoxMaxWidth){
-						widthDiff = actualSize - currentBoxMaxWidth
-						heightDiff = actualSize - boxHeight
-						boxWidth = currentBoxMaxWidth // set to the max width possible
-						boxHeight = boxHeight + widthDiff
-					}
-
-					maxHeight = boxHeight;
-				}
-
-				
+				const {width, height, newMaxHeight} = calculateSizes(amount,base, i)
+				maxHeight = newMaxHeight
 
 				const displayBox = {
 					id: `box-${i}`,
-					height: boxHeight,
-					width: boxWidth,
-					colour: selectedColour,
+					height: height,
+					width: width,
+					colour: selectedColourObj,
 					displayVal: amount.displayValue,
 					zIndex: amounts.length - i
 				}
 
 				boxes.push(displayBox)
 
+				const displayKey = {
+					id: `box-${i}`,
+					colour: selectedColourObj,
+					displayVal: amount.displayValue,
+				}
+				
+
 				const boxKey = {
-					visual: <div className={`h-4 w-4 `} style={{
-						backgroundColor: `${selectedColour}`
+					visual: <div className={`h-4 w-4 border `} style={{
+						backgroundColor: `${selectedColourObj}`
 					}} ></div>,
 					displayVal: amount.displayValue,
 				}
-				keys.push(boxKey)
+				keys.push(displayKey)
 
-				curIter += incBy
+				curIter += base?.incrementBy
 			})
 
 			return {
@@ -265,16 +257,27 @@ const BlockVisual = ({buttons, componentContext}) => {
 
 		const {keys,boxes, maxHeight} = formatAmounts()
 
-		// :need-fix: prevents infinite loop - must be a better way to do this... maybe a useCallback ??
-		if(updateVals){
-			setBoxes(boxes)
-			setKeys(keys)
-			if(displayType === 'y'){
-				setContHeight(maxHeight)
-			}
+		setBoxes(boxes)
+		setKeys(keys)
+		if(displayType === 'y'){
+			setContHeight(maxHeight)
 		}
+		
+		console.log(variableSelection, {containerWidth}, 'use effect is called');
+		console.log('---------');
+	},[variableSelection, containerWidth])
+	
 
-	},[variableSelection, elWidth, containerWidth])
+	// Triggered on resize - just update sizes of boxes
+	const onResize = useCallback((width) => {
+		// console.log('resized here', width);
+		setContainerWidth(width)
+	}, []);
+
+	// dynamically update the width and height on resize
+	const { width: elWidth, height: elHeight, ref: elementRef } = useResizeDetector({onResize});
+	// const containerWidth = useRef(elWidth)
+
 
 
 	const scrollToTop = () => {
@@ -326,43 +329,45 @@ const BlockVisual = ({buttons, componentContext}) => {
 		showLabels,
 		setShowLabels
 	}
+
+
+
 	
 	return (
 		<>
-			<div className="container gap-16 flex flex-col justify-center items-center mb-[100vh]">
-				<div className=" w-full lg:w-4/5  flex flex-col justify-center items-center  px-6">
+		<div  className="container    flex flex-col justify-center items-center ">
+            <Header >
+				<Default blocks={headerContent} />
+			</Header>
+            <Body >
+				<Default blocks={textContent} />
+
+				<div className="relative w-full h-full mb-20">
+					<Keys keys={keys} type={'block'}  />
+
+					{/* <Toggle context={toggleContext} /> */}
 					
-					<div ref={resultsRef} style={{scrollMarginTop: '200px'}} className="w-full bg-custom-faded  flex-col">
-						
-						<div className="w-full p-10 sm:p-12 gap-12 flex flex-col">
-							<div className="relative w-full h-full mb-20">
-								<Keys keys={keys} type={'block'}  />
-
-								<Toggle context={toggleContext} />
-								
-								<div className={` ${displayType === 'x'? 'h-[30vh]' : 'h-auto'}  w-full  relative`} ref={elementRef} 
-								style={{
-									height: `${contHeight}px`,
-									scrollMarginTop: '200px'
-								}}>
-									<Boxes  data={boxes} context={{scrollToTop,showLabels}} />
-								</div>
-							</div>
-
-							<div className="w-full h-full ">
-								<article className="relative -top-10 wrap flex flex-row flex-wrap justify-center items-center gap-5">
-									{buttons?.map((button, i) => {
-										return (
-											<PortableButton key={`btn-${i}`} content={button} context={btnContent}/>
-										)
-									})}
-								</article>
-							</div>
-
-						</div>
+					<div className={` ${displayType === 'x'? 'h-[30vh]' : 'h-auto'}  w-full  relative`} ref={elementRef} 
+					style={{
+						height: `${contHeight}px`,
+						scrollMarginTop: '200px'
+					}}>
+						<Boxes  data={boxes} context={{scrollToTop,showLabels}} />
 					</div>
 				</div>
-			</div> 
+
+				<div className="w-full h-full ">
+					<article className="relative -top-10 wrap flex flex-row flex-wrap justify-center items-center gap-5">
+						{buttons?.map((button, i) => {
+							return (
+								<PortableButton key={`btn-${i}`} content={button} context={btnContent}/>
+							)
+						})}
+					</article>
+				</div>
+			</Body>
+        </div>
+		
 		</>
 	)
 

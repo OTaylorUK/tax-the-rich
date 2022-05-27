@@ -19,7 +19,7 @@ const Hero = (props) => {
 
 	return (
 		<div className={`${conditionalClass}  flex flex-col justify-center items-center`}>
-			<div className="container w-3/5 text-center flex flex-col justify-center items-center">
+			<div className="container w-8/12 text-center flex flex-col justify-center items-center">
 				<Default blocks={Header}  overrides={{ textAlign: 'text-center' }}  />
 			</div>
 		</div>

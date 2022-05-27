@@ -79,12 +79,14 @@ export const formatNumberToLocal = (number) => {
     const display = (niceNum).toLocaleString('en-US', {
       style: 'currency',
       currency: 'USD',
-      maximumSignificantDigits: 3
+      maximumSignificantDigits: 5
     });
 
-    let numVal = display.split(',')[0];
+    // e.g. 1,020 -> 1.02k
+    let numVal = display.split(',').slice(0, 2).join().replace(',','.').slice(0, -1)
 
     formattedNumber = {
+      trueVal: display,
       actualValue: niceNum,
       shortValue: `${numVal}${short}`,
       displayValue: `${numVal} ${long}`,
@@ -165,10 +167,6 @@ export const calcUnitsPerAmount = (pricedItem, moneyAmount) => {
       display: displayPerUnit,
     },
     unitIcon: pricedItem?.icon,
-    name: {
-      singular: pricedItem?.nameSingle,
-      plural:  pricedItem?.namePlural,
-    }
     
   };
 

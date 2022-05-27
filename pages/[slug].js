@@ -83,18 +83,18 @@ export async function getStaticProps(context) {
 
 	let richList;
 
-	if (slug === 'the-greediest-people' || slug === 'show-me-the-money' || slug === 'how-much-does-it-buy') {
-		const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=10";
+	if (slug === 'the-fat-cats' || slug === 'visualise-a-billion' || slug === 'what-it-buys') {
+		const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=12";
 		const response = await axios.get(API);
 		richList = await response.data
 	}
 
 
 	switch (slug) {
-		case 'the-greediest-people':
+		case 'the-fat-cats':
 			pageProps.variable.richList = richList
 		break;
-		case 'show-me-the-money':
+		case 'visualise-a-billion':
 
 			// limit to show nothing other 1b
 			pageQuery = `
@@ -113,7 +113,7 @@ export async function getStaticProps(context) {
 			}
 			break;
 		
-		case 'how-much-does-it-buy':
+		case 'what-it-buys':
 			pageQuery = `
 			{
 				'moneyAmounts': *[_type in ["moneyAmounts"]] | order(actualValue asc),

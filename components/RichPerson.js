@@ -2,42 +2,21 @@ import Image from "next/image";
 import { PortableButton } from "./PortableContent";
 import  {findAndReplaceHolder} from '../utils/globalFunc';
 import { useEffect, useState, useRef } from 'react'
+import WealthChange from "./wealthChange";
 
-const RichPerson = ({indv, buttons, num}) => {
+const RichPerson = ({indv, buttons}) => {
 
 	// console.log('indv.person.squareImage', indv.person);
 
-
-	const number = num + 1;
-
-	
-	let url = indv.person.squareImage;
-	let split = url.split('https:')
-
-	// not formatted
-	if (split.length === 1) {
-		url = `https:${url}`
-	}
-
-	let netWorth = Number(indv.finalWorth / 1000).toFixed(1);
-	const toFixed = Number(indv?.finalWorth).toFixed(2)
-	const netWorthfinal =  Number(toFixed) * 1000000
-
-
-	console.log({
-		netWorth,
-		toFixed,
-		netWorthfinal
-	});
+	const {	personName, wealthSource, wealth, imgUrl, rank, changeInWealth, positiveChange} = indv
 
 
 	// deep copy to prevent rewriting data for all instances of the buttons
 	let newBtns = JSON.parse(JSON.stringify(buttons));
 
-
 	// the holder to find and replace
 	const findReplace = {
-		"name": indv?.person?.name
+		"name": personName
 	}
 
 	newBtns?.map((button, i) => {
@@ -59,17 +38,17 @@ const RichPerson = ({indv, buttons, num}) => {
 		  button.ogText = ogText
 		}
 
-		if(button.intLink === 'show-me-the-money'){
+		if(button.intLink === 'visualise-a-billion'){
 			button.query = {
-				personName: indv.person.name,
-				comp1: `${netWorthfinal}`,
+				personName: personName,
+				comp1: `${wealth.actualValue}`,
 				comp2: 1000000, //1m
 				comp3: 100000000, //100m
 			}
-		}else if(button.intLink === 'how-much-does-it-buy'){
+		}else if(button.intLink === 'what-it-buys'){
 			button.query = {
-				personName: indv.person.name,
-				personNetWorth: `${netWorth}`,
+				personName: personName,
+				personNetWorth: `${wealth.actualValue}`,
 			}
 		}
 
@@ -81,12 +60,14 @@ const RichPerson = ({indv, buttons, num}) => {
 			<div className="container top-0 group-hover:-top-2 transition-[top] relative overflow-hidden">
 				<div className="image-wrapper relative ">
 					<div className="absolute left-0 top-0  z-30 w-10 h-10 bg-custom-highlight flex justify-center items-center">
-						<span className="text-custom-secondary text-md font-bold">{number}</span>
+						<span className="text-custom-secondary text-md font-bold">{rank}</span>
 					</div>
+					<WealthChange change={changeInWealth} isPositive={positiveChange} />
+					
 					<Image
 						className="z-10"
-						src={url}
-						alt={`Picture of ${indv.person.name}`}
+						src={imgUrl}
+						alt={`Picture of ${personName}`}
 						width={200}
 						height={200}
 						layout='responsive'
@@ -107,9 +88,9 @@ const RichPerson = ({indv, buttons, num}) => {
 
 				<div className="person-info bg-custom-highlight flex-1 justify-center align-center flex flex-col py-5">
 					<div className="flex flex-col text-center  justify-center items-center text-custom-secondary">
-						<span className="text-2xl font-bold  mb-1 px-4">{indv.person.name}</span>
-						<span className="text-custom-text opacity-80 font-gaegu text-sm uppercase mb-4">{indv.source}</span>
-						<span className="text-3xl tracking-tight font-bold uppercase ">${netWorth}B</span>
+						<span className="text-2xl font-bold  mb-1 px-4">{personName}</span>
+						<span className="text-custom-text opacity-80 font-gaegu text-sm uppercase mb-4">{wealthSource}</span>
+						<span className="text-3xl tracking-tight font-bold uppercase ">{wealth.shortValue}</span>
 					</div>
 					
 				</div>

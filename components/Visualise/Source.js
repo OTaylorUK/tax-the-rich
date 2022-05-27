@@ -1,21 +1,9 @@
 import Link from "next/link";
 import  {findAndReplaceHolder} from '../../utils/globalFunc';
 
-const Source = ({ object }) => {
-	
-	if (object === null) {
-		return (<div>Loading...</div>)
-	}
+const Source = ({ text, replaceDetails, sources }) => {
 
-	const { singularName, priceUSD, sources, text } = { ...object }
-	
-	const displayPrice = priceUSD.toLocaleString("en-US");
-
-	var replaceDetails = { 
-		"price": `$${displayPrice}`,
-		"name": `${singularName}`,
-	};
-
+	console.log(text);
 	let updDesc = findAndReplaceHolder({ replaceVals: replaceDetails, str: text })
 	
 	return (

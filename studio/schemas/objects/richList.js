@@ -5,9 +5,14 @@ export default {
  
   fields: [
     {
-      name: 'api',
-      type: 'url',
-      title: 'Api url',
+      name: 'headerContent',
+      type: 'simplePortableText',
+      title: 'Header Content',
+    },
+    {
+      name: 'textContent',
+      type: 'simplePortableText',
+      title: 'Text Content',
     },
     {
       name: 'buttons',

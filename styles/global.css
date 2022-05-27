@@ -81,9 +81,9 @@
 
   
 	h1 {
-	  @apply  text-2xl font-bold md:text-4xl ;
+	  @apply  font-bold text-3xl md:text-5xl md:leading-tight lg:text-8xl lg:leading-snug capitalize ;
 	}
-  
+
 	h2 {
 	  @apply  text-xl font-bold md:text-3xl;
 	}
@@ -124,18 +124,30 @@
 	  @apply mx-auto w-11/12;
 	}
 	
-	
+	.general-text-container ul{
+		@apply list-disc flex flex-col gap-2;
+	}
 }
 
 .btn-styled {
-	@apply text-sm rounded-md
+	@apply py-2 px-3 text-sm rounded-md
+}
+
+.btn-size-large span{
+	@apply text-lg 
+}
+
+.btn-styled:not(.btn-size-large) span{
+	@apply text-sm 
+}
+
+.btn-styled svg path{
+	@apply fill-current
 }
 
 
-
-
 .btn-style-text {
-	@apply py-2 px-3  text-custom-secondary hover:text-custom-accent hover:underline
+	@apply   text-custom-secondary hover:text-custom-accent hover:underline
 }
 
 .btn-style-text.is-active  {
@@ -145,11 +157,11 @@
 
 
 .btn-style-primary {
-	@apply py-2 px-3 bg-custom-highlight text-custom-secondary border-solid border border-custom-highlight hover:bg-custom-secondary hover:text-custom-highlight 
+	@apply   bg-custom-highlight text-custom-secondary border-solid border border-custom-highlight hover:bg-custom-secondary hover:text-custom-highlight 
 }
 
 .btn-style-ghost {
-	@apply py-2 px-3  text-custom-accent border-solid border border-custom-accent hover:bg-custom-accent hover:text-custom-primary 
+	@apply    text-custom-accent border-solid border border-custom-accent hover:bg-custom-accent hover:text-custom-primary 
 }
 
 
@@ -176,9 +188,7 @@
   }
    */
 
-.btn-styled svg path{
-	@apply fill-current
-}
+
 
 .btn-size-large{
 	@apply  text-lg py-3 px-6

@@ -2,19 +2,16 @@
 // import { useEffect, useState } from 'react';
 
 
-const Icons = ({ content }) => {
+const Icons = ({ unitIcon, uPerIcon, displayName }) => {
 
 	
 	return (
 		<>
-			{content.map((key, index) => (
-				<div className="key flex flex-row justify-center items-center" key={`key-${index}`}>
-					<div className="m-1">
-						{key?.unitIcon}
-					</div>
-					<span className="m-1"> = {key?.uPerIcon?.display} {key?.isPlural ? key?.name?.plural : key?.name?.singular}  </span>
-				</div>
-			))}
+			<div className="key flex-1 sm:flex-auto flex flex-col text-center sm:flex-row justify-center items-center font-gaegu">
+				<div className={`m-1`}>{unitIcon}</div>
+				<span className="m-1"> = {uPerIcon?.display} {displayName} </span>
+			</div>
+
 		</>
 	);
 }

@@ -2,6 +2,9 @@ import {Menu, Stacked} from "./Menu";
 import { ThemeToggle } from "./themeToggle";
 import {SocialShare} from './Button'
 
+// import { useAppContext } from '../context/theme'; 
+
+
 const Footer = ({ content = null, scroll }) => {
 
 	if (!content || content === null || !content.hasOwnProperty('value') ) return null
@@ -10,7 +13,9 @@ const Footer = ({ content = null, scroll }) => {
 
 	const {middle } = data;
 
+	// const test =  useAppContext()
 
+	// console.log({test});
 
 
 	return (

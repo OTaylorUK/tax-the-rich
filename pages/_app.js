@@ -3,6 +3,7 @@ import Layout from '../components/Layout'
 import '../styles/global.css'
 
 import Head from "next/head";
+import { ThemeProvider } from '../context/theme'; 
 
 const MyApp = (props) => {
   const { Component, pageProps } = {...props};
@@ -30,47 +31,51 @@ const MyApp = (props) => {
     'url': PageSEO?.url ? PageSEO?.url : '',
   }
 
+ 
+
 
   return (
-    <Layout settings={settings}>
-      <Head>
-        <title>{SEO?.title}</title>
-        <meta name="twitter:card" content="summary" />
-        <meta name="twitter:site" content={`@${SEO?.twitterHandle}`} />
-        <meta name="twitter:creator" content={`@${SEO?.twitterHandle}`} />
-        <meta property="og:url" content={SEO?.url} />
-        <meta name="og:title" content={SEO?.title} />
-        <meta name="og:description" content={SEO?.description} />
-        <meta property="og:image" content={SEO?.ogImage} />
+    <ThemeProvider>
+      <Layout settings={settings}>
+        <Head>
+          <title>{SEO?.title}</title>
+          <meta name="twitter:card" content="summary" />
+          <meta name="twitter:site" content={`@${SEO?.twitterHandle}`} />
+          <meta name="twitter:creator" content={`@${SEO?.twitterHandle}`} />
+          <meta property="og:url" content={SEO?.url} />
+          <meta name="og:title" content={SEO?.title} />
+          <meta name="og:description" content={SEO?.description} />
+          <meta property="og:image" content={SEO?.ogImage} />
 
-        <meta name="description" content={SEO?.description} />
-        
-        <link
-            rel="preload"
-            href="/fonts/Gaegu-Regular.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin=""
-        />
-        <link
-            rel="preload"
-            href="/fonts/Poppins-Regular.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin=""
-        />
-        <link
-            rel="preload"
-            href="/fonts/Poppins-Medium.woff2"
-            as="font"
-            type="font/woff2"
-            crossOrigin=""
-        />
-        
-			</Head>
-      <Component {...pageProps} />
-      <ColourPalette palette={palette} />
-    </Layout>
+          <meta name="description" content={SEO?.description} />
+          
+          <link
+              rel="preload"
+              href="/fonts/Gaegu-Regular.woff2"
+              as="font"
+              type="font/woff2"
+              crossOrigin=""
+          />
+          <link
+              rel="preload"
+              href="/fonts/Poppins-Regular.woff2"
+              as="font"
+              type="font/woff2"
+              crossOrigin=""
+          />
+          <link
+              rel="preload"
+              href="/fonts/Poppins-Medium.woff2"
+              as="font"
+              type="font/woff2"
+              crossOrigin=""
+          />
+          
+        </Head>
+        <Component {...pageProps} />
+        <ColourPalette palette={palette} />
+      </Layout>
+    </ThemeProvider>
   )
 }
 
