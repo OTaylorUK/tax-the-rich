@@ -63,32 +63,15 @@ function DropDown(prop) {
 
     switch (selectedTarget) {
       case 'pricedItems':
-        // context?.setPricedItem(selectedObj?.[0])
-        // context?.updateSetValues({name: 'pricedItem', value: selectedObj?.[0] })
         context?.updateVariableSelection?.setSelectedItem(selectedObj?.[0])
-
-        
         break;
       
       case 'moneyAmounts':
-        // context?.setMoneyAmount(selectedObj?.[0])
-        // context?.updateSetValues({name: 'moneyAmount', value: selectedObj?.[0] })
-
-        // context?.updateSetValues({name: 'findReplace', value: {
-        //   'moneyAmount': selectedObj?.[0].displayValue,
-			  //   'self': context?.settings?.findReplace?.self
-        // } })
-
-
         context?.updateVariableSelection?.setSelectedAmount(selectedObj?.[0])
-
-
-        
-
-
-
         break;
     }
+
+    console.log('HERE:!!!', selectedObj?.[0]);
     context?.updateVariableSelection?.setIsUpdating(true)
     context?.scrollToResults()
 

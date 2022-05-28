@@ -8,9 +8,10 @@ const RichPerson = ({indv, buttons}) => {
 
 	// console.log('indv.person.squareImage', indv.person);
 
-	const {	personName, wealthSource, wealth, imgUrl, rank, changeInWealth, positiveChange} = indv
+	const {	personName, uid, wealthSource, wealth, imgUrl, rank, changeInWealth, positiveChange} = indv
 
 
+	console.log({changeInWealth});
 	// deep copy to prevent rewriting data for all instances of the buttons
 	let newBtns = JSON.parse(JSON.stringify(buttons));
 
@@ -40,15 +41,14 @@ const RichPerson = ({indv, buttons}) => {
 
 		if(button.intLink === 'visualise-a-billion'){
 			button.query = {
-				person1: personName,
+				person1: uid,
 				comp1: `${wealth.actualValue}`,
 				comp2: 1000000, //1m
 				comp3: 100000000, //100m
 			}
 		}else if(button.intLink === 'what-it-buys'){
 			button.query = {
-				person1: personName,
-				personNetWorth: `${wealth.actualValue}`,
+				person1: uid,
 			}
 		}
 

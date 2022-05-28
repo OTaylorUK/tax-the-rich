@@ -5,15 +5,17 @@ import { PortableButton } from "../PortableContent";
 import { useEffect, useState } from "react";
 
 import  {findAndReplaceHolder} from '../../utils/globalFunc';
+import { useRouter } from 'next/router'
 
-
-const SocialShare = ({content, context, social, bgColour, additionalClass}) => {
+const SocialShare = ({content, context, shareUrl = null, social, bgColour, additionalClass}) => {
 
 
 	const [scaled, setScaled] = useState(false);
 
 
-	// can be set before by the visualiser to create image, upload to cloudinary then share on social
+	
+
+	// opens the social buttons
 	if(context === undefined){
 		const buttonFunction = () => {
 			setScaled(!scaled)
@@ -32,8 +34,6 @@ const SocialShare = ({content, context, social, bgColour, additionalClass}) => {
 	}
 
 
-	// useEffect(()=>{
-	// },[])
 
 	return (
 		<div className={`${additionalClass} flex flex-row justify-center items-center relative`}>
@@ -47,7 +47,9 @@ const SocialShare = ({content, context, social, bgColour, additionalClass}) => {
 					btn?.portableButton?.[1]?.children?.[0]?.text = channel.name;
 
 					const link = channel?.button?.link;
-
+					if(shareUrl !== null){
+						channel?.button?.link = `${shareUrl}`
+					}
 					// console.log({link});
 					// console.log(btn?.link);
 

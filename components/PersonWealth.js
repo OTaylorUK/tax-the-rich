@@ -16,9 +16,9 @@ const PersonWealth = ({isPositive, change}) => {
 
 
 
-	if(colour === null){
+	if(colour === null || change.actualValue === 0){
 		return(
-			<div>Loading...</div>
+			<div></div>
 		)
 	}
 	else{

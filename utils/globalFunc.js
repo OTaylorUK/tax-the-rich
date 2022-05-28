@@ -1,4 +1,6 @@
 import axios from "axios"
+import { GoogleSpreadsheet } from "google-spreadsheet";
+import client from '../client'
 
 /**
  * 
@@ -208,6 +210,7 @@ export const capitalizeString = (str) => {
 }
 
 
+// internal api calls wont work in getStaticProps so changed to getSheets func
 export const getSheet = async () => {
 
   const response = await axios({
@@ -225,21 +228,91 @@ export const getSheet = async () => {
 
 }
 
+export const getSheets = async () => {
+
+  const doc = new GoogleSpreadsheet(process.env.GOOGLE_DOC_ID)
+
+  await doc.useServiceAccountAuth({
+    client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
+    private_key: process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+  });
+
+  // loads document properties and worksheets
+  await doc.loadInfo();
+  const sheet = doc.sheetsByIndex[0];
+  const rows = await sheet.getRows()
+
+  let allData = [];
+
+  rows.map((row, i)=>{
+    let currentItem = {
+      _id: row.uid = row.uid  ? row.uid  : null,
+      shortName: row.shortName = row.shortName  ? row.shortName  : null,
+      singularName: row.singularName = row.singularName  ? row.singularName  : null,
+      pluralName: row.pluralName = row.pluralName  ? row.pluralName  : null,
+      icon: row.icon = row.icon  ? row.icon  : null,
+      priceUSD: row.priceUSD = row.priceUSD  ? row.priceUSD  : null,
+      text: row.text = row.text  ? row.text  : null,
+      sources: [
+        row.source1 = row.source1  ? row.source1  : null,
+        row.source2 = row.source2  ? row.source2  : null,
+        row.source3 = row.source3  ? row.source3  : null
+      ],
+    }
+
+    allData.push(currentItem)
+
+  })
+
+
+
+  // const response = {
+  //   'test': 'test'
+  // }
+
+  return allData;
+
+
+}
+
+
+
 
 export const getRichList = async () => {
 
-  const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=10";
+  const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=12";
   const response = await axios.get(API);
+
+  const final = await response.data
+
   // richList = await response.data
 
   // // const response = {
   // //   'test': 'test'
   // // }
 
-  return response;
+  return final;
 
 
 }
+
+export const getGroqQuery = async (query) => {
+
+  const response = await client.fetch(query);
+
+  const final = await response
+
+  // richList = await response.data
+
+  // // const response = {
+  // //   'test': 'test'
+  // // }
+
+  return final;
+
+
+}
+
 
 
 			

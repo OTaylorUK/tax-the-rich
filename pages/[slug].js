@@ -1,12 +1,11 @@
 import client from '../client'
 import  {getFooter,getSEO, getNav, getPalette, getRoutes, getPageContent} from '../utils/globalGroq';
-import  {formatGlobalSettings} from '../utils/globalFunc';
+import  {allKeyed, formatGlobalSettings, formatNumberToLocal, getGroqQuery, getRichList, getSheet, getSheets} from '../utils/globalFunc';
 
 import PageSections from '../components/PageSections'
 // import { useEffect, useState } from 'react';
 
 import axios from "axios"
-import {  getSheet } from '../utils/globalFunc';
 
 // const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -81,27 +80,82 @@ export async function getStaticProps(context) {
 
 	// add page specific data 
 
+	const curDate = new Date().toLocaleString({  dateStyle: 'full',
+	timeStyle: 'full'})
+
 	let richList;
 
 	if (slug === 'the-fat-cats' || slug === 'visualise-a-billion' || slug === 'what-it-buys') {
-		const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=12";
-		const response = await axios.get(API);
-		richList = await response.data
+		// const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=12";
+		// const response = await axios.get(API);
+		// richList = await response.data
+
+		const {curRichList} = await allKeyed({
+			curRichList: getRichList(),
+		});
+
+		const formatWealthAmount = (number) => {
+			const toFixed = Number(number).toFixed(2)
+			const netWorthfinal =  Number(toFixed) * 1000000
+			const wealth = formatNumberToLocal(netWorthfinal)
+			return wealth
+		}
+
+
+		const formattedRichList = curRichList.map((indv, i)=> {
+			const curWealth = formatWealthAmount(indv?.finalWorth)
+			const prevWealth = formatWealthAmount(indv?.estWorthPrev)
+			const change = curWealth.actualValue - prevWealth.actualValue;
+			
+			const changeInWealth = formatNumberToLocal(change)
+
+			let positiveChange = true;
+
+			if (Math.sign(changeInWealth?.actualValue) === -1) {
+				positiveChange = false
+			}
+
+			let url = indv?.person.squareImage;
+			let split = url.split('https:')
 		
+			// catch error for some image snot having this already
+			if (split.length === 1) {
+				url = `https:${url}`
+			}
+
+			let newPerson = {
+				all: indv,
+				uid: indv.uri,
+				personName: indv.person.name,
+				wealthSource: indv.source,
+				wealth: curWealth,
+				prevWealth: prevWealth,
+				imgUrl: url,
+				rank: indv.rank,
+				changeInWealth: changeInWealth,
+				positiveChange: positiveChange,
+				isSelected: false
+			}
+
+			return newPerson;
+		})
+
+		richList = formattedRichList
 	}
+
+
 
 
 	switch (slug) {
 		case 'the-fat-cats':
+			
 			pageProps.variable.richList = {
 				richList,
-				dateGenerated: new Date().toLocaleString({  dateStyle: 'full',
-				timeStyle: 'full'})
+				dateGenerated: curDate
 			}
 		break;
 		case 'visualise-a-billion':
 
-			// limit to show nothing other 1b
 			pageQuery = `
 			{
 				'moneyAmounts': *[_type in ["moneyAmounts"] && actualValue <= 1000000000 ] | order(actualValue asc){
@@ -109,34 +163,45 @@ export async function getStaticProps(context) {
 					displayValue,
 					shortValue
 				},
-			}
-			`
-			data = await client.fetch(pageQuery);
-			// const moneyAmounts = await resp.data
+			}`
+
+			const {visualiseData} = await allKeyed({
+				visualiseData: getGroqQuery(pageQuery),
+			});
+
 			pageProps.variable.blockVisual = {
-				data
+				visualiseData,
+				dateGenerated: curDate
 			}
+
 			break;
 		
 		case 'what-it-buys':
+
 			pageQuery = `
 			{
-				'moneyAmounts': *[_type in ["moneyAmounts"]] | order(actualValue asc),
-			}
-			`
-			data = await client.fetch(pageQuery);
+				'moneyAmounts': *[_type in ["moneyAmounts"]]  | order(actualValue asc),
+			}`
 
-			// const moneyAmounts = await resp.data
+			const {buyingData, pricedItems} = await allKeyed({
+				buyingData: getGroqQuery(pageQuery),
+				pricedItems: getSheets()
+			});
+
 			pageProps.variable.visualiser = {
-				data,
+				buyingData,
 				richList,
-				// test
+				pricedItems,
+				dateGenerated: curDate
 			}
+
 			break;
 		
 		default:
 			break;
 	}
+
+
 	 
 	try {
 	  return {
@@ -156,6 +221,8 @@ const Details = (props) => {
 	const { globalData, pageData, variable } = props;
 	const pageContent = pageData?.find(({ name }) => name === 'pageContent')
 
+
+	console.log({props});
 	// // page builder array - loop through to create the page from the component types
 	const pageSections = pageContent.value?.[0]
 	return (

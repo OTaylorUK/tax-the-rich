@@ -21,7 +21,19 @@ const Visualiser = ({
 	componentContext
 }) => {
 
-	let { moneyAmounts : initalMoney, pricedItems : allItems } = {...componentContext?.data}
+	console.log({componentContext});
+	
+
+	// const variableSelection = useMemo(
+	// 	() => ({
+	// 		amounts: moneyAmounts,
+	// 		displayType: displayType,
+	// 	 }),
+	// 	[moneyAmounts] //no dependencies so the value doesn't change
+	//   );
+
+
+
 
 	const router = useRouter()
 
@@ -29,7 +41,7 @@ const Visualiser = ({
 	const resultsRef = useRef()
 	const ref = useRef();
 
-	const [replaceYou, setReplaceYou] = useState(true)
+	const [replaceYou, setReplaceYou] = useState(null)
 	const [pricedItems, setPricedItems] = useState(null)
 	const [moneyAmounts, setMoneyAmounts] = useState(null)
 	const [selectedItem, setSelectedItem] = useState(null)
@@ -49,8 +61,7 @@ const Visualiser = ({
 		}
 	});
 
-	const [ url, setUrl ] = useState("");
-
+	const [ url, setUrl ] = useState(null);
 
 
 	const scrollToResults = () => {
@@ -58,18 +69,13 @@ const Visualiser = ({
 			resultsRef?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })  
 		}
 	}
-
 	
 	const dataLists = {
 		pricedItems: pricedItems,
 		moneyAmounts: moneyAmounts,
 	}
 
-	// const variableSelection = {
-	// 	isUpdating: isUpdating,
-	// 	item: selectedItem,
-	// 	amount: selectedAmount,
-	// }
+
 	const variableSelection = useMemo(
 		() => ({
 			isUpdating: isUpdating,
@@ -77,11 +83,24 @@ const Visualiser = ({
 			amount: selectedAmount,
 		 }),
 		[isUpdating, selectedItem, selectedAmount] //no dependencies so the value doesn't change
-	  );
+	);
+
+	const sourceData = useMemo(
+		() => ({
+			text: selectedItem?.text,
+			replaceDetails: {
+				"price": `${selectedItem?.priceUSD?.toLocaleString("en-US")}`,
+				"name": `${selectedItem?.singularName}`,
+			},
+			sources: selectedItem?.sources
+		 }),
+		[selectedItem]
+	);
+
 
 	const findReplace = {
 		'moneyAmount' : selectedAmount?.displayValue,
-		'self': replaceYou ? 'you' : ' '
+		'self': replaceYou ? ' ' : 'you'
 	}
 
 	const updateVariableSelection = {
@@ -95,154 +114,144 @@ const Visualiser = ({
 	/**
 	 * on load / router change
 	 */
+	 useEffect(() => {
+
+		let { 
+			buyingData, 
+			pricedItems,
+			richList
+		} = {...componentContext}
 
 
-	
-	useEffect(() => {
-		const {
-			personName, 
-			personNetWorth,
-			moneyAmount,
-			pricedItem
-		} = { ...router.query }
+		const {moneyAmounts} = {...buyingData}
 
 
-		const formatRichList = (richList, personName) => {
+		console.log({moneyAmounts});
+		const filterRouterQueries = (query) => {
+
+			const amounts = []
+			const selectedPerson = null
+
+			Object.keys(query)
+				.reduce((obj, key) => {
+					let person,uid;
+					if(key.toLowerCase().includes('person')){
+						uid = key.split('person')?.[1]
+
+						person = {
+							name: router.query[key],
+							uid: uid
+						};
+						selectedPerson = person
+
+					}
+			}, {});
+
+			// sort array by asc size
+			amounts.sort((a,b) => (a.actualValue > b.actualValue) ? 1 : ((b.actualValue > a.actualValue) ? -1 : 0))
+
+			console.log({amounts});
+			return {amounts,selectedPerson}
+		}
+		// const formatMoneyAmount = (richList, selectedPerson) => {
+		// 	let formatedRichList = richList?.map((curPerson, i) => {
+			
+		// 		let isSelected = false;
+		// 		// used to preselect the select option based on the url params
+		// 		if (curPerson?.uid === selectedPerson.name) {
+		// 			isSelected = true;
+		// 		}
+		
+		// 		const newObj = {
+		// 			_id: curPerson.uid,
+		// 			actualValue: curPerson.wealth.actualValue,
+		// 			displayValue: curPerson.personName,
+		// 			shortValue: curPerson.wealth.shortValue,
+		// 			isSelected: isSelected,
+		// 			isIndividual: true
+		// 		}
+
+		// 		if (isSelected) {
+		// 			moneyAmountSelected = newObj
+		// 		}
+
+		// 		return newObj
+		// 	})
+		// }
+
+		const formatRichList = (richList, selectedPerson) => {
+
+			let moneyAmountSelected;
 			// format richlist to match the moneyAmounts format
-			let formatedRichList = richList?.map((indv, i) => {
-				const niceName = indv?.personName?.replaceAll(' ', '-');
-				const toFixed = Number(indv?.finalWorth).toFixed(2)
-				const netWorth =  Number(toFixed) * 1000000 // convert num to billions
-				const shortWorth =  (Number(toFixed) / 1000000).toFixed(2)
-		
+			let formatedRichList = richList?.map((curPerson, i) => {
+			
 				let isSelected = false;
-		
 				// used to preselect the select option based on the url params
-				if (indv?.personName === personName) {
+				if (curPerson?.uid === selectedPerson.name) {
 					isSelected = true;
 				}
 		
 				const newObj = {
-					_id: niceName,
-					actualValue: netWorth,
-					displayValue: indv?.personName,
-					shortValue: `$${shortWorth}b`,
+					_id: curPerson.uid,
+					actualValue: curPerson.wealth.actualValue,
+					displayValue: curPerson.personName,
+					shortValue: curPerson.wealth.shortValue,
 					isSelected: isSelected,
 					isIndividual: true
+				}
+
+				if (isSelected) {
+					moneyAmountSelected = newObj
 				}
 
 				return newObj
 			})
 
-			return formatedRichList;
+			return {formatedRichList, moneyAmountSelected};
 		
 		}
 
-		/**
-		 * sets the states for the lists and conditionally might add user selected choices if passed as a param in the url
-		 */
+		const setInitialVals = (moneyAmountsArr,pricedItems, selectedAmount, selectedItem,replaceYou) => {
+			console.log({moneyAmountsArr,pricedItems, selectedAmount, selectedItem,replaceYou});
+			const results = calcUnitsPerAmount(selectedItem, selectedAmount)
+			
+			setMoneyAmounts(moneyAmountsArr)
+			setPricedItems(pricedItems)
+
+			setSelectedAmount(selectedAmount)
+			setSelectedItem(selectedItem)
+
+			setVisualSettings(results)
+			setReplaceYou(replaceYou)
+
+		}
+
 		const getData = async () => {
-			// const {richList, items} = await allKeyed({
-
-			let finalRichList,finalPricedItems,finalAmounts,  finalSelectedItem, finalSelectedAmount;
-
-			let moneyAmountsArr = JSON.parse(JSON.stringify(initalMoney));
-			
-			const {richList, items} = await allKeyed({
-				richList: getRichList(),
-				items: getSheet(),
-			});
+			let replaceYou = false;
+			// original default values to use
+			let moneyAmountsArr = JSON.parse(JSON.stringify(moneyAmounts));
 
 
-			if(richList?.data.length > 0){
-				finalRichList = formatRichList(richList?.data, personName)
+			const {amounts, selectedPerson} = filterRouterQueries(router.query)
+
+			let selectedAmount = moneyAmountsArr[0];
+			const selectedItem = pricedItems[0];
+			// use rich list
+			if(selectedPerson !== null){
+				const {formatedRichList, moneyAmountSelected} = formatRichList(richList, selectedPerson)
+				moneyAmountsArr = formatedRichList;
+				selectedAmount = moneyAmountSelected
+				replaceYou = true;
 			}
 
-			if(items?.data.length > 0){
-				finalPricedItems = items?.data
-			}
-			
-			// default set if no change - try to find more elegant way of doing this
-			finalSelectedItem = finalPricedItems[0]
-			finalAmounts = moneyAmountsArr
-			finalSelectedAmount = moneyAmountsArr[0]
-
-			if(personName){
-				finalAmounts = finalRichList
-
-				finalSelectedAmount = finalRichList?.filter(obj => obj?.isSelected == true)?.[0];
-
-				setReplaceYou(false)
-
-			} else if(moneyAmount || pricedItem){
-				let selectedAmount = null, foundItem = null;
-
-				// update only if the moneyAmount is set else it'll stay to the default selection
-				if(moneyAmount){
-					const niceNum = parseInt(moneyAmount)
-
-					if(moneyAmountsArr?.filter(obj => obj?.actualValue === niceNum).length > 0){
-						selectedAmount = moneyAmountsArr?.filter(obj => obj?.actualValue === niceNum)[0]
-					}else{
-						// if value does not exist in the array then add it to the moneyAmount arr and update the state
-
-						selectedAmount = formatNumberToLocal(moneyAmount)
-						selectedAmount['isSelected'] = true;
-						moneyAmountsArr.push(selectedAmount)
-
-						// update
-						finalSelectedAmount = moneyAmountsArr
-						finalAmounts = moneyAmountsArr
-
-					}
-					finalSelectedItem = selectedAmount
-				}
-
-				// update only if the pricedItem is set otherwise set it as the first in arr of pricedItems
-				if(pricedItem){
-					if(finalPricedItems?.filter(obj => obj?._id === data?.pricedItem).length > 0){
-						foundItem = finalPricedItems?.filter(obj => obj?._id === data?.pricedItem)[0]
-					}else{
-						console.error(`We cannot find this item in the list`);
-					}
-				}
-
-				if(foundItem !== null){
-					finalSelectedItem = foundItem
-				}
-
-
-			} else{
-				finalSelectedItem = finalPricedItems[0]
-				finalSelectedAmount = 
-				initalMoney[0]
-			}
-
-
-			setPricedItems(finalPricedItems)
-			setMoneyAmounts(finalAmounts)
-
-
-			// prevent overwriting the selected item if already set
-			if(selectedItem === null){
-				setSelectedItem(finalSelectedItem)
-			}
-	
-			// prevent overwriting the selected amount if already set
-			if(selectedAmount === null){
-				setSelectedAmount(finalSelectedAmount)
-			}
-		
-			setIsUpdating(true)
-
+			setInitialVals(moneyAmountsArr,pricedItems, selectedAmount, selectedItem, replaceYou)
 		}
 
-		console.log('get data is called');
+		getData()
+	},[router.query, componentContext ])
+	
 
-		getData(personName)
-
-	},[router.query, initalMoney, selectedItem, selectedAmount])
-
+	
 
 	/**
 	 * on user selection change
@@ -250,12 +259,29 @@ const Visualiser = ({
 	 * 
 	 */
 	useEffect(() => {
+
+		console.log('user input changed something');
+		console.log('----');
+
+		console.log({variableSelection});
 		const{item, amount, isUpdating} = variableSelection
 
 		if(isUpdating){
 			const results = calcUnitsPerAmount(item, amount)
 			console.log({results});
 			setVisualSettings(results)
+			console.log({item, amount});
+
+
+			if (typeof window !== 'undefined') {
+				const href = window.location.href;
+		
+				var url = `${href}?person1=1&item1=${item?._id}`
+				console.log({url});
+				// setUrl(url)
+
+			}
+
 			setIsUpdating(false)
 		}
 
@@ -289,9 +315,6 @@ const Visualiser = ({
 			return (node.tagName !== 'ARTICLE');
 		}
 
-		console.log('resultsRef.current::::', resultsRef.current?.offsetHeight);
-
-  
 		toPng(resultsRef.current, { cacheBust: true, filter: filter})
 			.then((dataUrl) => {
 			  
@@ -313,102 +336,12 @@ const Visualiser = ({
 		buttonFunction
 	}
 
-	// social share button
 
-	//  conditional create image or get image url - add url to button context
-	const shareButtonClick = useCallback(() => {
-		if (resultsRef.current === null) {
-		  return null
-		}
-		if (questionRef.current === null) {
-		  return null
-		}
-
-		  
-		function filter(node) {
-			// console.log('\node', node);
-			return (node.tagName !== 'ARTICLE');
-		}
-
-
-
-		// const getImage = async () =>{
-
-		// 	const imgUrl = `https://res.cloudinary.com/virtual-jungle/image/upload/taxtherich/v1651164784/${questionRef?.current?.uriFriendly}.png`
-
-		// 	// if the image does not exist then ok to add to server - helps to avoid unnecessarily bandwidth usage
-		// 	axios.get(imgUrl)
-		// 	.then(function (res) {
-		// 		console.log('image already exists');
-
-		// 		setUrl(imgUrl)
-		// 	})
-		// 	.catch(function (error) {
-				
-		// 		// ok to add
-		// 		toPng(resultsRef.current, { cacheBust: true, filter: filter })
-		// 		.then((dataUrl) => {
-				
-		// 			const data = new FormData()
-
-		// 			data.append("file", dataUrl)
-		// 			data.append("upload_preset", "lfqya19b")
-		// 			data.append("cloud_name","virtual-jungle")
-		// 			data.append("public_id", questionRef?.current?.fileName);
-
-
-		// 			axios.post("https://api.cloudinary.com/v1_1/virtual-jungle/image/upload", data)
-		// 			.then(function (response) {
-
-		// 				console.log('successfully added image to the cloud');
-		// 				if(response?.data?.url){
-		// 					setUrl(response.data.url)
-		// 				}
-		// 			})
-		// 			.catch(function (error) {
-		// 				console.error('failed to add image to the cloud', error);
-		// 			});
-			
-		// 		})
-		// 		.catch((err) => {
-		// 			console.error(err)
-		// 		})
-		// 	});
-
-				
-		// }
-
-
-		//  getImage()
-
-
-		
-	}, [resultsRef])
-
-	const buttonFunctionAlt = () => {
-		// shareButtonClick()
-	}
-	const btnShareContext = {
-		buttonFunctionAlt,
-		url
-	}
-
-
-	const sourceData = useMemo(
-		() => ({
-			text: selectedItem?.text,
-			replaceDetails: {
-				"price": `${selectedItem?.priceUSD?.toLocaleString("en-US")}`,
-				"name": `${selectedItem?.singularName}`,
-			},
-			sources: selectedItem?.sources
-		 }),
-		[selectedItem]
-	  );
 
 
 	return (
 		<>
+			{/* question - user input here */}
 			<div  className="container    flex flex-col justify-center items-center ">
 				<Header >
 					<Default  blocks={question} />
@@ -418,6 +351,7 @@ const Visualiser = ({
 				</Body>
 			</div>
 
+			{/* answer */}
 			<div ref={ref}  className="container    flex flex-col justify-center items-center ">
 				<Header >
 					<Default blocks={answer} findReplace={findReplace}  />
@@ -438,7 +372,7 @@ const Visualiser = ({
 							{buttons?.map((button, i) => {
 								if (i === 0) {
 									return (
-										<SocialShare key={`btn-${i}`} context={btnShareContext} content={button} social={social} bgColour={'bg-custom-primary'}/>
+										<SocialShare key={`btn-${i}`} context={'test'} content={button} shareUrl={url} social={social} bgColour={'bg-custom-primary'}/>
 									)
 								} else {
 									return (

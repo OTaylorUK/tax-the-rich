@@ -2,7 +2,6 @@
 import { GoogleSpreadsheet } from 'google-spreadsheet'
 
 export default async function handler(req, res) {
-  const searchName = req.body.searchName;
   
     try {
       const doc = new GoogleSpreadsheet(process.env.GOOGLE_DOC_ID)

@@ -12,7 +12,7 @@ import { Header, Body } from '../sectionLayout';
 
 const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => {
 
-	let { moneyAmounts: initalMoney } = {...componentContext?.data}
+	let { moneyAmounts: initalMoney } = {...componentContext?.visualiseData}
 
 	const router = useRouter()
 
