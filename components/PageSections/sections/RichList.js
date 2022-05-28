@@ -5,16 +5,18 @@ import { Header, Body } from '../sectionLayout';
 import { Default} from "../../PortableContent";
 import { formatNumberToLocal } from '../../../utils/globalFunc';
 
-const RichList = ({buttons, headerContent, textContent, componentContext: richList}) => {
+const RichList = ({buttons, headerContent, textContent, componentContext}) => {
 
+
+	const {dateGenerated, richList} = {...componentContext}
 
 	const sourceData = useMemo(
 		() => ({
 			text: textContent?.[0]?.children?.[0]?.text,
 			replaceDetails: {
-				"timeStamp": `11`,
+				"timeStamp": dateGenerated,
 			},
-			sources: []
+			sources: ['https://www.forbes.com/real-time-billionaires']
 		 }),
 		[richList]
 	);
@@ -37,6 +39,8 @@ const RichList = ({buttons, headerContent, textContent, componentContext: richLi
 			const wealth = formatNumberToLocal(netWorthfinal)
 			return wealth
 		}
+
+		let wealthArr = []
 		
 		const newArr = richList.map((indv, i)=> {
 
@@ -68,16 +72,21 @@ const RichList = ({buttons, headerContent, textContent, componentContext: richLi
 				changeInWealth: changeInWealth,
 				positiveChange: positiveChange
 			}
+
+			wealthArr.push(curWealth.actualValue)
 			return newPerson;
 			// richList[i] = newPerson;
 		})
 
+		const allWealth = wealthArr.reduce((a, b) => a + b, 0);
+		const formattedAllWealth = formatNumberToLocal(allWealth)
+		setCombinedWealth(formattedAllWealth)
 		setFinalList(newArr)
 
 	},[richList])
 
 
-	if(finalList === null){
+	if(finalList === null || combinedWealth === null){
 		return(
 			<div>Loading...</div>
 		)
@@ -88,10 +97,10 @@ const RichList = ({buttons, headerContent, textContent, componentContext: richLi
 					<Default blocks={headerContent} />
 				</Header>
 				<Body >
-					<Results number={'$1,000'} text={'BILLION'}  />
+					<Results number={combinedWealth.shortRaw} text={combinedWealth.scale.toUpperCase()}  />
 					<Source {...sourceData} />
 
-					<div className=" sm:max-w-2/3 w-full    grid 2xl:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-10 justify-center items-stretch  ">
+					<div className=" sm:max-w-2/3 w-full    grid   grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-center items-stretch  ">
 						 {finalList.map((indv, i) => {
 							return (
 								<RichPerson key={`eattherich-${i}`} indv={indv} buttons={buttons} />

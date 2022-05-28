@@ -28,10 +28,11 @@ export const getLog10 = (number) => {
 export const formatNumberToLocal = (number) => {
   let formattedNumber = null
   const niceNum = parseInt(number)
+  const positiveNum = Math.abs(parseInt(number)) // log10 logic below will work only with positive num
 
-  if (!isNaN(niceNum)) {
+  if (!isNaN(positiveNum)) {
 					
-    const logten =  Math.floor(getLog10(niceNum))
+    const logten =  Math.floor(getLog10(positiveNum))
     let long = ''
     let short = ''
 
@@ -90,6 +91,8 @@ export const formatNumberToLocal = (number) => {
       actualValue: niceNum,
       shortValue: `${numVal}${short}`,
       displayValue: `${numVal} ${long}`,
+      shortRaw: numVal,
+      scale: long,
     }
   }
   return formattedNumber

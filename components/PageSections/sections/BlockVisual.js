@@ -97,9 +97,10 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 					}
 			}, {});
 
-			// combine names to value for displaying people from rich list
+			// combine names to value for displaying people from rich list e.g. person1 is linked to comp1
 			if(people.length > 0 ){
 				people.map((person)=>{
+
 					amounts.map((amount)=>{
 						if(amount?.uid === person?.uid){
 							amount.displayValue = `${person?.name} (${amount.displayValue})`

@@ -2,7 +2,7 @@ import Image from "next/image";
 import { PortableButton } from "./PortableContent";
 import  {findAndReplaceHolder} from '../utils/globalFunc';
 import { useEffect, useState, useRef } from 'react'
-import WealthChange from "./wealthChange";
+import PersonWealth from "./PersonWealth";
 
 const RichPerson = ({indv, buttons}) => {
 
@@ -40,14 +40,14 @@ const RichPerson = ({indv, buttons}) => {
 
 		if(button.intLink === 'visualise-a-billion'){
 			button.query = {
-				personName: personName,
+				person1: personName,
 				comp1: `${wealth.actualValue}`,
 				comp2: 1000000, //1m
 				comp3: 100000000, //100m
 			}
 		}else if(button.intLink === 'what-it-buys'){
 			button.query = {
-				personName: personName,
+				person1: personName,
 				personNetWorth: `${wealth.actualValue}`,
 			}
 		}
@@ -56,13 +56,13 @@ const RichPerson = ({indv, buttons}) => {
 	})
 
 	return (
-		<div className="flex flex-col drop-shadow-md hover:drop-shadow-xl group cursor-pointer rounded-md ">
-			<div className="container top-0 group-hover:-top-2 transition-[top] relative overflow-hidden">
+		<div className="flex flex-col drop-shadow-md hover:drop-shadow-xl group cursor-pointer  ">
+			<div className="flex flex-col h-full top-0 group-hover:-top-2 transition-[top] relative overflow-hidden rounded-md ">
 				<div className="image-wrapper relative ">
 					<div className="absolute left-0 top-0  z-30 w-10 h-10 bg-custom-highlight flex justify-center items-center">
 						<span className="text-custom-secondary text-md font-bold">{rank}</span>
 					</div>
-					<WealthChange change={changeInWealth} isPositive={positiveChange} />
+					<PersonWealth change={changeInWealth} isPositive={positiveChange} />
 					
 					<Image
 						className="z-10"

@@ -92,10 +92,12 @@ const Visualiser = ({
 
 
 	// Use effects //
-
 	/**
 	 * on load / router change
 	 */
+
+
+	
 	useEffect(() => {
 		const {
 			personName, 

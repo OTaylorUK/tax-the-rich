@@ -87,12 +87,17 @@ export async function getStaticProps(context) {
 		const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=12";
 		const response = await axios.get(API);
 		richList = await response.data
+		
 	}
 
 
 	switch (slug) {
 		case 'the-fat-cats':
-			pageProps.variable.richList = richList
+			pageProps.variable.richList = {
+				richList,
+				dateGenerated: new Date().toLocaleString({  dateStyle: 'full',
+				timeStyle: 'full'})
+			}
 		break;
 		case 'visualise-a-billion':
 
