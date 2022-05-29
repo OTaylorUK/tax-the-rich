@@ -23,7 +23,7 @@ const PersonWealth = ({isPositive, change}) => {
 	}
 	else{
 		return (
-			<div className="absolute right-4 bottom-2  z-30  h-10 flex flex-row gap-2 justify-center items-center">
+			<div className=" z-30  h-10 flex flex-row gap-2 justify-center items-center">
 
 				<div className="" style={{
 						transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)',

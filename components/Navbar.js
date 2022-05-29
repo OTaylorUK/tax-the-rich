@@ -76,7 +76,7 @@ const Navbar = ({ content = null, scroll }) => {
 					<Menu className={``} content={menu} context={btnContent} />
 					<div onClick={() => {
 					setMenuOpen(!menuOpen)
-				}} className={`${ menuOpen ? 'flex' : 'hidden'} md:hidden cursor-pointer  transition-[opacity] hover:opacity-0 absolute bg-custom-secondary opacity-20 h-full w-full z-[-1] left-0 top-0`}  ></div>
+				}} className={`${ menuOpen ? 'flex' : 'hidden'} md:hidden cursor-pointer  transition-[opacity] hover:opacity-0 absolute  h-full w-full z-[-1] left-0 top-0`}  ></div>
 				</div>
 
 				<button  

@@ -127,6 +127,15 @@
 	.general-text-container ul{
 		@apply list-disc flex flex-col gap-2;
 	}
+
+	q:before,q:after{
+		font-family: initial;
+		font-size: 1.5em;
+	}
+
+	/* .image-wrapper span{
+		min-height: 100%;
+	} */
 }
 
 .btn-styled {
@@ -164,6 +173,9 @@
 	@apply    text-custom-accent border-solid border border-custom-accent hover:bg-custom-accent hover:text-custom-primary 
 }
 
+.btn-style-ghostinverse {
+	@apply    text-custom-primary bg-custom-accent border-solid border border-custom-accent hover:bg-transparent hover:text-custom-accent 
+}
 
 
 .btn-style-action span {

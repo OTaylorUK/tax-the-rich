@@ -45,7 +45,7 @@ const RichList = ({buttons, headerContent, textContent, componentContext}) => {
 					<Results number={combinedWealth.shortRaw} text={combinedWealth.scale.toUpperCase()}  />
 					<Source {...sourceData} />
 
-					<div className=" sm:max-w-2/3 w-full    grid   grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10 justify-center items-stretch  ">
+					<div className=" sm:max-w-2/3 w-full    grid   grid-cols-1 md:grid-cols-2 xl:grid-cols-1 gap-10 justify-center items-stretch  ">
 						 {richList.map((indv, i) => {
 							return (
 								<RichPerson key={`eattherich-${i}`} indv={indv} buttons={buttons} />

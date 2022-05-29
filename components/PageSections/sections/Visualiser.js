@@ -89,7 +89,7 @@ const Visualiser = ({
 		() => ({
 			text: selectedItem?.text,
 			replaceDetails: {
-				"price": `${selectedItem?.priceUSD?.toLocaleString("en-US")}`,
+				"price": `${selectedItem?.wealth?.trueVal}`,
 				"name": `${selectedItem?.singularName}`,
 			},
 			sources: selectedItem?.sources
@@ -153,32 +153,17 @@ const Visualiser = ({
 			console.log({amounts});
 			return {amounts,selectedPerson}
 		}
-		// const formatMoneyAmount = (richList, selectedPerson) => {
-		// 	let formatedRichList = richList?.map((curPerson, i) => {
-			
-		// 		let isSelected = false;
-		// 		// used to preselect the select option based on the url params
-		// 		if (curPerson?.uid === selectedPerson.name) {
-		// 			isSelected = true;
-		// 		}
+
+		const formatItemList = (pricedItems) => {
+			let formattedList = pricedItems?.map((item, i) => {
+				const wealth = formatNumberToLocal(item.priceUSD)
+				const newObj = {...item, wealth: wealth}
+				return newObj
+			})
+
+			return formattedList;
 		
-		// 		const newObj = {
-		// 			_id: curPerson.uid,
-		// 			actualValue: curPerson.wealth.actualValue,
-		// 			displayValue: curPerson.personName,
-		// 			shortValue: curPerson.wealth.shortValue,
-		// 			isSelected: isSelected,
-		// 			isIndividual: true
-		// 		}
-
-		// 		if (isSelected) {
-		// 			moneyAmountSelected = newObj
-		// 		}
-
-		// 		return newObj
-		// 	})
-		// }
-
+		}
 		const formatRichList = (richList, selectedPerson) => {
 
 			let moneyAmountSelected;
@@ -212,7 +197,6 @@ const Visualiser = ({
 		}
 
 		const setInitialVals = (moneyAmountsArr,pricedItems, selectedAmount, selectedItem,replaceYou) => {
-			console.log({moneyAmountsArr,pricedItems, selectedAmount, selectedItem,replaceYou});
 			const results = calcUnitsPerAmount(selectedItem, selectedAmount)
 			
 			setMoneyAmounts(moneyAmountsArr)
@@ -228,6 +212,9 @@ const Visualiser = ({
 
 		const getData = async () => {
 			let replaceYou = false;
+
+			const finalPricedItems = formatItemList(pricedItems)
+
 			// original default values to use
 			let moneyAmountsArr = JSON.parse(JSON.stringify(moneyAmounts));
 
@@ -235,7 +222,7 @@ const Visualiser = ({
 			const {amounts, selectedPerson} = filterRouterQueries(router.query)
 
 			let selectedAmount = moneyAmountsArr[0];
-			const selectedItem = pricedItems[0];
+			const selectedItem = finalPricedItems[0];
 			// use rich list
 			if(selectedPerson !== null){
 				const {formatedRichList, moneyAmountSelected} = formatRichList(richList, selectedPerson)
@@ -244,7 +231,8 @@ const Visualiser = ({
 				replaceYou = true;
 			}
 
-			setInitialVals(moneyAmountsArr,pricedItems, selectedAmount, selectedItem, replaceYou)
+
+			setInitialVals(moneyAmountsArr,finalPricedItems, selectedAmount, selectedItem, replaceYou)
 		}
 
 		getData()

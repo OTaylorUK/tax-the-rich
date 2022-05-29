@@ -125,7 +125,7 @@ const PortableButton = (props) => {
     // setIsActive(!isActive)
   }
 
-  let classList = `group max-w-sm flex flex-wrap gap-1 flex-row items-center justify-center btn-styled btn-style-${style} btn-size-${size} ${addMargin} ${btnClass}  ${isActive ? 'is-active' : ''} ${'/'+router?.query?.slug == linkURL ? 'is-active' : ''}`;
+  let classList = ` group max-w-sm flex flex-wrap gap-1 flex-row items-center justify-center btn-styled btn-style-${style} btn-size-${size} ${addMargin} ${btnClass}  ${isActive ? 'is-active' : ''} ${'/'+router?.query?.slug == linkURL ? 'is-active' : ''}`;
 
   
   if (!outputLink) {

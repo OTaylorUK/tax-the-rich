@@ -8,12 +8,15 @@ const Quote = (props) => {
 
 
 	return (
-		<figure className="w-full flex flex-col justify-center items-center bg-custom-primary py-20 mt-7 text-center">
-			<div className="container md:w-3/5">
-				<blockquote className="text-custom-secondary font-bold text-5xl uppercase mb-8 " cite={citation}>{quoteText}</blockquote>
-				<figcaption className="text-custom-secondary font-bold text-2xl uppercase opacity-70">{author}</figcaption>
+		<blockquote cite={citation} className="container flex flex-col justify-center items-center  mb-20">
+			<div className=" w-full bg-custom-faded  rounded-lg text-custom-accent flex justify-center">
+				<div className="w-full lg:w-10/12 flex flex-col gap-10 justify-center items-center text-center p-20">
+					<q className="flex flex-col md:flex-row items-center gap-8  font-bold text-2xl md:text-5xl md:leading-tight   leading-tight" >{quoteText}</q>
+					<figcaption className=" font-bold text-2xl  opacity-80">{author}</figcaption>
+				</div>
+
 			</div>
-		</figure>
+		</blockquote>
 	)
 
 }

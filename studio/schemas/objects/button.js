@@ -83,6 +83,7 @@ export default {
         list: [
           {title: 'Primary', value: 'Primary', defaultValue: true},
           {title: 'Ghost', value: 'Ghost'},
+          {title: 'Ghost Inverse', value: 'GhostInverse'},
           {title: 'Action', value: 'Action'},
           {title: 'Text', value: 'Text'},
         ],

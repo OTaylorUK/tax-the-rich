@@ -71,7 +71,7 @@ function Default(props) {
           block: {
             // Ex. 1: customizing common block types
             h1: ({ children }) =>
-              <h1 className={`font-bold text-3xl md:text-5xl lg:text-8xl capitalize ${options?.textColor} mb-10 lg:leading-snug`}>{children}</h1>,
+              <h1 className={`font-bold text-4xl leading-tight md:text-5xl md:leading-tight lg:text-8xl lg:leading-tight capitalize ${options?.textColor} mb-10 lg:leading-snug`}>{children}</h1>,
             h2: ({ children }) =>
               <h1 className={`font-bold text-2xl md:text-3xl lg:text-4xl    `} > { children }</h1>,
             h3: ({ children }) =>

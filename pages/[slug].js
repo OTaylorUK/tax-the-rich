@@ -109,11 +109,16 @@ export async function getStaticProps(context) {
 			
 			const changeInWealth = formatNumberToLocal(change)
 
-			let positiveChange = true;
+			let positiveChange = null;
 
-			if (Math.sign(changeInWealth?.actualValue) === -1) {
+			if(change > 0){
+				positiveChange = true
+			}else if(change < 0){
 				positiveChange = false
 			}
+			// if (Math.sign(changeInWealth?.actualValue) === -1) {
+			// 	positiveChange = false
+			// }
 
 			let url = indv?.person.squareImage;
 			let split = url.split('https:')
@@ -123,9 +128,16 @@ export async function getStaticProps(context) {
 				url = `https:${url}`
 			}
 
+			let bio = '';
+
+			if(indv.bios.length > 0){
+				bio = indv?.bios?.[0]
+			}
+
 			let newPerson = {
 				all: indv,
 				uid: indv.uri,
+				bio: bio ? bio : '',
 				personName: indv.person.name,
 				wealthSource: indv.source,
 				wealth: curWealth,

@@ -6,12 +6,11 @@ import PersonWealth from "./PersonWealth";
 
 const RichPerson = ({indv, buttons}) => {
 
-	// console.log('indv.person.squareImage', indv.person);
 
-	const {	personName, uid, wealthSource, wealth, imgUrl, rank, changeInWealth, positiveChange} = indv
+	const {	personName, bio, uid, wealthSource, wealth, imgUrl, rank, changeInWealth, positiveChange} = indv
 
 
-	console.log({changeInWealth});
+	console.log({indv});
 	// deep copy to prevent rewriting data for all instances of the buttons
 	let newBtns = JSON.parse(JSON.stringify(buttons));
 
@@ -30,14 +29,14 @@ const RichPerson = ({indv, buttons}) => {
 		  ogText = button?.portableButton?.[0]?.children?.[0].text;
 		}
 
-		let newText = findAndReplaceHolder({ replaceVals: findReplace, str: ogText })
+		// let newText = findAndReplaceHolder({ replaceVals: findReplace, str: ogText })
 
-		// if do not match then findReplace has worked
-		if (ogText !== newText) {
-		  button?.portableButton?.[0]?.children?.[0].text = newText
-		  // must store the original value for when the select option is changed
-		  button.ogText = ogText
-		}
+		// // if do not match then findReplace has worked
+		// if (ogText !== newText) {
+		//   button?.portableButton?.[0]?.children?.[0].text = newText
+		//   // must store the original value for when the select option is changed
+		//   button.ogText = ogText
+		// }
 
 		if(button.intLink === 'visualise-a-billion'){
 			button.query = {
@@ -55,46 +54,71 @@ const RichPerson = ({indv, buttons}) => {
 		
 	})
 
+	const [colour, setColour] = useState('') 
+
+
+	useEffect(()=>{
+
+		if(positiveChange !== null){
+			if(positiveChange){
+				setColour('#13F352')
+			}else if(!positiveChange){
+				setColour('#F31313')
+			}
+		}
+		
+
+	},[positiveChange])
+
+	console.log({positiveChange});
+
 	return (
-		<div className="flex flex-col drop-shadow-md hover:drop-shadow-xl group cursor-pointer  ">
-			<div className="flex flex-col h-full top-0 group-hover:-top-2 transition-[top] relative overflow-hidden rounded-md ">
-				<div className="image-wrapper relative ">
-					<div className="absolute left-0 top-0  z-30 w-10 h-10 bg-custom-highlight flex justify-center items-center">
-						<span className="text-custom-secondary text-md font-bold">{rank}</span>
+		<div className="flex flex-col xl:flex-row drop-shadow-md  group cursor-pointer  rounded-md relative bg-custom-highlight">
+
+			<div className="absolute left-0 top-0  z-30 w-10 h-10 bg-custom-highlight flex justify-center items-center">
+				<span className="text-custom-secondary text-md font-bold">{rank}</span>
+			</div>
+
+			<div className="image-wrapper m-w-[200px]  relative w-full " style={{flex: '0 1 20vw'}}>
+				<Image
+					className="z-10"
+					src={imgUrl}
+					alt={`Picture of ${personName}`}
+					width={200}
+					height={200}
+					layout='responsive'
+				/>
+			</div>
+				
+			<div className="person-info p-6  flex-[min-content] flex flex-col justify-center  xl:justify-evenly align-center gap-6 text-left">
+				
+				<div className="flex flex-col xl:flex-row text-center xl:text-left items-center justify-between gap-4">
+					<div className="flex flex-col items-left text-custom-secondary">
+						<span className="text-2xl font-bold  ">{personName}</span>
+						<span className="text-custom-text opacity-80 font-gaegu text-sm uppercase ">{wealthSource}</span>
 					</div>
-					<PersonWealth change={changeInWealth} isPositive={positiveChange} />
-					
-					<Image
-						className="z-10"
-						src={imgUrl}
-						alt={`Picture of ${personName}`}
-						width={200}
-						height={200}
-						layout='responsive'
-					/>
-					<div className="button-wrapper flex flex-row justify-center items-center absolute w-full h-full top-0 left-0  opacity-0 z-20  transition-opacity group-hover:opacity-100">
-						<div className="w-10/12">
-							{newBtns.map((button, i) => {
-								button.additionalClass = 'm-5'
-								return (
-									<PortableButton key={`btn-${i}`} content={button}	/>
-								)
-							})}
-						</div>
-						<div className="absolute w-full h-full top-0 left-0 bg-custom-primary opacity-90 z-[-1] ">
-						</div>
+
+
+					<div className="flex flex-col text-center  justify-center items-center text-custom-secondary relative" style={{
+						color: colour
+					}}>
+						<span className="text-3xl tracking-tight font-bold uppercase ">{wealth.shortValue}</span>
+						<PersonWealth change={changeInWealth} isPositive={positiveChange} />
 					</div>
 				</div>
 
-				<div className="person-info bg-custom-highlight flex-1 justify-center align-center flex flex-col py-5">
-					<div className="flex flex-col text-center  justify-center items-center text-custom-secondary">
-						<span className="text-2xl font-bold  mb-1 px-4">{personName}</span>
-						<span className="text-custom-text opacity-80 font-gaegu text-sm uppercase mb-4">{wealthSource}</span>
-						<span className="text-3xl tracking-tight font-bold uppercase ">{wealth.shortValue}</span>
-					</div>
-					
+				<p className="text-sm hidden xl:block ">{bio}</p>
+		
+				<div className="button-wrapper flex flex-col xl:flex-row justify-center xl:justify-start items-center gap-4  w-full ">
+					{newBtns.map((button, i) => {
+						return (
+							<PortableButton key={`btn-${i}`} content={button}	/>
+						)
+					})}
 				</div>
+				
 			</div>
+			
 		
 			
 		</div>

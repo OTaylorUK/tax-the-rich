@@ -6,7 +6,7 @@ function Buttons({value}) {
 
   const buttons = value?.buttons
   return (
-    <div className={`button-wrapper flex flex-flow flex-wrap gap-6`}>
+    <div className={`button-wrapper flex flex-flow justify-center items-center flex-wrap gap-6`}>
       {buttons?.map((button, index) => {
         button.hasMargin = true;
         return(
