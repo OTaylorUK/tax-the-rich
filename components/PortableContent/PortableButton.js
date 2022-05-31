@@ -7,19 +7,18 @@ import { useRouter } from 'next/router'
 const PortableButton = (props) => {
 
   let data  = props?.value ? props?.value : props?.content
-  const {portableButton : blocks, buttonStyle, buttonSize, intLink, link, isLink, query} = {...data} ;
-
+  const {portableButton : blocks, buttonAction,shareLinks, buttonStyle, buttonSize, intLink, link, isLink, query} = {...data} ;
+  
+  
   let additionalClass = data?.additionalClass !== undefined ? data?.additionalClass : '';
   const router = useRouter()
 
 
-  const [btnClass, updateBtnClass] = useState('')
+  const [btnClass, updateBtnClass] = useState(additionalClass)
 
 
 	const [isActive, setIsActive] = useState(false);
 
-// console.log('data', data);
-  // add button for buttons output in portabletext block
   let addMargin = '';
   if (data?.hasMargin) {
     addMargin= 'mb-5'
@@ -64,7 +63,9 @@ const PortableButton = (props) => {
 	let linkURL, linkTarget, outputLink = isLink;
   
   if (outputLink) {
+
     if (link !== null) {
+
       linkURL = `${link}`
 			linkTarget = '_blank'
     } else if (intLink !== null) {
@@ -79,14 +80,13 @@ const PortableButton = (props) => {
     }
   }
 
-  // console.log('link:', link);
-  // console.log('intLink:', intLink);
-
-
-
+  let customAction = {
+    isSet: false,
+    doAction: null,
+  }
 
   let hrefData = {
-    pathname: linkURL
+    pathname: linkURL?.trim()
   }
 
   if (query) {
@@ -122,25 +122,145 @@ const PortableButton = (props) => {
       }
     }
 
+    if(customAction.isSet){
+      customAction.doAction()
+    }
+
     // setIsActive(!isActive)
   }
 
-  let classList = ` group max-w-sm flex flex-wrap gap-1 flex-row items-center justify-center btn-styled btn-style-${style} btn-size-${size} ${addMargin} ${btnClass}  ${isActive ? 'is-active' : ''} ${'/'+router?.query?.slug == linkURL ? 'is-active' : ''}`;
+  const formatClassObj = (arr) => {
+    let classArray = ['']
+
+
+    arr.forEach(obj => {
+      for (const [key, value] of Object.entries(obj)) {
+        if(value !== null){
+          // if(key === 'hover'){
+          //  value.split(' ').map((text) =>  classArray.push(`hover:${text}`))
+          // }else{
+          //   classArray.push(value)
+          // }
+          classArray.push(value)
+
+        }else{
+          classArray.push('')
+
+        }
+      }
+    });
+    
+    return classArray.join(' ')
+  }
+
+
+
+  let styleClass = {default: null, hover: null}, sizeClass = {default: null, hover: null}
+
+  switch (size) {
+    case 'large':
+      sizeClass = {
+        default: 'py-4 px-6 text-lg',
+      }
+      break;
+    case 'small':
+      sizeClass = {
+        default: 'py-2 px-4 text-sm',
+      }
+      break;
+    default:
+      sizeClass = {
+        default: 'py-2 px-4 text-base',
+      }
+      break;
+  }
+
+  switch (style) {
+    case 'icon':
+      styleClass = {
+        default: 'w-12 h-12 text-custom-accent border-solid border border-custom-accent bg-transparent',
+        hover: 'hover:underline hover:bg-custom-accent ',
+      }
+      sizeClass = {
+        default: 'py-0 px-0',
+      }
+      break;
+
+    case 'text':
+      styleClass = {
+        default: 'text-custom-secondary',
+        hover: 'hover:underline hover:text-custom-accent ',
+      }
+      sizeClass = {
+        default: 'py-0 px-0',
+      }
+      break;
+
+    case 'primary':
+      styleClass = {
+        default: 'bg-custom-highlight text-custom-secondary border-solid border border-custom-highlight',
+        hover: 'hover:bg-custom-secondary hover:text-custom-highlight',
+      }
+     break;
+
+    case 'ghost':
+
+      styleClass = {
+        default: 'text-custom-accent border-solid border border-custom-accent',
+        hover: 'hover:bg-custom-accent hover:text-custom-primary',
+      }
+      break;
+
+    case 'ghostinverse':
+      styleClass = {
+        default: 'text-custom-primary bg-custom-accent border-solid border border-custom-accent',
+        hover: 'hover:bg-transparent hover:text-custom-accent',
+      }
+     break;
+
+    case 'action':
+      styleClass = {
+        default: 'text-custom-accent border-solid border border-custom-accent',
+        hover: 'hover:bg-custom-accent hover:text-custom-primary',
+      }
+      break;
+
+    default:
+      break;
+  }
+
+
+
+  const isActiveClass = '/'+router?.query?.slug == linkURL ? 'is-active' : '';
+
+  const finalClass = `${btnClass} ${isActiveClass} group flex flex-wrap gap-1 flex-row items-center justify-center rounded-lg ${styleClass.hover} ${styleClass.default} ${sizeClass.default}`
+  // const variableClass = formatClassObj([styleClass, sizeClass])
+
+  // const classArr = [
+  //   globalClass,
+  //   variableClass,
+  // ]
+  // const finalClass = classArr.join(' ')
 
   
   if (!outputLink) {
     return (
       <button 
+      data-style={style}
+      data-size={size}
       onClick={() => {
         handleContext()
-    }}  className={classList}>{btnContent}</button>
+    }}  className={finalClass}>{btnContent}</button>
     )
   } else {
     return (
       <Link  href={hrefData}>
-				<a  onClick={() => {
+				<a  
+          data-style={style}
+          data-size={size}
+        onClick={() => {
         handleContext()
-    }}  className={classList}  target={linkTarget}>{btnContent}</a>
+    }}  className={finalClass}  target={linkTarget}>{btnContent}</a>
       </Link>
     )
   }

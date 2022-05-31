@@ -64,9 +64,9 @@ const Navbar = ({ content = null, scroll }) => {
 
 
 	return (
-		<nav className={`  site-nav fixed  w-full   flex flex-row items-center z-50 h-20 ${navPos} transition-[top] duration-300`}>
+		<nav className={`  site-nav fixed  w-full  bg-custom-primary flex flex-row items-center z-50 h-20 ${navPos} transition-[top] duration-300 ${navShadow}`}>
 
-			<div className={`px-10 py-5 overflow-hidden bg-custom-primary container max-w-screen-xl m-auto   flex flex-row items-center   h-full ${navPos} transition-[top] duration-300 ${navShadow}`}>
+			<div className={`px-10 py-5 overflow-hidden  container max-w-screen-xl m-auto   flex flex-row items-center   h-full ${navPos} transition-[top] duration-300 `}>
 
 				<div className="logo flex-1 flex items-start justify-start  ">
 					<PortableButton content={logo}/>

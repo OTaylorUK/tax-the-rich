@@ -9,7 +9,7 @@ import { PortableButton } from "../../PortableContent";
 import { useRouter } from "next/router";
 import {  getSheet, getRichList, allKeyed, formatNumberToLocal, calcUnitsPerAmount } from '../../../utils/globalFunc';
 
-import { Header, Body } from '../sectionLayout';
+import { Header, Body, Container } from '../sectionLayout';
 
 
 const Visualiser = ({
@@ -20,20 +20,6 @@ const Visualiser = ({
 	social,
 	componentContext
 }) => {
-
-	console.log({componentContext});
-	
-
-	// const variableSelection = useMemo(
-	// 	() => ({
-	// 		amounts: moneyAmounts,
-	// 		displayType: displayType,
-	// 	 }),
-	// 	[moneyAmounts] //no dependencies so the value doesn't change
-	//   );
-
-
-
 
 	const router = useRouter()
 
@@ -125,8 +111,6 @@ const Visualiser = ({
 
 		const {moneyAmounts} = {...buyingData}
 
-
-		console.log({moneyAmounts});
 		const filterRouterQueries = (query) => {
 
 			const amounts = []
@@ -150,7 +134,6 @@ const Visualiser = ({
 			// sort array by asc size
 			amounts.sort((a,b) => (a.actualValue > b.actualValue) ? 1 : ((b.actualValue > a.actualValue) ? -1 : 0))
 
-			console.log({amounts});
 			return {amounts,selectedPerson}
 		}
 
@@ -248,25 +231,16 @@ const Visualiser = ({
 	 */
 	useEffect(() => {
 
-		console.log('user input changed something');
-		console.log('----');
-
-		console.log({variableSelection});
 		const{item, amount, isUpdating} = variableSelection
 
 		if(isUpdating){
 			const results = calcUnitsPerAmount(item, amount)
-			console.log({results});
 			setVisualSettings(results)
-			console.log({item, amount});
-
-
 			if (typeof window !== 'undefined') {
 				const href = window.location.href;
 		
-				var url = `${href}?person1=1&item1=${item?._id}`
-				console.log({url});
-				// setUrl(url)
+				// var url = `${href}?person1=1&item1=${item?._id}`
+				// // setUrl(url)
 
 			}
 
@@ -330,17 +304,17 @@ const Visualiser = ({
 	return (
 		<>
 			{/* question - user input here */}
-			<div  className="container    flex flex-col justify-center items-center ">
+			<Container>
 				<Header >
 					<Default  blocks={question} />
 				</Header>
 				<Body >
 					<Dynamic blocks={header} context={dynamicContext} />
 				</Body>
-			</div>
+			</Container>
 
 			{/* answer */}
-			<div ref={ref}  className="container    flex flex-col justify-center items-center ">
+			<Container  ref={ref} >
 				<Header >
 					<Default blocks={answer} findReplace={findReplace}  />
 				</Header>
@@ -371,7 +345,8 @@ const Visualiser = ({
 						</article>
 					</div>
 				</Body>
-			</div>
+			</Container>
+
 
 			
 		</>

@@ -21,14 +21,14 @@ const Block = ({id, colour, displayVal}) => {
 	
 	return (
 		<>
-			<div className="key flex-1 sm:flex-auto flex flex-col text-center sm:flex-row justify-center items-center font-gaegu" key={`key-${id}`}
+			<div className="key min-w-[45%] sm:min-w-0 flex-1 sm:flex-auto flex flex-col text-center sm:flex-row justify-center items-center font-gaegu" key={`key-${id}`}
 			>
 				<div className={`h-4 w-4 border `} 
 				style={{
 					backgroundColor: `${bgColour}`,
 				}}
 				></div>
-				<span className="m-1"> = {displayVal} </span>
+				<span className="m-1 whitespace-nowrap"> = {displayVal} </span>
 			</div>
 		</>
 	);

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import RichPerson from '../../RichPerson';
 import { Results, Source } from '../../Visualise';
-import { Header, Body } from '../sectionLayout';
+import { Header, Body, Container } from '../sectionLayout';
 import { Default} from "../../PortableContent";
 import { formatNumberToLocal } from '../../../utils/globalFunc';
 
@@ -37,7 +37,7 @@ const RichList = ({buttons, headerContent, textContent, componentContext}) => {
 		)
 	}else{
 		return (
-			<div  className="container    flex flex-col justify-center items-center ">
+			<Container>
 				<Header >
 					<Default blocks={headerContent} />
 				</Header>
@@ -55,7 +55,7 @@ const RichList = ({buttons, headerContent, textContent, componentContext}) => {
 					</div>
 				</Body >
 
-			</div>
+			</Container>
 		)
 	}
 

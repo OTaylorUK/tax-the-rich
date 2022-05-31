@@ -28,8 +28,11 @@ const PersonWealth = ({isPositive, change}) => {
 				<div className="" style={{
 						transform: isPositive ? 'rotate(0deg)' : 'rotate(180deg)',
 					}}>
-					<svg  width="12" height="10" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-						<path d="M9.0001 0L17.6604 15H0.339844L9.0001 0Z" fill={colour}/>
+					<svg  width="12" height="10" viewBox="0 0 18 15" fill="none" xmlns="http://www.w3.org/2000/svg" 
+					style={{
+						fill: colour
+					}}>
+						<path d="M9.0001 0L17.6604 15H0.339844L9.0001 0Z"/>
 					</svg>
 				</div>
 				<span className="text-custom-secondary text-md font-gaegu uppercase" style={{

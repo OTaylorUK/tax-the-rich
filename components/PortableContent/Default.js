@@ -3,7 +3,7 @@ import {PortableText} from '@portabletext/react'
 import Figure from './Figure'
 import DropDown from './DropDown'
 import PortableButton from './PortableButton'
-import Buttons from './Buttons'
+import {Buttons} from '../Button'
 import  {findAndReplaceHolder} from '../../utils/globalFunc';
 
 function Default(props) {
@@ -71,9 +71,9 @@ function Default(props) {
           block: {
             // Ex. 1: customizing common block types
             h1: ({ children }) =>
-              <h1 className={`font-bold text-4xl leading-tight md:text-5xl md:leading-tight lg:text-8xl lg:leading-tight capitalize ${options?.textColor} mb-10 lg:leading-snug`}>{children}</h1>,
+              <h1 className={` ${options?.textColor} mb-10 lg:leading-snug`}>{children}</h1>,
             h2: ({ children }) =>
-              <h1 className={`font-bold text-2xl md:text-3xl lg:text-4xl    `} > { children }</h1>,
+              <h2 className={``} > { children }</h2>,
             h3: ({ children }) =>
               <h1 className={`font-bold text-xl md:text-3xl ${options?.textColor} mb-8`} > { children }</h1 >,
             normal: ({ children }) =>

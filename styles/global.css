@@ -51,13 +51,13 @@
 		font-style: normal;
 		font-weight: 400;
 		font-display: swap;
-		src: url('/fonts/Poppins-Regular.woff2') format('woff2')
+		src: url('/fonts/Poppins-Light.woff2') format('woff2')
 	}
 
 	@font-face {
 		font-family: 'Poppins';
 		font-weight: 700;
-		font-style: Bold;
+		font-style: bold;
 		font-display: swap;
 		src: url('/fonts/Poppins-Bold.woff2') format('woff2')
 	}
@@ -79,13 +79,16 @@
 		src: url('/fonts/Gaegu-Regular.woff2') format('woff2')
 	}
 
+	::selection {
+		@apply bg-custom-secondary text-custom-primary
+	}
   
 	h1 {
-	  @apply  font-bold text-3xl md:text-5xl md:leading-tight lg:text-8xl lg:leading-snug capitalize ;
+	  @apply font-gaegu font-bold text-3xl md:text-5xl md:leading-tight lg:text-8xl lg:leading-snug uppercase ;
 	}
 
 	h2 {
-	  @apply  text-xl font-bold md:text-3xl;
+	  @apply font-gaegu uppercase  font-bold text-2xl md:text-4xl;
 	}
   
 	h3 {
@@ -94,6 +97,10 @@
   
 	h4 {
 	  @apply  text-base font-bold md:text-lg;
+	}
+
+	p{
+		@apply font-sans text-base md:text-lg font-normal ;
 	}
   
 	html {
@@ -124,7 +131,7 @@
 	  @apply mx-auto w-11/12;
 	}
 	
-	.general-text-container ul{
+	.layout-container ul{
 		@apply list-disc flex flex-col gap-2;
 	}
 
@@ -133,12 +140,16 @@
 		font-size: 1.5em;
 	}
 
+	svg path{
+		fill: inherit !important;
+	}
+
 	/* .image-wrapper span{
 		min-height: 100%;
 	} */
 }
 
-.btn-styled {
+/* .btn-styled {
 	@apply py-2 px-3 text-sm rounded-md
 }
 
@@ -153,6 +164,11 @@
 .btn-styled svg path{
 	@apply fill-current
 }
+
+.btn-style-icon {
+	@apply   p-2
+}
+
 
 
 .btn-style-text {
@@ -175,7 +191,7 @@
 
 .btn-style-ghostinverse {
 	@apply    text-custom-primary bg-custom-accent border-solid border border-custom-accent hover:bg-transparent hover:text-custom-accent 
-}
+} */
 
 
 .btn-style-action span {

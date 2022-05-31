@@ -1,19 +1,19 @@
-import Link from "next/link";
-// import Svg from 'react-inlinesvg';
 import { PortableButton } from "../PortableContent";
 
 import { useEffect, useState } from "react";
 
-import  {findAndReplaceHolder} from '../../utils/globalFunc';
-import { useRouter } from 'next/router'
+import  {findAndReplaceHolder, formatSocialChannelQuery} from '../../utils/globalFunc';
+import Button from "./Default";
 
-const SocialShare = ({content, context, shareUrl = null, social, bgColour, additionalClass}) => {
+const SocialShare = ({content, context}) => {
 
 
 	const [scaled, setScaled] = useState(false);
-
-
+	const [pageTitle, setPageTitle] = useState(null);
+	const [pageURL, setPageURL] = useState(null);
 	
+
+	const {shareLinks} = {...content}
 
 	// opens the social buttons
 	if(context === undefined){
@@ -25,6 +25,13 @@ const SocialShare = ({content, context, shareUrl = null, social, bgColour, addit
 		}
 	}
 
+
+	useEffect(()=>{
+		setPageTitle(document.title);
+		setPageURL(document.URL);
+
+	},[])
+
 	
 	Array.prototype.swap = function (x,y) {
 		var b = this[x];
@@ -33,34 +40,24 @@ const SocialShare = ({content, context, shareUrl = null, social, bgColour, addit
 		return this;
 	}
 
-
-
 	return (
-		<div className={`${additionalClass} flex flex-row justify-center items-center relative`}>
+		<div className={` flex flex-row justify-center items-center relative`}>
 			<PortableButton content={content} context={context} />
 
-			<div className={` p-6 z-40 flex flex-col items-start absolute -left-1 bottom-full gap-y-3 mb-4 ${scaled ? 'scale-100' : 'scale-0'}  ${bgColour !== undefined ? bgColour : ''} `}>
-				{social?.map((channel, index) => {
-					let btn = JSON.parse(JSON.stringify(channel?.button));
+			<div className={`w-max p-8  z-40 bg-custom-primary flex flex-col items-start absolute -left-1 bottom-full gap-y-6 mb-4 ${scaled ? 'scale-100' : 'scale-0'}  `}>
+				{shareLinks?.map((channel, index) => {
+					let btn = JSON.parse(JSON.stringify(channel));
 					// flip the order of blank span to go after the icon
-					btn?.portableButton.swap(0, 1)
-					btn?.portableButton?.[1]?.children?.[0]?.text = channel.name;
+					btn?.button?.portableButton.swap(0, 1)
+					btn?.button?.portableButton?.[1]?.children?.[0]?.text = channel.name;
 
-					const link = channel?.button?.link;
-					if(shareUrl !== null){
-						channel?.button?.link = `${shareUrl}`
-					}
-					// console.log({link});
-					// console.log(btn?.link);
+					const  btnQuery = formatSocialChannelQuery(pageTitle, pageURL, channel.name)
+					btn?.button?.query = btnQuery
 
-					// let newText = findAndReplaceHolder({ replaceVals: findReplace, str: ogText })
-
-
-						
 					return (
-						<PortableButton key={`btn-${index}`} content={btn} />
+						<Button key={`btn-${index}`} content={btn?.button}  />
 					)
-				})}
+				})} 
 			</div>
 				
 		</div>

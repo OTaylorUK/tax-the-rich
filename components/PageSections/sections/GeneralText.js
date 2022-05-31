@@ -2,7 +2,7 @@
 
 import {Default} from "../../PortableContent";
 
-import { Header, Body } from '../sectionLayout';
+import { Header, Body, Container } from '../sectionLayout';
 
 const Quote = (props) => {
 
@@ -10,14 +10,14 @@ const Quote = (props) => {
 
 
 	return (
-		<div  className="container general-text-container   flex flex-col justify-center items-center ">
+		<Container>
 			<Header >
 				<Default blocks={headerContent} />
 			</Header>
 			<Body >
 				<Default blocks={textContent} />
 			</Body>
-		</div>
+		</Container>
 	)
 
 }

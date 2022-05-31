@@ -10,7 +10,6 @@ const RichPerson = ({indv, buttons}) => {
 	const {	personName, bio, uid, wealthSource, wealth, imgUrl, rank, changeInWealth, positiveChange} = indv
 
 
-	console.log({indv});
 	// deep copy to prevent rewriting data for all instances of the buttons
 	let newBtns = JSON.parse(JSON.stringify(buttons));
 
@@ -70,7 +69,6 @@ const RichPerson = ({indv, buttons}) => {
 
 	},[positiveChange])
 
-	console.log({positiveChange});
 
 	return (
 		<div className="flex flex-col xl:flex-row drop-shadow-md  group cursor-pointer  rounded-md relative bg-custom-highlight">
@@ -90,7 +88,7 @@ const RichPerson = ({indv, buttons}) => {
 				/>
 			</div>
 				
-			<div className="person-info p-6  flex-[min-content] flex flex-col justify-center  xl:justify-evenly align-center gap-6 text-left">
+			<div className="person-info p-6  flex-[min-content] flex flex-col justify-between  xl:justify-between align-center gap-6 text-left">
 				
 				<div className="flex flex-col xl:flex-row text-center xl:text-left items-center justify-between gap-4">
 					<div className="flex flex-col items-left text-custom-secondary">
@@ -112,7 +110,7 @@ const RichPerson = ({indv, buttons}) => {
 				<div className="button-wrapper flex flex-col xl:flex-row justify-center xl:justify-start items-center gap-4  w-full ">
 					{newBtns.map((button, i) => {
 						return (
-							<PortableButton key={`btn-${i}`} content={button}	/>
+							<PortableButton key={`btn-${i}`} content={{...button, additionalClass : 'w-full'}}	/>
 						)
 					})}
 				</div>

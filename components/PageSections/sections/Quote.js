@@ -1,11 +1,7 @@
 
-
-import Default from "../../PortableText/Default";
-
 const Quote = (props) => {
 
 	const { author, quoteText, citation } = props;
-
 
 	return (
 		<blockquote cite={citation} className="container flex flex-col justify-center items-center  mb-20">

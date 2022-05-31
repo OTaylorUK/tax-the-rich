@@ -2,7 +2,8 @@ import {PortableText} from '@portabletext/react'
 import Figure from './Figure'
 import DropDown from './DropDown'
 import PortableButton from './PortableButton'
-import Buttons from './Buttons'
+import {Buttons} from '../Button'
+
 import React, {useEffect, useRef } from 'react';
 
 

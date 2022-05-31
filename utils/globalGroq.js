@@ -5,9 +5,24 @@ const buttonGroq = `
 ...,
 
 _type == 'button' => {
-  'intLink': route->slug.current,'link': link,
+  'intLink': route->slug.current,
+  'link': link,
+  buttonAction == 'share-page' => {
+    'shareLinks': *[_type in ["socialMedia"]]{
+      name,
+      button{
+        ...,
+        'link': link,
+        portableButton[]{
+          ...,
+          asset->
+        },
+      }
+    }
+  },
   portableButton[]{
   ...,
+ 
   asset->
   },
  },

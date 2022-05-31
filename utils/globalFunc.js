@@ -26,6 +26,56 @@ export const getLog10 = (number) => {
 
 }
 
+export const formatSocialChannelQuery = (title, url, name) => {
+
+  const niceTitle = encodeURIComponent(title);
+
+  let btnQuery = {
+    'title': title,
+    'url': url
+  }
+
+  switch (name.toLowerCase()) {
+    case 'twitter':
+      btnQuery = {...btnQuery,
+        'title': `Check out this great way to ${title}` ,
+        'hashtags': 'TaxTheRich'
+      }
+
+    break;
+
+    case 'linkedin':
+      btnQuery = {
+        'url': url
+      }
+
+    break;
+    case 'facebook':
+      btnQuery = {
+        'u': url
+      }
+    break;
+  
+    case 'email':
+      //mailto:
+      btnQuery = {
+        'subject': `Check out this great way to ${title}` ,
+        'body': `Visit the site: ${url}`
+      }
+    break;
+
+    case 'whatsapp':
+      btnQuery = {
+        'text': `Check out this great way to ${title} - ${url}` ,
+      }
+    break;
+    default:
+      break;
+  }
+
+  return btnQuery;
+
+}
 
 export const formatNumberToLocal = (number) => {
   let formattedNumber = null
@@ -347,28 +397,5 @@ export const findAndReplaceHolder = ({replaceVals, str }) => {
   } else {
     return str;
   }
-
-  // if (placeholders) {
-
-   
-  //   placeholders.forEach(function(placeholder){
-  //     //Placeholder - $price$
-  //     console.log('here');
-  //     var phText = placeholder.substring(1, placeholder.length - 1);
-      
-
-  //     //phText = price
-
-  //     if (replaceVals[phText]) {
-  //       newString = str.replaceAll(placeholder,replaceVals[phText])
-
-  //     }
-  //   })
-  //   return newString;
-
-  // } else {
-  //   return str;
-    
-  // }
 
 }

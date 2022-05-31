@@ -13,12 +13,12 @@ function Image({ value }) {
   if (value?.btnStyle == 'action'){
     return (
       <div className='box-wrap '>
-         <Svg className="icon" no-cors="true" src={value?.asset?.url} height={`${height}px`}  width={`${width}px`} title="socialIcon" />
+         <Svg className="fill-current  icon" no-cors="true" src={value?.asset?.url} height={`${height}px`}  width={`${width}px`} title="socialIcon" />
       </div>
     )
   } else {
     return (
-      <Svg className="icon" no-cors="true" src={value?.asset?.url} height={`${height}px`}  width={`${width}px`} title="socialIcon" />
+      <Svg className=" fill-current icon" no-cors="true" src={value?.asset?.url} height={`${height}px`}  width={`${width}px`} title="socialIcon" />
     )
   }
   

@@ -233,9 +233,6 @@ const Details = (props) => {
 	const { globalData, pageData, variable } = props;
 	const pageContent = pageData?.find(({ name }) => name === 'pageContent')
 
-
-	console.log({props});
-	// // page builder array - loop through to create the page from the component types
 	const pageSections = pageContent.value?.[0]
 	return (
 		<>

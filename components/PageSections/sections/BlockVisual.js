@@ -8,7 +8,7 @@ import { useRouter } from "next/router";
 import { useResizeDetector } from 'react-resize-detector';
 import { formatNumberToLocal } from '../../../utils/globalFunc';
 import { PortableButton, Default } from '../../PortableContent';
-import { Header, Body } from '../sectionLayout';
+import { Header, Body, Container } from '../sectionLayout';
 
 const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => {
 
@@ -134,7 +134,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 			// setIsUpdating(true) // triggers comp reload with new data
 		}
 
-		console.log('get data is called');
+		// console.log('get data is called');
 		getData()
 	},[router.query, initalMoney ])
 
@@ -146,8 +146,6 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 	 */
 	useEffect(() => {
 		const{amounts, displayType} = {...variableSelection}
-		console.log('this called here', colourArray);
-
 		
 		if(amounts === null  || colourArray === null || containerWidth === null){
 			return null
@@ -264,8 +262,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 			setContHeight(maxHeight)
 		}
 		
-		console.log(variableSelection, {containerWidth}, 'use effect is called');
-		console.log('---------');
+		
 	},[variableSelection, containerWidth])
 	
 
@@ -335,8 +332,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 
 	
 	return (
-		<>
-		<div  className="container    flex flex-col justify-center items-center ">
+		<Container>
             <Header >
 				<Default blocks={headerContent} />
 			</Header>
@@ -367,9 +363,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 					</article>
 				</div>
 			</Body>
-        </div>
-		
-		</>
+		</Container>
 	)
 
 }

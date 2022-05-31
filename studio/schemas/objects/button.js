@@ -47,6 +47,7 @@ export default {
       type: 'string',
       hidden: ({ parent }) =>  parent.isLink
     },
+
     {
       group: 'action',
       title: 'Internal link',
@@ -61,6 +62,11 @@ export default {
       title: 'External link',
       name: 'link',
       type: 'url',
+      validation: Rule =>
+        Rule.uri({
+          allowRelative: true,
+          scheme: ['https', 'http', 'mailto', 'tel', 'whatsapp'],
+        }),
       hidden: ({ parent, value }) => (!value && parent?.route) || !parent.isLink
     },
 
@@ -70,6 +76,15 @@ export default {
       name: 'portableButton',
       description: 'Use this to add text and/or an icon to the button',
       type: 'portableButton',
+    },
+
+    {
+      group: 'content',
+      title: 'Action content',
+      name: 'actionContent',
+      description: 'Use this to add content that will appear when the button is clicked.',
+      type: 'simplePortableText',
+      hidden: ({ parent }) =>  !parent.isLink
     },
    
 
@@ -85,6 +100,7 @@ export default {
           {title: 'Ghost', value: 'Ghost'},
           {title: 'Ghost Inverse', value: 'GhostInverse'},
           {title: 'Action', value: 'Action'},
+          {title: 'Icon', value: 'Icon'},
           {title: 'Text', value: 'Text'},
         ],
       },

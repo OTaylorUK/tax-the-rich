@@ -20,7 +20,6 @@ export function ThemeToggle({ className }) {
 
 
   useEffect(()=>{
-    console.log('theme:', isDark);
     if(isDark){
       setDisplaySettings({
         position: 'translate(13px)',
