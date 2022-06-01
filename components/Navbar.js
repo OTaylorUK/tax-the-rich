@@ -67,41 +67,26 @@ const Navbar = ({ content = null, scroll }) => {
 
 	const [boxVariants, setBoxVariants] = useState({})
 
-	// useEffect(()=> {
-	// 	if (window === undefined) return
+	// Triggered on resize - just update sizes of boxes
+	const onResize = useCallback(() => {
+		if (window === undefined) return
 
-	// 	if(window){
-	// 		const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
-	// 		if (isMobile) {
-	// 			setBoxVariants({
-	// 				open: { opacity: 1, x: 0 },
-	// 				closed: { opacity: 0, x: "100%" },
-	// 			})
-	// 		}
-	// 	}
-
-	// },[])
-
-		// Triggered on resize - just update sizes of boxes
-		const onResize = useCallback(() => {
-			if (window === undefined) return
-
-			if(window){
-				const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
-				if (isMobile) {
-					setBoxVariants({
-						open: { opacity: 1, x: 0 },
-						closed: { opacity: 0, x: "100%" },
-					})
-				}
+		if(window){
+			const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
+			if (isMobile) {
+				setBoxVariants({
+					open: { opacity: 1, x: 0 },
+					closed: { opacity: 0, x: "100%" },
+				})
 			}
-		}, []);
+		}
+	}, []);
+
+	// dynamically update the width and height on resize
+	const { ref } = useResizeDetector({onResize});
+
+
 	
-		// dynamically update the width and height on resize
-		const { ref } = useResizeDetector({onResize});
-
-
-	  
 
 	
 

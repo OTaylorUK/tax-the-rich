@@ -1,10 +1,10 @@
 import { PortableButton } from "../PortableContent";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import  {findAndReplaceHolder, formatSocialChannelQuery} from '../../utils/globalFunc';
 import Button from "./Default";
-
+import { useRouter } from "next/router";
 const SocialShare = ({content, context}) => {
 
 
@@ -14,6 +14,9 @@ const SocialShare = ({content, context}) => {
 	
 
 	const {shareLinks} = {...content}
+
+	// const test = useRef(null);
+	const router = useRouter();
 
 	// opens the social buttons
 	if(context === undefined){
@@ -27,10 +30,11 @@ const SocialShare = ({content, context}) => {
 
 
 	useEffect(()=>{
+		setScaled(false)
 		setPageTitle(document.title);
 		setPageURL(document.URL);
 
-	},[])
+	},[router])
 
 	
 	Array.prototype.swap = function (x,y) {
@@ -44,7 +48,7 @@ const SocialShare = ({content, context}) => {
 		<div className={` flex flex-row justify-center items-center relative`}>
 			<PortableButton content={content} context={context} />
 
-			<div className={`w-max p-8  z-40 bg-custom-primary flex flex-col items-start absolute -left-1 bottom-full gap-y-6 mb-4 ${scaled ? 'scale-100' : 'scale-0'}  `}>
+			<div className={`min-w-full w-max p-8  z-40 bg-custom-primary flex flex-col items-center absolute -left-1 bottom-full gap-y-6 mb-4 ${scaled ? 'scale-100' : 'scale-0'}  `}>
 				{shareLinks?.map((channel, index) => {
 					let btn = JSON.parse(JSON.stringify(channel));
 					// flip the order of blank span to go after the icon

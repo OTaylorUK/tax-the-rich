@@ -46,7 +46,7 @@ const MyApp = (props) => {
           <meta name="og:title" content={SEO?.title} />
           <meta name="og:description" content={SEO?.description} />
           <meta property="og:image" content={SEO?.ogImage} />
-
+          <meta property="og:type" content="article" />
           <meta name="description" content={SEO?.description} />
           
           <link

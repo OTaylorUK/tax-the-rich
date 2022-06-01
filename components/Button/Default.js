@@ -1,21 +1,28 @@
 import { PortableButton } from "../PortableContent";
 import SocialShare from "./SocialShare";
-const Button = ({content, context}) => {
+const Button = (props) => {
 	
-	let action = content?.buttonAction ? content?.buttonAction : 'link'
+	const {content = null, value = null, context} = props
 
-	switch (action) {
-		case 'share-page':
-			return (<SocialShare  content={content} context={context}/>)
-			break;
-	
-		default:
-			return (<PortableButton  content={content} context={context}/>)
-			break;
+
+	let btn = content;
+
+	if(btn === null){
+		btn = value
+	console.log({btn});
+
 	}
-	// if (content.portableButton) {
-	// 	return (<PortableButton  content={content} context={context}/>)
-	// }
+
+
+	const action = btn?.buttonAction ? btn?.buttonAction : 'link'
+
+
+	if(action == 'share-page'){
+		return (<SocialShare  content={btn} context={context}/>)
+	}else{
+		return (<PortableButton  content={btn} context={context}/>)
+	}
+
 
 }
  

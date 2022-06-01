@@ -10,25 +10,22 @@ const Header = ({ additionalClass = '', children }) => {
 	const control = useAnimation()
 	const [ref, inView] = useInView({  delay: 200 })
 
-	useEffect(() => {
 
-		if (inView) {
-		  control.start("visible");
-		} 
-		// remove below if you want annimation to only happen once
-		// else {
-		// 	control.start("hidden");
-		//   }
-	  }, [control, inView]);
+	const boxVariants = {
 
+	}
 
 	return (
 		<>
-		<motion.div  
+	
 
-			initial={{ opacity: 0 }}
-			whileInView={{ opacity: 1 }}
-			viewport={{ once: true }}
+		<div  
+			// transition={{ delay: 1 }}
+			// initial={{ opacity: 0 }}
+			// whileInView={{ opacity: 1 }}
+			// viewport={{ once: true }}
+
+			// variants={boxVariants}
 
 		 	// ref={ref}
 			 
@@ -38,7 +35,7 @@ const Header = ({ additionalClass = '', children }) => {
 			className={`${additionalClass}  bg-custom-highlight justify-center flex px-6 py-8 w-full text-custom-accent`}
 		>
 				{children}
-		</motion.div>
+		</div>
 		</>
 	);
 }

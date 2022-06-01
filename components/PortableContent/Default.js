@@ -3,12 +3,12 @@ import {PortableText} from '@portabletext/react'
 import Figure from './Figure'
 import DropDown from './DropDown'
 import PortableButton from './PortableButton'
-import {Buttons} from '../Button'
+import {Buttons, Button} from '../Button'
 import  {findAndReplaceHolder} from '../../utils/globalFunc';
 import { motion } from "framer-motion";
 
 function Default(props) {
-  const {blocks, overrides, findReplace} = {...props}
+  const {blocks, overrides, findReplace = null} = {...props}
 
   const options = {
     textColor: overrides?.textColor ? overrides?.textColor : 'text-custom-secondary',
@@ -30,7 +30,9 @@ function Default(props) {
     if (content._type === 'button') {
       content.hasMargin = true
     }
-    if (findReplace !== undefined) {
+    if (findReplace !== null) {
+
+      console.log({findReplace});
       content?.children?.map((child, index) => {
         let ogText;
 
@@ -85,7 +87,7 @@ function Default(props) {
           types: {
             dropDown: DropDown,
             figure: Figure,
-            button: PortableButton,
+            button: Button,
             buttons: Buttons,
             
           },

@@ -85,13 +85,17 @@ export async function getStaticProps(context) {
 
 	let richList;
 
-	if (slug === 'the-fat-cats' || slug === 'visualise-a-billion' || slug === 'what-it-buys') {
+	if (slug === 'the-fat-cats' || slug === 'visualise-a-billion' || slug === 'what-it-buys' || slug === 'take-action') {
 		// const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=12";
 		// const response = await axios.get(API);
 		// richList = await response.data
+		let number = 25;
+		if( slug === 'take-action'){
+			number = 1;
+		}
 
 		const {curRichList} = await allKeyed({
-			curRichList: getRichList(),
+			curRichList: getRichList(number),
 		});
 
 		const formatWealthAmount = (number) => {
@@ -135,7 +139,6 @@ export async function getStaticProps(context) {
 			}
 
 			let newPerson = {
-				all: indv,
 				uid: indv.uri,
 				bio: bio ? bio : '',
 				personName: indv.person.name,
@@ -160,12 +163,19 @@ export async function getStaticProps(context) {
 
 	switch (slug) {
 		case 'the-fat-cats':
-			
 			pageProps.variable.richList = {
 				richList,
 				dateGenerated: curDate
 			}
 		break;
+
+		case 'take-action':
+			pageProps.variable.generalText = {
+				richList,
+				dateGenerated: curDate
+			}
+		break;
+
 		case 'visualise-a-billion':
 
 			pageQuery = `

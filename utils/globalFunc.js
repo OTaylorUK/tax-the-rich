@@ -328,9 +328,9 @@ export const getSheets = async () => {
 
 
 
-export const getRichList = async () => {
+export const getRichList = async (number = '25') => {
 
-  const API = "https://forbes400.herokuapp.com/api/forbes400/real-time?limit=25";
+  const API = `https://forbes400.herokuapp.com/api/forbes400/real-time?limit=${number}`;
   const response = await axios.get(API);
 
   const final = await response.data

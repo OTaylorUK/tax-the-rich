@@ -59,7 +59,7 @@
 		font-weight: 700;
 		font-style: bold;
 		font-display: swap;
-		src: url('/fonts/Poppins-Bold.woff2') format('woff2')
+		src: url('/fonts/Poppins-Medium.woff2') format('woff2')
 	}
 
 	/* @font-face {
@@ -100,7 +100,12 @@
 	}
 
 	p{
-		@apply font-sans text-base md:text-lg font-normal ;
+		@apply font-sans text-base  font-normal ;
+	}
+
+	p strong{
+		@apply text-custom-accent ;
+
 	}
   
 	html {
