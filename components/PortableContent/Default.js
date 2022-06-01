@@ -5,6 +5,7 @@ import DropDown from './DropDown'
 import PortableButton from './PortableButton'
 import {Buttons} from '../Button'
 import  {findAndReplaceHolder} from '../../utils/globalFunc';
+import { motion } from "framer-motion";
 
 function Default(props) {
   const {blocks, overrides, findReplace} = {...props}
@@ -55,6 +56,26 @@ function Default(props) {
   })
 
 
+  const sentence = {
+    hidden: {opacity: 1},
+    visible: {
+      opacity: 1,
+      transition: {
+        delay: 0.5,
+        staggerChildren: 0.08,
+      },
+    },
+  }
+
+  const letter = {
+    hidden: { opacity: 0, y: 50},
+    visible: {
+      opacity: 1,
+      y:0,
+    },
+  }
+
+
   
   return (
     <div className={`flex flex-wrap flex-col items-center justify-center text-center ${options?.customClass} ${options?.containerMargin} ${options?.textAlign}`}>
@@ -70,12 +91,38 @@ function Default(props) {
           },
           block: {
             // Ex. 1: customizing common block types
-            h1: ({ children }) =>
-              <h1 className={` ${options?.textColor} mb-10 lg:leading-snug`}>{children}</h1>,
+            h1: ({ children }) => {
+              // console.log({children});
+              return (
+                <motion.h1  
+                variants={sentence}
+                initial='hidden'
+                animate="visible"
+                className={` ${options?.textColor} mb-10 lg:leading-snug`}
+                >{children?.map((child, i)=>{
+                  if(typeof child === 'string'){
+                    return child?.split("").map((char,i) => {
+                      return(
+                        <motion.span 
+                        key={i} 
+                        variants={letter}
+                        >{char}</motion.span>
+                      )
+                    })
+                  }else{
+                    return child
+                  }
+                 
+                })}
+                 </motion.h1>
+              )
+            }
+           
+           ,
             h2: ({ children }) =>
               <h2 className={``} > { children }</h2>,
             h3: ({ children }) =>
-              <h1 className={`font-bold text-xl md:text-3xl ${options?.textColor} mb-8`} > { children }</h1 >,
+              <h3 className={`font-bold text-xl md:text-3xl ${options?.textColor} mb-8`} > { children }</h3 >,
             normal: ({ children }) =>
               <p className={`mb-4 `} > { children }</p >,
             span: ({ children }) =>

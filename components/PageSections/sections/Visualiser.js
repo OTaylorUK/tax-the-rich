@@ -4,10 +4,9 @@ import { toPng } from 'html-to-image';
 import {Dynamic, Default} from "../../PortableContent";
 import { useEffect, useState } from 'react';
 import {Results, Icons, Source, Keys} from "../../Visualise";
-import {SocialShare} from '../../Button'
-import { PortableButton } from "../../PortableContent";
+import {Buttons} from '../../Button'
 import { useRouter } from "next/router";
-import {  getSheet, getRichList, allKeyed, formatNumberToLocal, calcUnitsPerAmount } from '../../../utils/globalFunc';
+import { formatNumberToLocal, calcUnitsPerAmount } from '../../../utils/globalFunc';
 
 import { Header, Body, Container } from '../sectionLayout';
 
@@ -17,7 +16,6 @@ const Visualiser = ({
 	header,
 	answer,
 	buttons,
-	social,
 	componentContext
 }) => {
 
@@ -25,7 +23,6 @@ const Visualiser = ({
 
 	const questionRef = useRef();
 	const resultsRef = useRef()
-	const ref = useRef();
 
 	const [replaceYou, setReplaceYou] = useState(null)
 	const [pricedItems, setPricedItems] = useState(null)
@@ -300,7 +297,6 @@ const Visualiser = ({
 
 
 
-
 	return (
 		<>
 			{/* question - user input here */}
@@ -314,7 +310,7 @@ const Visualiser = ({
 			</Container>
 
 			{/* answer */}
-			<Container  ref={ref} >
+			<Container  ref={resultsRef} >
 				<Header >
 					<Default blocks={answer} findReplace={findReplace}  />
 				</Header>
@@ -331,17 +327,8 @@ const Visualiser = ({
 
 					<div className="w-full h-full ">
 						<article className="relative -top-24 wrap flex flex-row flex-wrap justify-center items-center gap-5">
-							{buttons?.map((button, i) => {
-								if (i === 0) {
-									return (
-										<SocialShare key={`btn-${i}`} context={'test'} content={button} shareUrl={url} social={social} bgColour={'bg-custom-primary'}/>
-									)
-								} else {
-									return (
-										<PortableButton key={`btn-${i}`} content={button} context={btnContent}/>
-									)
-								}
-							})}
+
+						<Buttons  buttons={buttons}  />
 						</article>
 					</div>
 				</Body>

@@ -3,21 +3,18 @@ import {PortableText} from '@portabletext/react'
 import Image from './Image'
 import Link from 'next/link';
 import { useRouter } from 'next/router'
+import { formatLinkHref, isActiveLink } from '../../utils/globalFunc';
 
 const PortableButton = (props) => {
 
   let data  = props?.value ? props?.value : props?.content
-  const {portableButton : blocks, buttonAction,shareLinks, buttonStyle, buttonSize, intLink, link, isLink, query} = {...data} ;
-  
-  
+  const {portableButton : blocks, isActive = false, buttonStyle, buttonSize, intLink, link, isLink, query} = {...data} ;
   let additionalClass = data?.additionalClass !== undefined ? data?.additionalClass : '';
   const router = useRouter()
 
 
   const [btnClass, updateBtnClass] = useState(additionalClass)
 
-
-	const [isActive, setIsActive] = useState(false);
 
   let addMargin = '';
   if (data?.hasMargin) {
@@ -60,25 +57,10 @@ const PortableButton = (props) => {
     }}
     />
   
-	let linkURL, linkTarget, outputLink = isLink;
-  
-  if (outputLink) {
 
-    if (link !== null) {
+  const {outputLink, linkURL, linkTarget } = formatLinkHref(link, intLink, isLink)
 
-      linkURL = `${link}`
-			linkTarget = '_blank'
-    } else if (intLink !== null) {
-      if (intLink !== '/') {
-       linkURL = `/${intLink}`
-      } else {
-       linkURL = `${intLink}`
-      }
-			linkTarget = '_self'
-    } else {
-      outputLink = false
-    }
-  }
+
 
   let customAction = {
     isSet: false,
@@ -122,9 +104,9 @@ const PortableButton = (props) => {
       }
     }
 
-    if(customAction.isSet){
-      customAction.doAction()
-    }
+    // if(isActive){
+    //   customAction.doAction()
+    // }
 
     // setIsActive(!isActive)
   }
@@ -188,8 +170,8 @@ const PortableButton = (props) => {
 
     case 'text':
       styleClass = {
-        default: 'text-custom-secondary',
-        hover: 'hover:underline hover:text-custom-accent ',
+        default: `text-custom-secondary ${isActive && 'text-custom-accent'}`,
+        hover: ' hover:text-custom-accent ',
       }
       sizeClass = {
         default: 'py-0 px-0',
@@ -230,8 +212,10 @@ const PortableButton = (props) => {
   }
 
 
+ 
+  
 
-  const isActiveClass = '/'+router?.query?.slug == linkURL ? 'is-active' : '';
+  const isActiveClass = '/' +router?.query?.slug == linkURL ? 'is-active' : '';
 
   const finalClass = `${btnClass} ${isActiveClass} group flex flex-wrap gap-1 flex-row items-center justify-center rounded-lg ${styleClass.hover} ${styleClass.default} ${sizeClass.default}`
   // const variableClass = formatClassObj([styleClass, sizeClass])

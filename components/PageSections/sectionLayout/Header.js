@@ -25,10 +25,16 @@ const Header = ({ additionalClass = '', children }) => {
 	return (
 		<>
 		<motion.div  
-		 	ref={ref}
-			 variants={boxVariant}
-			 initial="hidden"
-			 animate={control}
+
+			initial={{ opacity: 0 }}
+			whileInView={{ opacity: 1 }}
+			viewport={{ once: true }}
+
+		 	// ref={ref}
+			 
+			//  variants={boxVariant}
+			//  initial="hidden"
+			//  animate={control}
 			className={`${additionalClass}  bg-custom-highlight justify-center flex px-6 py-8 w-full text-custom-accent`}
 		>
 				{children}

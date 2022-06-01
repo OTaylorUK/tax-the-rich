@@ -7,6 +7,8 @@ const Buttons = ({buttons = null, value = null}) => {
 	if(buttonArr === null){
 		buttonArr = value?.buttons;
 	}
+
+	console.log({buttonArr});
 	return (
 		<div className={` flex flex-row justify-center items-center relative flex-wrap gap-6`}>
 			{buttonArr?.map((button, index) => {

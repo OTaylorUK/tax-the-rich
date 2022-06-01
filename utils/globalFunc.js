@@ -364,6 +364,39 @@ export const getGroqQuery = async (query) => {
 }
 
 
+export const isActiveLink = (href, currentPathname) => {
+  let {linkURL} = formatLinkHref(null, href)
+  if (linkURL === '/') {
+      return linkURL === currentPathname
+  }
+
+  return currentPathname.startsWith(linkURL)
+}
+
+export const formatLinkHref = (link = null,intLink = null, outputLink = true) => {
+
+  let linkURL,linkTarget;
+  
+  if (link !== null) {
+    linkURL = `${link}`
+    linkTarget = '_blank'
+  } else if (intLink !== null) {
+    
+    if (intLink !== '/') {
+     linkURL = `/${intLink}`
+    } else {
+     linkURL = `${intLink}`
+    }
+    
+    linkTarget = '_self'
+  } else {
+    outputLink = false
+  }
+  return {linkURL,linkTarget, outputLink}
+}
+
+
+
 
 			
 
