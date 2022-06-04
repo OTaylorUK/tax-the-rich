@@ -1,7 +1,5 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import client from '../../client'
-
 
 function DropDown(prop) {
   const { value } = prop
@@ -48,6 +46,8 @@ function DropDown(prop) {
       })
      setSelectOptions(options)
     }
+
+    
 
   }, [listItems, context]);
 

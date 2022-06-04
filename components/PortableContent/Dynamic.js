@@ -4,7 +4,7 @@ import DropDown from './DropDown'
 import PortableButton from './PortableButton'
 import {Buttons} from '../Button'
 
-import React, {useEffect, useRef } from 'react';
+import React from 'react';
 
 
 const Dynamic = (props) => {
@@ -30,55 +30,12 @@ const Dynamic = (props) => {
     }
     if (content._type === 'dropDown') {
       content.context = context
+      content.context = props?.context
     }
   })
-  
-  // props.updateQuestion
-
-
-	const ref = useRef();
-  useEffect(() => {
-    
-    let array = [ ...ref?.current?.childNodes ];
-    let finalString = '';
-
-    if (array) {
-      array.map((element) => {
-        let elText;
-
-        // find the raw text of all elements - incl selected option
-        if (element.innerText === '') {
-           elText = ` ${element?.selectedOptions?.[0]?.innerText} `;
-        } else {
-          elText = element.innerText
-        }
-				finalString = finalString.concat(elText);
-
-      })
-    }
-
-
-
-    if(finalString !== ''){
-      const raw = finalString;
-      const fileName = finalString.replace(/([ ]|[?])/g, "");
-      const uriFriendly =  encodeURIComponent(fileName)
-      props?.context?.questionRef?.current = {
-        raw: raw,
-        fileName: fileName,
-        uriFriendly:  uriFriendly
-      };
-    }else{
-      props?.context?.questionRef?.current = finalString;
-
-    }
-   
-    
-  }, [props])
-  
 
   return (
-    <div ref={ref} className={`w-[min-content] flex flex-wrap flex-row gap-5  row items-center justify-center ${options?.customClass} ${options?.containerMargin} ${options?.textAlign}`}>
+    <div  className={`w-[min-content] flex flex-wrap flex-row gap-5  row items-center justify-center ${options?.customClass} ${options?.containerMargin} ${options?.textAlign}`}>
        <PortableText
         value={blocks}
         components={{

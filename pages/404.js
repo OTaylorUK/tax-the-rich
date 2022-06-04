@@ -3,9 +3,7 @@ import client from '../client'
 import  {getFooter,getSEO, getNav, getPalette, getRoutes, getPageContent} from '../utils/globalGroq';
 
 import  {formatGlobalSettings} from '../utils/globalFunc';
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-
+import PageSections from '../components/PageSections'
 
 
 export async function getStaticProps(context) {
@@ -42,23 +40,37 @@ export async function getStaticProps(context) {
 }
 
 
+
 const NotFound = (props) => {
+	const { globalData, pageData, variable } = props;
+	const pageContent = pageData?.find(({ name }) => name === 'pageContent')
 
-	const router = useRouter();
-
-	// useEffect(() => {
-	// 	setTimeout(() => {
-	// 		router.push('/');
-	// 	}, 3000);
-	// }, [])
-	
+	const pageSections = pageContent.value?.[0]
 	return (
-		<div className="not-found">
-			<h1>Oooops...</h1>
-			<h2>That page cannot be found.</h2>
-			<p>Go back to the <Link href="/"><a>Homepage</a></Link></p>
-		</div>
+		<>
+			<PageSections content={pageSections} variableData={variable}/>
+		</>
 	);
 }
+
+// const NotFound = (props) => {
+
+// 	console.log({props});
+// 	const router = useRouter();
+
+// 	// useEffect(() => {
+// 	// 	setTimeout(() => {
+// 	// 		router.push('/');
+// 	// 	}, 3000);
+// 	// }, [])
+	
+// 	return (
+// 		<div className="not-found">
+// 			<h1>Oooops...</h1>
+// 			<h2>That page cannot be found.</h2>
+// 			<p>Go back to the <Link href="/"><a>Homepage</a></Link></p>
+// 		</div>
+// 	);
+// }
  
 export default NotFound;

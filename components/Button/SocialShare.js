@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import  {findAndReplaceHolder, formatSocialChannelQuery} from '../../utils/globalFunc';
 import Button from "./Default";
 import { useRouter } from "next/router";
-const SocialShare = ({content, context}) => {
+const SocialShare = ({content, context = null}) => {
 
 
 	const [scaled, setScaled] = useState(false);
@@ -18,8 +18,10 @@ const SocialShare = ({content, context}) => {
 	// const test = useRef(null);
 	const router = useRouter();
 
+
+	console.log({context});
 	// opens the social buttons
-	if(context === undefined){
+	if(!context){
 		const buttonFunction = () => {
 			setScaled(!scaled)
 		}

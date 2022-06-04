@@ -26,6 +26,7 @@ const Navbar = ({ content = null, scroll }) => {
 	//   }, [])
 
 
+	console.log({menuOpen});
 	useEffect(() => {
 		if (scroll !== 'noScroll') {
 			updateNavShadow('shadow-md')

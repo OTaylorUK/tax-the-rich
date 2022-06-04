@@ -44,6 +44,25 @@ const Visualiser = ({
 		}
 	});
 
+	const [curQuestion, setCurQuestion] = useState(null);
+
+
+	const formatQuestion = (question = null, numOfUnits = null) => {
+
+		console.log({numOfUnits});
+		if(question){
+			const raw = `${question.amount} could pay for ${numOfUnits.display} ${question.item} `
+
+			const fileName = raw.replace(/([ ]|[?])/g, "");
+			const uriFriendly =  encodeURIComponent(fileName)
+			const finalQuestion = {
+				raw: raw,
+				fileName: fileName,
+				uriFriendly:  uriFriendly
+			};
+			setCurQuestion(finalQuestion)
+		}
+	}
 	const [ url, setUrl ] = useState(null);
 
 
@@ -186,6 +205,13 @@ const Visualiser = ({
 			setSelectedItem(selectedItem)
 
 			setVisualSettings(results)
+
+			formatQuestion({
+				'item': selectedItem.pluralName,
+				'amount': selectedAmount.displayValue
+			}, results.numOfUnits)
+
+			
 			setReplaceYou(replaceYou)
 
 		}
@@ -220,6 +246,8 @@ const Visualiser = ({
 	
 
 	
+	// const [setQuestions, setQuestions] = 
+
 
 	/**
 	 * on user selection change
@@ -233,6 +261,14 @@ const Visualiser = ({
 		if(isUpdating){
 			const results = calcUnitsPerAmount(item, amount)
 			setVisualSettings(results)
+			// setCurQuestion(results)
+
+			formatQuestion({
+				'item': item.pluralName,
+				'amount': amount.displayValue
+			}, results.numOfUnits)
+			
+			console.log({results});
 			if (typeof window !== 'undefined') {
 				const href = window.location.href;
 		
@@ -257,15 +293,12 @@ const Visualiser = ({
 		
 	}
 
+	console.log({questionRef});
 
 	// download button
 	const downloadButtonClick = useCallback(() => {
 
 		if (resultsRef.current === null) {
-			  return null
-		}
-		  
-		if (questionRef.current === null) {
 			  return null
 		}
 
@@ -278,7 +311,7 @@ const Visualiser = ({
 			.then((dataUrl) => {
 			  
 			  const link = document.createElement('a')
-			  link.download = `${questionRef?.current?.fileName}.png`
+			  link.download = `${curQuestion?.fileName}.png`
 			  link.href = dataUrl
 			  
 			  link.click()
@@ -286,12 +319,12 @@ const Visualiser = ({
 		  .catch((err) => {
 			console.error(err)
 		  })
-	}, [resultsRef])
+	}, [resultsRef, curQuestion])
 
 	const buttonFunction = () => {
 		downloadButtonClick()
 	}
-	const btnContent = {
+	const btnContext = {
 		buttonFunction
 	}
 
@@ -328,7 +361,9 @@ const Visualiser = ({
 					<div className="w-full h-full ">
 						<article className="relative -top-24 wrap flex flex-row flex-wrap justify-center items-center gap-5">
 
-						<Buttons  buttons={buttons}  />
+						<Buttons  buttons={buttons} context={{
+							'download': btnContext
+						}}  />
 						</article>
 					</div>
 				</Body>
