@@ -6,6 +6,7 @@ import { motion,useCycle } from "framer-motion";
 import { MenuToggle } from "./MenuToggle";
 import { useResizeDetector } from 'react-resize-detector';
 
+import {Button} from '../components/Button'
 
 const Navbar = ({ content = null, scroll }) => {
 	if (!content || content === null || !content.hasOwnProperty('value')) return null
@@ -17,9 +18,8 @@ const Navbar = ({ content = null, scroll }) => {
 
 	let navPos = 'top-[0]'
 	const [navShadow, updateNavShadow] = useState('');
-	// const [menuOpen, setMenuOpen] = useState(false)
-	const [menuOpen, setMenuOpen] = useCycle(false, true);
-
+	const [menuIsOpen, setMenuIsOpen] = useState(false)
+	const [menuOpen, setMenuOpen] = useCycle( "closed","open");
 
 	// useEffect(() => {
 	// 	setMenuOpen(false)
@@ -71,6 +71,7 @@ const Navbar = ({ content = null, scroll }) => {
 	// Triggered on resize - just update sizes of boxes
 	const onResize = useCallback(() => {
 		if (window === undefined) return
+		// setMenuOpen(false)
 
 		if(window){
 			const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
@@ -80,6 +81,7 @@ const Navbar = ({ content = null, scroll }) => {
 					closed: { opacity: 0, x: "100%" },
 				})
 			}
+
 		}
 	}, []);
 
@@ -87,7 +89,6 @@ const Navbar = ({ content = null, scroll }) => {
 	const { ref } = useResizeDetector({onResize});
 
 
-	
 
 	
 
@@ -98,11 +99,12 @@ const Navbar = ({ content = null, scroll }) => {
 				<div ref={ref} className={` absolute left-0 w-full h-full bg-custom-primary -z-20`}></div>
 
 				<div className="logo flex-1 flex items-start justify-start z-2 ">
-					<PortableButton content={logo}/>
+					<Button  content={logo} context={btnContent}  />
+
 				</div>
 
 				<motion.div
-				animate={menuOpen ? "open" : "closed"}
+				animate={menuOpen}
 				variants={boxVariants}
 				className={` md:top-auto -z-30 md:z-10 h-[100vh] md:h-auto absolute md:relative  w-[70vw] md:w-full  flex justify-center items-start top-0 right-0`}
 				>

@@ -4,7 +4,7 @@ import { toPng } from 'html-to-image';
 import {Dynamic, Default} from "../../PortableContent";
 import { useEffect, useState } from 'react';
 import {Results, Icons, Source, Keys} from "../../Visualise";
-import {Buttons} from '../../Button'
+import {Buttons,Button} from '../../Button'
 import { useRouter } from "next/router";
 import { formatNumberToLocal, calcUnitsPerAmount } from '../../../utils/globalFunc';
 
@@ -298,6 +298,7 @@ const Visualiser = ({
 	// download button
 	const downloadButtonClick = useCallback(() => {
 
+		console.log('clicked download');
 		if (resultsRef.current === null) {
 			  return null
 		}
@@ -328,7 +329,7 @@ const Visualiser = ({
 		buttonFunction
 	}
 
-
+	console.log({buttons});
 
 	return (
 		<>
@@ -361,9 +362,13 @@ const Visualiser = ({
 					<div className="w-full h-full ">
 						<article className="relative -top-24 wrap flex flex-row flex-wrap justify-center items-center gap-5">
 
+						<Button  content={buttons[0]} context={btnContext}  />
+						<Button  content={buttons[1]} context={btnContext}  />
+{/* 
 						<Buttons  buttons={buttons} context={{
-							'download': btnContext
-						}}  />
+							'download': btnContext,
+							'trigger': null
+						}}  /> */}
 						</article>
 					</div>
 				</Body>

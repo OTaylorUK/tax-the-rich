@@ -19,7 +19,6 @@ const SocialShare = ({content, context = null}) => {
 	const router = useRouter();
 
 
-	console.log({context});
 	// opens the social buttons
 	if(!context){
 		const buttonFunction = () => {
@@ -28,6 +27,21 @@ const SocialShare = ({content, context = null}) => {
 		context = {
 			buttonFunction
 		}
+	}else{
+		console.log('context?.downloadButtonClick?.buttonFunction',context);
+
+		const buttonFunction = () => {
+
+			if(context?.downloadButtonClick?.buttonFunction !== undefined){
+				context?.download?.buttonFunction()
+			}
+			setScaled(!scaled)
+
+		}
+		context = {
+			buttonFunction
+		}
+
 	}
 
 
