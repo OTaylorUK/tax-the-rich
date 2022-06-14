@@ -161,7 +161,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 
 
 			const actualSize = (baseInc * base?.size)
-			const currentBoxMaxWidth = base?.maxWidth * (i + 1)
+			const currentBoxMaxWidth = (base.size * (i + 1) )
 
 
 
@@ -174,25 +174,55 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 				}
 			}
 
+			
 			let boxHeight = Number(base.size);
 			let boxWidth = Number(base.size);
 			let differenceToAdd;
 
-			if(displayType === 'y'){
-				// has max width
-				boxWidth *= baseInc
-				differenceToAdd = Number(findDifference(boxWidth, currentBoxMaxWidth))
-				boxWidth = boxWidth - differenceToAdd
-				boxHeight += differenceToAdd
 
-				// makes the box nearer a square
-				if(differenceToAdd === 0){
-					let area = boxWidth * boxHeight
-					let sqrt = Math.sqrt(area).toFixed(0)
-					boxWidth =sqrt
-					boxHeight = sqrt
+			let curBoxArea = Number(base.area) * baseInc
+			let sqrt = Number(Math.sqrt(curBoxArea).toFixed(0))
+
+			console.log({curMax: base.size * (i + 1)});
+			if(displayType === 'y'){
+				boxHeight = sqrt
+				boxWidth = sqrt
+
+				if(sqrt > currentBoxMaxWidth){
+					differenceToAdd = Number(findDifference(sqrt, currentBoxMaxWidth))
+
+					console.log({differenceToAdd});
+					boxWidth = boxWidth - differenceToAdd
+					boxHeight += differenceToAdd
 				}
+
+				// console.log({sqrt, size: base.size});
+
 			}
+
+				
+			// if(displayType === 'y'){
+			// 	// has max width
+			// 	boxWidth *= baseInc
+			// 	differenceToAdd = Number(findDifference(boxWidth, currentBoxMaxWidth))
+			// 	boxWidth = boxWidth - differenceToAdd
+			// 	boxHeight += differenceToAdd
+
+			// 	console.log({
+			// 		currentBoxMaxWidth: currentBoxMaxWidth,
+			// 		differenceToAdd: differenceToAdd,
+			// 		boxWidth: boxWidth,
+			// 		boxHeight: boxHeight,
+			// 	});
+
+			// 	// makes the box nearer a square
+			// 	if(differenceToAdd === 0){
+			// 		let area = boxWidth * boxHeight
+			// 		let sqrt = Math.sqrt(area).toFixed(0)
+			// 		boxWidth =sqrt
+			// 		boxHeight = sqrt
+			// 	}
+			// }
 			maxHeight = boxHeight;
 			// // will scroll horizontally
 			// if(displayType === 'x'){
@@ -230,16 +260,19 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 		const formatAmounts = () => {
 			let keys = [], boxes = [], maxHeight, heightDiff, widthDiff, curIter = 0;
 
-			const width = containerWidth;
-			// const height = elHeight;
 			
+			const startSize = Number((containerWidth / amounts.length).toFixed(0))
+
 			const base = {
-				size:  10, //px
+				size:  startSize, //px
+				area : startSize * startSize,
 				value: amounts?.[0]?.actualValue,
-				maxWidth: width / amounts.length,
+				// maxWidth: startSize,
+				containerWidth: containerWidth,
 				// change the increment rate of the colours so that each box is visually distinct when possible 
 				incrementBy: Math.floor(colourArray.current.length / amounts.length )
 			}
+			console.log({baseHEREL: base});
 
 		
 			// loop over the set money amounts to create keys and update/add values
