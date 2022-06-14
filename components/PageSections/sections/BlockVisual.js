@@ -158,33 +158,66 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 			// calculate the new height/width of element 
 			const baseInc = (amount?.actualValue / base?.value)
 
+
+
 			const actualSize = (baseInc * base?.size)
 			const currentBoxMaxWidth = base?.maxWidth * (i + 1)
 
-			let boxHeight = actualSize;
-			let boxWidth = actualSize;
-			
-			// will scroll horizontally
-			if(displayType === 'x'){
-				// is bigger than the max height then add the difference to the width
-				if(actualSize > elHeight){
-					heightDiff = actualSize - elHeight
-					widthDiff = actualSize - boxWidth
-					boxHeight = elHeight // set to the max height possible
-					boxWidth = boxWidth + heightDiff
-				}
 
-			}else{
-				// is bigger than the max width of current box then add the difference to the height
-				if(actualSize > currentBoxMaxWidth){
-					widthDiff = actualSize - currentBoxMaxWidth
-					heightDiff = actualSize - boxHeight
-					boxWidth = currentBoxMaxWidth // set to the max width possible
-					boxHeight = boxHeight + widthDiff
-				}
 
-				maxHeight = boxHeight;
+			const findDifference = (val1, val2, toFixed = 0) =>{
+				let dif = val1 - val2
+				if(dif > 0){
+					return Number(dif).toFixed(toFixed)
+				}else{
+					return 0
+				}
 			}
+
+			let boxHeight = Number(base.size);
+			let boxWidth = Number(base.size);
+			let differenceToAdd;
+
+			if(displayType === 'y'){
+				// has max width
+				boxWidth *= baseInc
+				differenceToAdd = Number(findDifference(boxWidth, currentBoxMaxWidth))
+				boxWidth = boxWidth - differenceToAdd
+				boxHeight += differenceToAdd
+
+				// makes the box nearer a square
+				if(differenceToAdd === 0){
+					let area = boxWidth * boxHeight
+					let sqrt = Math.sqrt(area).toFixed(0)
+					boxWidth =sqrt
+					boxHeight = sqrt
+				}
+			}
+			maxHeight = boxHeight;
+			// // will scroll horizontally
+			// if(displayType === 'x'){
+			// 	// is bigger than the max height then add the difference to the width
+			// 	if(actualSize > elHeight){
+			// 		heightDiff = actualSize - elHeight
+			// 		widthDiff = actualSize - boxWidth
+			// 		boxHeight = elHeight // set to the max height possible
+			// 		boxWidth = boxWidth + heightDiff
+			// 	}
+
+			// }
+			// else{
+			// 	// is bigger than the max width of current box then add the difference to the height
+			// 	if(actualSize > currentBoxMaxWidth){
+			// 		widthDiff = actualSize - currentBoxMaxWidth
+			// 		heightDiff = actualSize - boxHeight
+			// 		boxWidth = currentBoxMaxWidth // set to the max width possible
+			// 		boxHeight = boxHeight + widthDiff
+			// 	}
+			// 	// else{
+			// 	// 	boxHeight = base?.size
+			// 	// }
+			// 	maxHeight = boxHeight;
+			// }
 
 			return {
 				width: boxWidth,
