@@ -5,7 +5,7 @@ function DropDown(prop) {
   const { value } = prop
   const { listItems, context } = value
 
-  const classList = 'cursor-pointer bg-white bg-opacity-0 hover:bg-opacity-5 flex-1 basis-full font-gaegu font-bold text-base sm:text-xl md:text-3xl text-custom-accent p-1    text-center    ';
+  const classList = 'appearance-none border-custom-accent border p-2 cursor-pointer bg-white bg-opacity-0 hover:bg-opacity-5 flex-1 basis-full font-gaegu font-bold text-base sm:text-xl md:text-3xl text-custom-accent p-1    text-center    ';
 
 
   const [data, setData] = useState(null);

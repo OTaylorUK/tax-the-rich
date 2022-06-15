@@ -90,6 +90,26 @@ function Default(props) {
             buttons: Buttons,
             
           },
+          marks: {
+            internalLink: ({value, children}) => {
+              // log
+              const url = value.slug.current ? value.slug.current : '/'
+              return (
+              <a href={url} target="_self" 
+              >
+                {children}
+              </a>
+              )
+            },	
+            link: ({children, value}) => {
+              const rel = !value.href.startsWith('/') ? 'noreferrer noopener' : undefined
+              return (
+              <a href={value.href} target="_blank" rel={rel}>
+                {children}
+              </a>
+              )
+            },
+          },
           block: {
             // Ex. 1: customizing common block types
             h1: ({ children }) => {

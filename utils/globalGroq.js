@@ -139,7 +139,14 @@ export const getPageContent = (slug = '404') => {
       },
 
       textContent[] {
-        ${buttonGroq}
+        ...,
+        ${buttonGroq},
+        markDefs[]{
+          ...,
+          _type == "internalLink" => {
+            "slug": @->slug,
+          }
+        }
       },
       buttons[]{
         ${buttonGroq}

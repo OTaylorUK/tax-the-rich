@@ -63,7 +63,7 @@ const Icons = ({ data }) => {
 
 	return (
 		<div className="relative  w-full flex flex-row flex-wrap justify-center items-center" data-total-num={data?.numOfUnits?.raw}>
-			<span className='tracking-[.5em] text-sm text-center ' style={{lineHeight: 'calc(100% + .8em)'}}>{test}</span>
+			<span className='max-w-full tracking-[.5em] text-sm text-center ' style={{lineHeight: 'calc(100% + .8em)'}}>{test}</span>
 			
 		</div>
 	);
