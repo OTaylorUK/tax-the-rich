@@ -151,114 +151,22 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 			return null
 		}
 
-		const calculateSizes = (amount, base, i) => {
 
-			let maxHeight,widthDiff,heightDiff;
-
-			// calculate the new height/width of element 
-			const baseInc = (amount?.actualValue / base?.value)
-
-
-
-			const actualSize = (baseInc * base?.size)
-			const currentBoxMaxWidth = (base.size * (i + 1) )
-
-
-
-			const findDifference = (val1, val2, toFixed = 0) =>{
-				let dif = val1 - val2
-				if(dif > 0){
-					return Number(dif).toFixed(toFixed)
-				}else{
-					return 0
-				}
-			}
-
-			
-			let boxHeight = Number(base.size);
-			let boxWidth = Number(base.size);
-			let differenceToAdd;
-
-
-			let curBoxArea = Number(base.area) * baseInc
-			let sqrt = Number(Math.sqrt(curBoxArea).toFixed(0))
-
-			console.log({curMax: base.size * (i + 1)});
-			if(displayType === 'y'){
-				boxHeight = sqrt
-				boxWidth = sqrt
-
-				if(sqrt > currentBoxMaxWidth){
-					differenceToAdd = Number(findDifference(sqrt, currentBoxMaxWidth))
-
-					console.log({differenceToAdd});
-					boxWidth = boxWidth - differenceToAdd
-					boxHeight += differenceToAdd
-				}
-
-				// console.log({sqrt, size: base.size});
-
-			}
-
-				
-			// if(displayType === 'y'){
-			// 	// has max width
-			// 	boxWidth *= baseInc
-			// 	differenceToAdd = Number(findDifference(boxWidth, currentBoxMaxWidth))
-			// 	boxWidth = boxWidth - differenceToAdd
-			// 	boxHeight += differenceToAdd
-
-			// 	console.log({
-			// 		currentBoxMaxWidth: currentBoxMaxWidth,
-			// 		differenceToAdd: differenceToAdd,
-			// 		boxWidth: boxWidth,
-			// 		boxHeight: boxHeight,
-			// 	});
-
-			// 	// makes the box nearer a square
-			// 	if(differenceToAdd === 0){
-			// 		let area = boxWidth * boxHeight
-			// 		let sqrt = Math.sqrt(area).toFixed(0)
-			// 		boxWidth =sqrt
-			// 		boxHeight = sqrt
-			// 	}
-			// }
-			maxHeight = boxHeight;
-			// // will scroll horizontally
-			// if(displayType === 'x'){
-			// 	// is bigger than the max height then add the difference to the width
-			// 	if(actualSize > elHeight){
-			// 		heightDiff = actualSize - elHeight
-			// 		widthDiff = actualSize - boxWidth
-			// 		boxHeight = elHeight // set to the max height possible
-			// 		boxWidth = boxWidth + heightDiff
-			// 	}
-
-			// }
-			// else{
-			// 	// is bigger than the max width of current box then add the difference to the height
-			// 	if(actualSize > currentBoxMaxWidth){
-			// 		widthDiff = actualSize - currentBoxMaxWidth
-			// 		heightDiff = actualSize - boxHeight
-			// 		boxWidth = currentBoxMaxWidth // set to the max width possible
-			// 		boxHeight = boxHeight + widthDiff
-			// 	}
-			// 	// else{
-			// 	// 	boxHeight = base?.size
-			// 	// }
-			// 	maxHeight = boxHeight;
-			// }
-
+		const calcBoxSize = (amount, base, i) => {
+			// e.g. 10x²/2x = 5x = 1,250 pixels
+			const baseMultiplier = (amount?.actualValue / base?.value)
+			const area = baseMultiplier * base.basePower
+			const boxWidth = i * base.size
+			const boxHeight = area / boxWidth
 			return {
 				width: boxWidth,
 				height: boxHeight,
-				newMaxHeight: maxHeight,
 			}
-
 		}
 
+
 		const formatAmounts = () => {
-			let keys = [], boxes = [], maxHeight, heightDiff, widthDiff, curIter = 0;
+			let keys = [], boxes = [],  heightDiff, widthDiff, curIter = 0;
 
 			
 			const startSize = Number((containerWidth / amounts.length).toFixed(0))
@@ -267,13 +175,10 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 				size:  startSize, //px
 				area : startSize * startSize,
 				value: amounts?.[0]?.actualValue,
-				// maxWidth: startSize,
+				basePower: Math.pow(startSize, 2),
 				containerWidth: containerWidth,
-				// change the increment rate of the colours so that each box is visually distinct when possible 
 				incrementBy: Math.floor(colourArray.current.length / amounts.length )
 			}
-			console.log({baseHEREL: base});
-
 		
 			// loop over the set money amounts to create keys and update/add values
 			amounts?.map((amount, i) => {
@@ -281,8 +186,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 				// dynamically selected colour - depends on the number of values to show
 				const selectedColourObj = colourArray.current[curIter];
 
-				const {width, height, newMaxHeight} = calculateSizes(amount,base, i)
-				maxHeight = newMaxHeight
+				const {width, height} =calcBoxSize(amount,base, (i + 1))
 
 				const displayBox = {
 					id: `box-${i}`,
@@ -312,6 +216,9 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 
 				curIter += base?.incrementBy
 			})
+
+			const maxHeight = Math.max.apply(null,boxes.map(function(o) { return o.height; }));
+
 
 			return {
 				keys,
