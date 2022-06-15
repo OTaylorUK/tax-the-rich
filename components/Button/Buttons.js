@@ -41,7 +41,6 @@ const Buttons = ({buttons = null, value = null, context = null}) => {
 
 				let finalContext = JSON.parse(JSON.stringify(context));
 
-				console.log({finalContext});
 				return (
 					<Button key={`btn-${index}`} content={button} context={finalContext}  />
 				)

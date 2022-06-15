@@ -28,7 +28,6 @@ const SocialShare = ({content, context = null}) => {
 			buttonFunction
 		}
 	}else{
-		console.log('context?.downloadButtonClick?.buttonFunction',context);
 
 		const buttonFunction = () => {
 

@@ -31,12 +31,6 @@ const Navbar = ({ content = null, scroll }) => {
 	const [menuIsOpen, setMenuIsOpen] = useState(false)
 	// const [menuOpen, setMenuOpen] = useCycle( "closed","open");
 
-	// useEffect(() => {
-	// 	setMenuOpen(false)
-	//   }, [])
-
-
-	console.log({menuIsOpen});
 	useEffect(() => {
 		if (scroll !== 'noScroll') {
 			updateNavShadow('shadow-md')
@@ -105,9 +99,6 @@ const Navbar = ({ content = null, scroll }) => {
 
 	const { ref } = useResizeDetector({onResize});
 
-console.log({isMobile});
-
-	
 
 	return (
 		<nav ref={ref} className={`  site-nav fixed  w-full   flex flex-row items-center z-50 h-20 ${navPos} transition-[top] duration-300 ${navShadow}`}>

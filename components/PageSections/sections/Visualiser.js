@@ -49,7 +49,6 @@ const Visualiser = ({
 
 	const formatQuestion = (question = null, numOfUnits = null) => {
 
-		console.log({numOfUnits});
 		if(question){
 			const raw = `${question.amount} could pay for ${numOfUnits.display} ${question.item} `
 
@@ -268,7 +267,6 @@ const Visualiser = ({
 				'amount': amount.displayValue
 			}, results.numOfUnits)
 			
-			console.log({results});
 			if (typeof window !== 'undefined') {
 				const href = window.location.href;
 		
@@ -293,12 +291,9 @@ const Visualiser = ({
 		
 	}
 
-	console.log({questionRef});
-
 	// download button
 	const downloadButtonClick = useCallback(() => {
 
-		console.log('clicked download');
 		if (resultsRef.current === null) {
 			  return null
 		}
@@ -329,7 +324,6 @@ const Visualiser = ({
 		buttonFunction
 	}
 
-	console.log({buttons});
 
 	return (
 		<>

@@ -8,8 +8,6 @@ import {PortableText} from '@portabletext/react'
 const myPortableTextComponents = {
 	marks: {
 		internalLink: ({value, children}) => {
-        console.log("🚀 ~ file: Footer.js ~ line 11 ~ value", value)
-
 			// log
 			const url = value.slug.current ? value.slug.current : '/'
 			return (
@@ -39,8 +37,6 @@ const Footer = ({ content = null, scroll }) => {
 	const data = content.value[0]
 
 	const {middle, credit} = data;
-    console.log("🚀 ~ file: Footer.js ~ line 15 ~ Footer ~ data", data)
-
 
 	return (
 		<footer className={`site-footer w-full z-50`}>

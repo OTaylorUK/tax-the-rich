@@ -15,10 +15,7 @@ const Quote = (props) => {
 	useEffect(()=> {
 		if(findReplace){
 			const richestPerson = componentContext?.richList?.[0]
-
 			const perDay = formatNumberToLocal(richestPerson.wealth.actualValue / 365)
-	
-			console.log({richestPerson});
 			setFindReplaceVals({
 				'richestPerson' : richestPerson.personName,
 				'richestPersonWealth' : richestPerson.wealth.displayValue,

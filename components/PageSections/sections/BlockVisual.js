@@ -329,8 +329,6 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 				<div className="w-full h-full ">
 					<article className="relative -top-10 wrap flex flex-row flex-wrap justify-center items-center gap-5">
 						{buttons?.map((button, i) => {
-
-							console.log(button);
 							return (
 								<PortableButton key={`btn-${i}`} content={button} context={btnContent}/>
 							)

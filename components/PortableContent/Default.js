@@ -32,7 +32,6 @@ function Default(props) {
     }
     if (findReplace !== null) {
 
-      console.log({findReplace});
       content?.children?.map((child, index) => {
         let ogText;
 
