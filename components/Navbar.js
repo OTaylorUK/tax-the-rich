@@ -80,7 +80,7 @@ const Navbar = ({ content = null, scroll }) => {
 		// setMenuOpen(false)
 
 		if(window){
-
+			setMenuIsOpen(false)
 			if(window.innerWidth < 768){
 				setIsMobile(true)
 			}else{
