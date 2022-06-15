@@ -8,6 +8,16 @@ import { useResizeDetector } from 'react-resize-detector';
 
 import {Button} from '../components/Button'
 
+
+
+
+const variants = {
+	open: { opacity: 1, x: 0 },
+	closed: { opacity: 0, x: "100%" },
+}
+
+
+
 const Navbar = ({ content = null, scroll }) => {
 	if (!content || content === null || !content.hasOwnProperty('value')) return null
 	
@@ -19,14 +29,14 @@ const Navbar = ({ content = null, scroll }) => {
 	let navPos = 'top-[0]'
 	const [navShadow, updateNavShadow] = useState('');
 	const [menuIsOpen, setMenuIsOpen] = useState(false)
-	const [menuOpen, setMenuOpen] = useCycle( "closed","open");
+	// const [menuOpen, setMenuOpen] = useCycle( "closed","open");
 
 	// useEffect(() => {
 	// 	setMenuOpen(false)
 	//   }, [])
 
 
-	console.log({menuOpen});
+	console.log({menuIsOpen});
 	useEffect(() => {
 		if (scroll !== 'noScroll') {
 			updateNavShadow('shadow-md')
@@ -59,36 +69,43 @@ const Navbar = ({ content = null, scroll }) => {
 	}
 
 	const buttonFunction = () => {
-		setMenuOpen(!menuOpen)
+		setMenuIsOpen(!menuIsOpen)
 	}
 
 	const btnContent = {
 		buttonFunction
 	}
 
-	const [boxVariants, setBoxVariants] = useState({})
+	// const [boxVariants, setBoxVariants] = useState({})
 
-	// Triggered on resize - just update sizes of boxes
+	const [isMobile, setIsMobile] = useState(false);
+
+	// // Triggered on resize - just update sizes of boxes
 	const onResize = useCallback(() => {
 		if (window === undefined) return
 		// setMenuOpen(false)
 
 		if(window){
-			const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
-			if (isMobile) {
-				setBoxVariants({
-					open: { opacity: 1, x: 0 },
-					closed: { opacity: 0, x: "100%" },
-				})
+
+			if(window.innerWidth < 768){
+				setIsMobile(true)
+			}else{
+				setIsMobile(false)
 			}
+			// const isMobile = window.innerWidth < 768; //Add the width you want to check for here (now 768px)
+			// if (isMobile) {
+			// 	setBoxVariants({
+			// 		open: { opacity: 1, x: 0 },
+			// 		closed: { opacity: 0, x: "100%" },
+			// 	})
+			// }
 
 		}
 	}, []);
 
-	// dynamically update the width and height on resize
 	const { ref } = useResizeDetector({onResize});
 
-
+console.log({isMobile});
 
 	
 
@@ -96,22 +113,22 @@ const Navbar = ({ content = null, scroll }) => {
 		<nav ref={ref} className={`  site-nav fixed  w-full   flex flex-row items-center z-50 h-20 ${navPos} transition-[top] duration-300 ${navShadow}`}>
 
 			<div className={`px-10 z-0  py-5 overflow-hidden  container max-w-screen-xl m-auto   flex flex-row items-center   h-full ${navPos} transition-[top] duration-300 `}>
-				<div ref={ref} className={` absolute left-0 w-full h-full bg-custom-primary -z-20`}></div>
+				<div className={` absolute left-0 w-full h-full bg-custom-primary -z-20`}></div>
 
 				<div className="logo flex-1 flex items-start justify-start z-2 ">
 					<Button  content={logo} context={btnContent}  />
-
 				</div>
 
 				<motion.div
-				animate={menuOpen}
-				variants={boxVariants}
+				initial={isMobile ? {opacity: 0, x: "100%" } : {}}
+				animate={menuIsOpen ? "open" : "closed"}
+				variants={isMobile ? variants : {}}
 				className={` md:top-auto -z-30 md:z-10 h-[100vh] md:h-auto absolute md:relative  w-[70vw] md:w-full  flex justify-center items-start top-0 right-0`}
 				>
 					<Menu className={``} content={menu} context={btnContent} />
 				</motion.div>
 
-				<MenuToggle menuOpen={menuOpen} toggle={() => setMenuOpen()} />
+				<MenuToggle menuOpen={menuIsOpen} toggle={() => setMenuIsOpen(prevState => !prevState)} />
 
 			</div>
 		

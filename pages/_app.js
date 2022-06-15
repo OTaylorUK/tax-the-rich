@@ -4,6 +4,8 @@ import '../styles/global.css'
 
 import Head from "next/head";
 import { ThemeProvider } from '../context/theme'; 
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const MyApp = (props) => {
   const { Component, pageProps } = {...props};
@@ -30,6 +32,22 @@ const MyApp = (props) => {
     'homepage': globalSEO?.url ? globalSEO?.url : '',
     'url': PageSEO?.url ? PageSEO?.url : '',
   }
+
+
+  const router = useRouter();
+
+
+  useEffect(function sendGoatCounterEventsOnRoute() {
+    const handleRouteChange = (path) => {
+      window?.goatcounter?.count?.({
+        path,
+      })
+    }
+    router.events.on('routeChangeComplete', handleRouteChange)
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange)
+    }
+  }, [router.events])
 
  
 
@@ -72,9 +90,23 @@ const MyApp = (props) => {
           />
           
         </Head>
+        
         <Component {...pageProps} />
         <ColourPalette palette={palette} />
+
+        <script 
+          async
+          data-goatcounter="https://tax-the-rich.goatcounter.com/count" 
+          src="//gc.zgo.at/count.js"
+          data-goatcounter-settings='{"no_onload": true}'
+          strategy='afterInteractive'
+        ></script>
+
+
+
       </Layout>
+
+        
     </ThemeProvider>
   )
 }

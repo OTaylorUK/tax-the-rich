@@ -7,7 +7,7 @@ export default {
    
     {
       name: 'middle',
-      title: 'Middle',
+      title: 'Fixed',
       type: 'object',
       fields: [
         {name: 'text', type: 'string', title: 'Text'},
@@ -16,6 +16,15 @@ export default {
           of: [{ title: 'Social Channel', type: 'reference',
           to: [{ type: 'socialMedia' }], }]
         },
+      ],
+    },
+    {
+      name: 'credit',
+      title: 'Credit',
+      type: 'object',
+      fields: [
+        {name: 'text', type: 'portableText', title: 'text'},
+        // {name: 'hostedOn', type: 'portableButton', title: 'hostedOn'},
       ],
     },
   ],

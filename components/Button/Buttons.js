@@ -1,5 +1,25 @@
 import Button from "./Default";
 
+
+import { motion } from "framer-motion";
+
+
+const cardVariants = {
+	offscreen: {
+	  opacity: 0
+	},
+	onscreen: {
+		opacity: 1, 
+		transition: {
+			type: "spring",
+			bounce: 0.4,
+			duration: 1.2,
+			delay: 3,
+		}
+	}
+  };
+
+
 const Buttons = ({buttons = null, value = null, context = null}) => {
 
 	let buttonArr = buttons;
@@ -9,7 +29,14 @@ const Buttons = ({buttons = null, value = null, context = null}) => {
 	}
 
 	return (
-		<div className={` flex flex-row justify-center items-center relative flex-wrap gap-6`}>
+
+		<motion.div
+        className={` flex flex-row justify-center items-center relative flex-wrap gap-6`}
+        initial="offscreen"
+        whileInView="onscreen"
+		variants={cardVariants}
+        viewport={{ once: true, amount: 0.8 }}
+      >
 			{buttonArr?.map((button, index) => {
 
 				let finalContext = JSON.parse(JSON.stringify(context));
@@ -20,7 +47,7 @@ const Buttons = ({buttons = null, value = null, context = null}) => {
 				)
 			})} 
 				
-		</div>
+		</motion.div>
 	)
 
 }

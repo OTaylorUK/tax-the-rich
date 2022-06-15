@@ -3,6 +3,25 @@ import { useEffect, useState, useRef } from 'react'
 import { forwardRef } from 'react'
 import { motion, useAnimation } from "framer-motion";
 import { useInView } from "react-intersection-observer";
+
+
+
+const cardVariants = {
+	offscreen: {
+	  y: 300
+	},
+	onscreen: {
+	  y: 0,
+	  // rotate: -10,
+	  transition: {
+		type: "spring",
+		bounce: 0.4,
+		duration: 0.8
+	  }
+	}
+  };
+
+
 const Container = forwardRef((props, ref) => {
 
 	const { additionalClass = '', children } = props
@@ -21,7 +40,7 @@ const Container = forwardRef((props, ref) => {
 
 	useEffect(() => {
 		if (inView) {
-		  control.start("visible");
+		  control.start("onscreen");
 		} 
 		// else {
 		// 	control.start("hidden");
@@ -32,11 +51,11 @@ const Container = forwardRef((props, ref) => {
 
 		<motion.div  
 			// transition={{ delay: 2 }}
-			variants={boxVariant}
-			initial="hidden"
+			variants={cardVariants}
+			initial="offscreen"
 			animate={control}
 			ref={wrapRef} 
-			className="layout-container container px-4 md:px-12 flex flex-col justify-center items-center "
+			className={`layout-container container px-4 md:px-12 flex flex-col justify-center items-center ${additionalClass}`}
 			// style={{scrollMarginTop: '-600px'}}
 		>
 			<div 

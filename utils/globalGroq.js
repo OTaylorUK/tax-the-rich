@@ -45,6 +45,18 @@ _type == 'buttons' => {
 export const getFooter = `
 *[_type in ["siteFooter"]]
 {_type,
+  credit{
+    ...,
+    text[] {
+      ...,
+      markDefs[]{
+        ...,
+        _type == "internalLink" => {
+          "slug": @->slug,
+        }
+      }
+    },
+  },
   middle{
     button{
       ${buttonGroq}

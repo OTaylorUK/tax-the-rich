@@ -97,10 +97,10 @@ const PortableButton = (props) => {
     if (props?.context) {
 
       if(props.context.buttonFunction !== undefined){
-        props?.context?.buttonFunction()
+        props?.context?.buttonFunction.call()
       }
       if(props.context.buttonFunctionAlt !== undefined){
-        props?.context?.buttonFunctionAlt()
+        props?.context?.buttonFunctionAlt.call()
       }
     }
 
@@ -211,20 +211,9 @@ const PortableButton = (props) => {
       break;
   }
 
-
- 
-  
-
   const isActiveClass = '/' +router?.query?.slug == linkURL ? 'is-active' : '';
 
   const finalClass = `${btnClass} ${isActiveClass} group flex flex-wrap gap-1 flex-row items-center justify-center rounded-lg ${styleClass.hover} ${styleClass.default} ${sizeClass.default}`
-  // const variableClass = formatClassObj([styleClass, sizeClass])
-
-  // const classArr = [
-  //   globalClass,
-  //   variableClass,
-  // ]
-  // const finalClass = classArr.join(' ')
 
   
   if (!outputLink) {

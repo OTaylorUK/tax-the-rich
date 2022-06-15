@@ -12,7 +12,12 @@ const Path = props => (
 );
 
 export const MenuToggle = ({ menuOpen, toggle }) => (
-  <motion.button animate={menuOpen} className={`z-2 block md:hidden`} onClick={toggle}>
+  <motion.button 
+    animate={menuOpen ? "open" : "closed"}
+    className={`z-2 block md:hidden`} 
+    onClick={toggle}
+  >
+
     <svg  className="text-custom-secondary" width="23" height="23" viewBox="0 0 23 23">
       <Path
         // d="M 2 2.5 L 20 2.5"
