@@ -1,17 +1,17 @@
 import { useEffect, useState,useRef, useContext } from 'react';
 import { useThemeContext } from '../../context/theme';
 
-const Box = ({ height, width, colour, zIndex, displayVal, iteration, context}) => {
+const Box = ({ height, width, colour, zIndex, displayVal, iteration, context, isLast}) => {
 
-	let varClass = 'absolute top-0' 
+	let varClass =  `${isLast ? 'relative' : 'absolute'} top-0`
 	let variableLabelArr = ['block']
 	// let variableLabelArr = ['md:hidden group-hover:block']
 
-	if(iteration == 0){
-		varClass = 'sticky top-20' 
-		// variableLabelArr = ['hidden md:block' ]
+	// if(iteration == 0){
+	// 	varClass = 'sticky top-20' 
+	// 	// variableLabelArr = ['hidden md:block' ]
 	
-	}
+	// }
 
 	const boxRef = useRef()
 

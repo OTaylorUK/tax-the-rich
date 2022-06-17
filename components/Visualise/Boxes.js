@@ -9,11 +9,18 @@ const Boxes = ({ data, context }) => {
 			<div>loading...</div>
 		)
 	}else{
+
+		console.log(data.length);
 		return (
 			< >
 				{data.map((box,i)=>{
+
+					let isLast = false;
+					if((i + 1) === data.length){
+						isLast = true
+					}
 					return(
-						<Box key={i} context={context} iteration={i} {... box}/>
+						<Box key={i} context={context} isLast={isLast} iteration={i} {... box}/>
 					)
 				})}
 			</>

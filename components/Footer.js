@@ -39,9 +39,9 @@ const Footer = ({ content = null, scroll }) => {
 	const {middle, credit} = data;
 
 	return (
-		<footer className={`site-footer w-full z-50`}>
+		<footer className={`site-footer w-full z-540`}>
 
-			<div className="mb-20 flex flex-col gap-4 justify-center items-center w-full p-20 text-custom-text">
+			<div className="mb-20 flex flex-col gap-4 justify-center items-center w-full p-20 text-custom-text text-center">
 			<PortableText
 				value={credit.text}
 				components={myPortableTextComponents}

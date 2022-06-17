@@ -25,7 +25,7 @@ const Quote = (props) => {
 	
 	},[findReplace,componentContext])
 
-	
+	console.log({textContent});
 	return (
 		<Container>
 			<Header >

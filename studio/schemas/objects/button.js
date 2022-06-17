@@ -86,7 +86,31 @@ export default {
       type: 'simplePortableText',
       hidden: ({ parent }) =>  !parent.isLink
     },
-   
+    {
+      group: 'content',
+      title: 'Link query',
+      name: 'query',
+      description: 'Use this to add query.',
+      type: 'array',
+      of: [{
+        type: 'object',
+        fields: [
+          {
+            title: 'Key',
+            description: 'Use this to define the key.',
+            name: 'key',
+            type: 'string',
+          },
+          {
+            title: 'Value',
+            description: 'Use this to define the value.',
+            name: 'value',
+            type: 'string',
+          },
+        ]
+      }],
+      // hidden: ({ parent }) =>  parent.isLink
+    },
 
     {
       group: 'style',

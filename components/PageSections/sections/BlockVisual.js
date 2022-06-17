@@ -217,23 +217,25 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 				curIter += base?.incrementBy
 			})
 
-			const maxHeight = Math.max.apply(null,boxes.map(function(o) { return o.height; }));
-
+			// const maxHeight = Math.max.apply(null,boxes.map(function(o) { return o.height; }));
+            // console.log("🚀 ~ file: BlockVisual.js ~ line 221 ~ formatAmounts ~ maxHeight", maxHeight)
+			// console.log({boxes});
+			
 
 			return {
 				keys,
 				boxes,
-				maxHeight
+				// maxHeight
 			}
 		}
 
-		const {keys,boxes, maxHeight} = formatAmounts()
+		const {keys,boxes} = formatAmounts()
 
 		setBoxes(boxes)
 		setKeys(keys)
-		if(displayType === 'y'){
-			setContHeight(maxHeight)
-		}
+		// if(displayType === 'y'){
+		// 	setContHeight(maxHeight)
+		// }
 		
 		
 	},[variableSelection, containerWidth])
@@ -319,7 +321,7 @@ const BlockVisual = ({headerContent,textContent, buttons, componentContext}) => 
 					
 					<div className={` ${displayType === 'x'? 'h-[30vh]' : 'h-auto'}  w-full  relative`} ref={elementRef} 
 					style={{
-						height: `${contHeight}px`,
+						// height: `${contHeight}px`,
 						scrollMarginTop: '200px'
 					}}>
 						<Boxes  data={boxes} context={{scrollToTop,showLabels}} />

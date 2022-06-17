@@ -72,7 +72,12 @@ const PortableButton = (props) => {
   }
 
   if (query) {
-    hrefData.query = query;
+
+    let finalQuery = query;
+    if(Array.isArray(query)){
+      finalQuery = query.reduce((o, cur) => ({ ...o, [cur.key]: cur.value}), {})
+    }
+    hrefData.query = finalQuery;
   }
 
 

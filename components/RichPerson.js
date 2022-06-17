@@ -41,8 +41,10 @@ const RichPerson = ({indv, buttons}) => {
 			button.query = {
 				person1: uid,
 				comp1: `${wealth.actualValue}`,
-				comp2: 1000000, //1m
-				comp3: 100000000, //100m
+				// comp2: 1000000, //1m
+				comp2: 100000000, //100m
+				comp3: 1000000000, //1b
+				comp4: 10000000000, //10b
 			}
 		}else if(button.intLink === 'what-it-buys'){
 			button.query = {

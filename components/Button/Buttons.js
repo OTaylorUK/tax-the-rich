@@ -5,19 +5,21 @@ import { motion } from "framer-motion";
 
 
 const cardVariants = {
-	offscreen: {
-	  opacity: 0
-	},
+	offscreen:  { opacity: 0 },
 	onscreen: {
-		opacity: 1, 
+		opacity: 1,
 		transition: {
-			type: "spring",
-			bounce: 0.4,
-			duration: 1.2,
-			delay: 3,
+		staggerChildren: 0.5,
+		duration: 1,
+		delay:2
 		}
 	}
   };
+
+const listItem = {
+	offscreen: { opacity: 0 },
+	onscreen: { opacity: 1 }
+};
 
 
 const Buttons = ({buttons = null, value = null, context = null}) => {
@@ -42,7 +44,9 @@ const Buttons = ({buttons = null, value = null, context = null}) => {
 				let finalContext = JSON.parse(JSON.stringify(context));
 
 				return (
-					<Button key={`btn-${index}`} content={button} context={finalContext}  />
+					<motion.div key={`btn-${index}`} variants={listItem}>
+						<Button content={button} context={finalContext}  />
+					</motion.div>
 				)
 			})} 
 				

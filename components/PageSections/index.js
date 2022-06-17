@@ -28,7 +28,7 @@ const PageSections = (props) => {
 	const additionalClass = numSections !== 1 ? 'mb-20' : ''
 
 	return (
-		<div className={`page-sections overflow-hidden items-center gap-y-20 flex flex-col ${additionalClass}`}  >
+		<div className={`page-sections overflow-hidden items-center gap-y-8 md:gap-y-20 flex flex-col ${additionalClass}`}  >
 
 			{sections?.map((section, i) => {
 				const SectionComponent = resolveSections(section, variableData)
