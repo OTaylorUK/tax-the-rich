@@ -1,10 +1,10 @@
-import axios from "axios"
+import axios from "axios";
 import { GoogleSpreadsheet } from "google-spreadsheet";
-import client from '../client'
+import client from "../client";
 
 /**
- * 
- * @param {*} promises 
+ *
+ * @param {*} promises
  * @returns Key value paired object from Promise.all
  */
 export const allKeyed = async (promises) => {
@@ -15,128 +15,132 @@ export const allKeyed = async (promises) => {
   // Build an object from those result values; this works because the
   // array from `Promise.all` is in the same order as the array of
   // values we gave it above.
-  const result = Object.fromEntries(entries.map(([key], index) => {
+  const result = Object.fromEntries(
+    entries.map(([key], index) => {
       return [key, values[index]];
-  }));
+    })
+  );
   return result;
-}
+};
 
 export const getLog10 = (number) => {
-  return Math.round(100*Math.log(number)/Math.log(10))/100;
-
-}
+  return Math.round((100 * Math.log(number)) / Math.log(10)) / 100;
+};
 
 export const formatSocialChannelQuery = (title, url, name) => {
-
   const niceTitle = encodeURIComponent(title);
 
   let btnQuery = {
-    'title': title,
-    'url': url
-  }
+    title: title,
+    url: url,
+  };
 
   switch (name.toLowerCase()) {
-    case 'twitter':
-      btnQuery = {...btnQuery,
-        'title': `Check out this great way to ${title}` ,
-        'hashtags': 'TaxTheRich'
-      }
-
-    break;
-
-    case 'linkedin':
+    case "twitter":
       btnQuery = {
-        'url': url
-      }
+        ...btnQuery,
+        title: `Check out this great way to ${title}`,
+        hashtags: "TaxTheRich",
+      };
 
-    break;
-    case 'facebook':
+      break;
+
+    case "linkedin":
       btnQuery = {
-        'u': url
-      }
-    break;
-  
-    case 'email':
+        url: url,
+      };
+
+      break;
+    case "facebook":
+      btnQuery = {
+        u: url,
+      };
+      break;
+
+    case "email":
       //mailto:
       btnQuery = {
-        'subject': `Check out this great way to ${title}` ,
-        'body': `Visit the site: ${url}`
-      }
-    break;
+        subject: `Check out this great way to ${title}`,
+        body: `Visit the site: ${url}`,
+      };
+      break;
 
-    case 'whatsapp':
+    case "whatsapp":
       btnQuery = {
-        'text': `Check out this great way to ${title} - ${url}` ,
-      }
-    break;
+        text: `Check out this great way to ${title} - ${url}`,
+      };
+      break;
     default:
       break;
   }
 
   return btnQuery;
-
-}
+};
 
 export const formatNumberToLocal = (number) => {
-  let formattedNumber = null
-  const niceNum = parseInt(number)
-  const positiveNum = Math.abs(parseInt(number)) // log10 logic below will work only with positive num
+  let formattedNumber = null;
+  const niceNum = parseInt(number);
+  const positiveNum = Math.abs(parseInt(number)); // log10 logic below will work only with positive num
 
   if (!isNaN(positiveNum)) {
-					
-    const logten =  Math.floor(getLog10(positiveNum))
-    let long = ''
-    let short = ''
+    const logten = Math.floor(getLog10(positiveNum));
+    let long = "";
+    let short = "";
 
     switch (logten) {
       case 3:
       case 4:
       case 5:
-        long = 'thousand'
-        short = 'k'
+        long = "thousand";
+        short = "k";
         break;
       case 6:
       case 7:
       case 8:
-        long = 'million'
-        short = 'm'
+        long = "million";
+        short = "m";
 
         break;
-        
+
       case 9:
       case 10:
       case 11:
-        long = 'billion'
-        short = 'b'
+        long = "billion";
+        short = "b";
 
         break;
       case 12:
       case 13:
       case 14:
-        long = 'trillion'
-        short = 't'
+        long = "trillion";
+        short = "t";
 
         break;
       case 15:
       case 16:
       case 17:
-        long = 'quadrillion'
-        short = 'q'
+        long = "quadrillion";
+        short = "q";
 
         break;
       default:
         break;
     }
 
-    // convert actualValue number to display in USD 
-    const display = (niceNum).toLocaleString('en-US', {
-      style: 'currency',
-      currency: 'USD',
-      maximumSignificantDigits: 5
+    // convert actualValue number to display in USD
+    const display = niceNum.toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      maximumSignificantDigits: 5,
     });
 
     // e.g. 1,020 -> 1.02k
-    let numVal = display.split(',').slice(0, 2).join().replace(',','.').slice(0, -1)
+    let numVal = display
+      .split(",")
+      .slice(0, 2)
+      .join()
+      .replace(",", ".")
+      .slice(0, -1);
 
     formattedNumber = {
       trueVal: display,
@@ -145,40 +149,36 @@ export const formatNumberToLocal = (number) => {
       displayValue: `${numVal} ${long}`,
       shortRaw: numVal,
       scale: long,
-    }
+    };
   }
-  return formattedNumber
-
-}
-
+  return formattedNumber;
+};
 
 /**
  * calculate the total number of pricedItem(units e.g. cars) that moneyAmount (money amount) can buy
  * @returns number to 2 decimal points
  */
 export const calcTotalUnits = (pricedItem, moneyAmount) => {
-
   let valPrimary = pricedItem?.priceUSD;
   let valSecondary = moneyAmount?.actualValue;
-  const numOfUnits = Number((valSecondary / valPrimary).toFixed(2))
+  const numOfUnits = Number((valSecondary / valPrimary).toFixed(2));
 
-  // update the display figure to reflect the true value 
+  // update the display figure to reflect the true value
   const formattedNumOfUnits = numOfUnits.toLocaleString("en-US");
   // updateNiceNumber(formattedNumOfUnits)
-  
+
   return {
-    raw: numOfUnits, 
-    display: formattedNumOfUnits
+    raw: numOfUnits,
+    display: formattedNumOfUnits,
   };
-}
+};
 
 /**
  * updates values depending on how many total unit are to be displayed - helps to prevent slow browser warning
- * @param {*} totalUnits 
+ * @param {*} totalUnits
  */
 export const calcUnitsPerAmount = (pricedItem, moneyAmount) => {
-
-  const {display, raw} = calcTotalUnits(pricedItem, moneyAmount)
+  const { display, raw } = calcTotalUnits(pricedItem, moneyAmount);
 
   let perUnit = 1;
 
@@ -191,28 +191,27 @@ export const calcUnitsPerAmount = (pricedItem, moneyAmount) => {
    */
   const logFloor = Math.floor(logTen) - 3;
 
-  // calc the per unit using the floored log 10 - limits the number to prevent slow browser warning 
+  // calc the per unit using the floored log 10 - limits the number to prevent slow browser warning
 
   if (logTen > 4) {
-    perUnit = Math.pow(10, logFloor) // keep the power to as '2' so not to detract from larger numbers that result in log 3+
-    // perUnit = Math.pow(10, 2)		
-
+    perUnit = Math.pow(10, logFloor); // keep the power to as '2' so not to detract from larger numbers that result in log 3+
+    // perUnit = Math.pow(10, 2)
   }
-
 
   // units per icon
   const displayPerUnit = perUnit.toLocaleString("en-US");
-  
 
-  const updatedTotalUnits =  Number((raw / perUnit).toFixed(2))
+  const updatedTotalUnits = Number((raw / perUnit).toFixed(2));
 
-  const numOfUnitsPlural = updatedTotalUnits > 1 ? true : false
+  const numOfUnitsPlural = updatedTotalUnits > 1 ? true : false;
 
   return {
     isReady: true,
-    isPlural:  Number(perUnit) > 1 ? true : false,
+    isPlural: Number(perUnit) > 1 ? true : false,
     numOfUnitsPlural: numOfUnitsPlural,
-    displayName: numOfUnitsPlural ? pricedItem?.pluralName : pricedItem?.singularName,
+    displayName: numOfUnitsPlural
+      ? pricedItem?.pluralName
+      : pricedItem?.singularName,
     numOfUnits: {
       raw: updatedTotalUnits,
       display: display,
@@ -222,11 +221,8 @@ export const calcUnitsPerAmount = (pricedItem, moneyAmount) => {
       display: displayPerUnit,
     },
     unitIcon: pricedItem?.icon,
-    
   };
-
-}
-
+};
 
 export const formatGlobalSettings = (obj) => {
   for (let [key, result] of Object.entries(obj)) {
@@ -237,50 +233,45 @@ export const formatGlobalSettings = (obj) => {
     let returnContent = result;
 
     // handle same type value -- diff from routes
-    if (type === 'page') {
+    if (type === "page") {
       if (result.length === 1) {
         // if page content will only have one array item
-        type = 'pageContent'
+        type = "pageContent";
 
         // grab content to avoid to many nested arr objs
         // returnContent = result?.[0]?.content;
       }
     }
-    let newObj = { name: type, value: returnContent }
+    let newObj = { name: type, value: returnContent };
     obj[key] = newObj;
   }
 
   return obj;
-}
+};
 
 export const capitalizeString = (str) => {
-  if (typeof str !== 'string' || !str) return str
+  if (typeof str !== "string" || !str) return str;
 
-  return str.charAt(0).toUpperCase() + str.slice(1)
-}
-
+  return str.charAt(0).toUpperCase() + str.slice(1);
+};
 
 // internal api calls wont work in getStaticProps so changed to getSheets func
 export const getSheet = async () => {
-
   const response = await axios({
     method: "POST",
     url: "/api/sheets/get",
-    withCredentials: false
-  })
+    withCredentials: false,
+  });
 
   // const response = {
   //   'test': 'test'
   // }
 
   return response;
-
-
-}
+};
 
 export const getSheets = async () => {
-
-  const doc = new GoogleSpreadsheet(process.env.GOOGLE_DOC_ID)
+  const doc = new GoogleSpreadsheet(process.env.GOOGLE_DOC_ID);
 
   await doc.useServiceAccountAuth({
     client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
@@ -290,67 +281,61 @@ export const getSheets = async () => {
   // loads document properties and worksheets
   await doc.loadInfo();
   const sheet = doc.sheetsByIndex[0];
-  const rows = await sheet.getRows()
+  const rows = await sheet.getRows();
 
   let allData = [];
 
-  rows.map((row, i)=>{
+  rows.map((row, i) => {
     let currentItem = {
-      _id: row.uid = row.uid  ? row.uid  : null,
-      shortName: row.shortName = row.shortName  ? row.shortName  : null,
-      singularName: row.singularName = row.singularName  ? row.singularName  : null,
-      pluralName: row.pluralName = row.pluralName  ? row.pluralName  : null,
-      icon: row.icon = row.icon  ? row.icon  : null,
-      priceUSD: row.priceUSD = row.priceUSD  ? row.priceUSD  : null,
-      text: row.text = row.text  ? row.text  : null,
+      _id: (row.uid = row.uid ? row.uid : null),
+      shortName: (row.shortName = row.shortName ? row.shortName : null),
+      singularName: (row.singularName = row.singularName
+        ? row.singularName
+        : null),
+      pluralName: (row.pluralName = row.pluralName ? row.pluralName : null),
+      icon: (row.icon = row.icon ? row.icon : null),
+      priceUSD: (row.priceUSD = row.priceUSD ? row.priceUSD : null),
+      text: (row.text = row.text ? row.text : null),
       sources: [
-        row.source1 = row.source1  ? row.source1  : null,
-        row.source2 = row.source2  ? row.source2  : null,
-        row.source3 = row.source3  ? row.source3  : null
+        (row.source1 = row.source1 ? row.source1 : null),
+        (row.source2 = row.source2 ? row.source2 : null),
+        (row.source3 = row.source3 ? row.source3 : null),
       ],
-    }
+    };
 
-    allData.push(currentItem)
-
-  })
-
-
+    allData.push(currentItem);
+  });
 
   // const response = {
   //   'test': 'test'
   // }
 
   return allData;
+};
 
+export const getRichList = async (number = "25") => {
+  const API1 = `https://forbes400.onrender.com/api/forbes400?limit=${number}`;
+  const API2 = `https://forbes400.herokuapp.com/api/forbes400/real-time?limit=${number}`;
 
-}
-
-
-
-
-export const getRichList = async (number = '25') => {
-
-  const API = `https://forbes400.herokuapp.com/api/forbes400/real-time?limit=${number}`;
-  const response = await axios.get(API);
-
-  const final = await response.data
-
-  // richList = await response.data
-
-  // // const response = {
-  // //   'test': 'test'
-  // // }
-
-  return final;
-
-
-}
+  try {
+    const response1 = await axios.get(API1);
+    return response1.data;
+  } catch (error1) {
+    console.error(`Error with first API: ${error1}`);
+    try {
+      const response2 = await axios.get(API2);
+      return response2.data;
+    } catch (error2) {
+      console.error(`Error with second API: ${error2}`);
+      return null;
+    }
+  }
+};
 
 export const getGroqQuery = async (query) => {
-
   const response = await client.fetch(query);
 
-  const final = await response
+  const final = await response;
 
   // richList = await response.data
 
@@ -359,76 +344,63 @@ export const getGroqQuery = async (query) => {
   // // }
 
   return final;
-
-
-}
-
+};
 
 export const isActiveLink = (href, currentPathname) => {
-  let {linkURL} = formatLinkHref(null, href)
-  if (linkURL === '/') {
-      return linkURL === currentPathname
+  let { linkURL } = formatLinkHref(null, href);
+  if (linkURL === "/") {
+    return linkURL === currentPathname;
   }
 
-  return currentPathname.startsWith(linkURL)
-}
+  return currentPathname.startsWith(linkURL);
+};
 
-export const formatLinkHref = (link = null,intLink = null, outputLink = true) => {
+export const formatLinkHref = (
+  link = null,
+  intLink = null,
+  outputLink = true
+) => {
+  let linkURL, linkTarget;
 
-  let linkURL,linkTarget;
-  
   if (link !== null) {
-    linkURL = `${link}`
-    linkTarget = '_blank'
+    linkURL = `${link}`;
+    linkTarget = "_blank";
   } else if (intLink !== null) {
-    
-    if (intLink !== '/') {
-     linkURL = `/${intLink}`
+    if (intLink !== "/") {
+      linkURL = `/${intLink}`;
     } else {
-     linkURL = `${intLink}`
+      linkURL = `${intLink}`;
     }
-    
-    linkTarget = '_self'
+
+    linkTarget = "_self";
   } else {
-    outputLink = false
+    outputLink = false;
   }
-  return {linkURL,linkTarget, outputLink}
-}
+  return { linkURL, linkTarget, outputLink };
+};
 
-
-
-
-			
-
-
-
-export const findAndReplaceHolder = ({replaceVals, str }) => {
-
-  var placeholders = str?.match(/\$(.*?)\$/g)
+export const findAndReplaceHolder = ({ replaceVals, str }) => {
+  var placeholders = str?.match(/\$(.*?)\$/g);
   if (placeholders) {
-    let newString = '';
+    let newString = "";
 
     placeholders?.map((placeholder, i) => {
-
       // text without placeholder characters
       var phText = placeholder.substring(1, placeholder.length - 1);
 
       // replacen with new value
       if (replaceVals[phText]) {
-        if (newString !== '') {
-          newString = newString.replace(placeholder, replaceVals[phText])
-        
+        if (newString !== "") {
+          newString = newString.replace(placeholder, replaceVals[phText]);
         } else {
           if (str) {
-            newString = str?.replace(placeholder, replaceVals[phText])
+            newString = str?.replace(placeholder, replaceVals[phText]);
           }
-         
         }
       }
-    })
+    });
     return newString;
   } else {
     return str;
   }
-
-}
+};
